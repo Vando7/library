@@ -9,6 +9,8 @@ CREATE OR REPLACE TABLE user (
     street VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
+    auth_key varchar(255) NOT NULL,
+    access_token varchar(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('reader','librarian','admin') NOT NULL,
     note TINYTEXT DEFAULT NULL,
