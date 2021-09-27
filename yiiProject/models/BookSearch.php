@@ -22,6 +22,7 @@ class BookSearch extends Book
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +31,7 @@ class BookSearch extends Book
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+
 
     /**
      * Creates data provider instance with search query applied

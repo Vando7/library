@@ -31,6 +31,7 @@ class BookController extends Controller
         );
     }
 
+    
     /**
      * Lists all Book models.
      * @return mixed
@@ -46,6 +47,7 @@ class BookController extends Controller
         ]);
     }
 
+
     /**
      * Displays a single Book model.
      * @param string $isbn Isbn
@@ -58,6 +60,7 @@ class BookController extends Controller
             'model' => $this->findModel($isbn),
         ]);
     }
+
 
     /**
      * Creates a new Book model.
@@ -81,6 +84,7 @@ class BookController extends Controller
         ]);
     }
 
+
     /**
      * Updates an existing Book model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -101,6 +105,7 @@ class BookController extends Controller
         ]);
     }
 
+
     /**
      * Deletes an existing Book model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -114,6 +119,7 @@ class BookController extends Controller
 
         return $this->redirect(['index']);
     }
+
 
     /**
      * Finds the Book model based on its primary key value.

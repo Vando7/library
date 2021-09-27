@@ -22,6 +22,7 @@ class Genre extends \yii\db\ActiveRecord
         return 'genre';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +33,7 @@ class Genre extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 25],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -44,6 +46,7 @@ class Genre extends \yii\db\ActiveRecord
         ];
     }
 
+    
     /**
      * Gets query for [[BookGenres]].
      *

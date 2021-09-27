@@ -14,6 +14,7 @@ class SignupForm extends Model{
     public $password;
     public $password_repeat;
 
+    
     public function rules(){
         return [
             [['first_name', 'last_name', 'country', 'city', 'street', 'phone', 'email', 'password'], 'required'],
@@ -27,6 +28,7 @@ class SignupForm extends Model{
             ['password_repeat','compare','compareAttribute'=>'password'],
         ];
     }
+
 
     public function signup(){
         $user = new User();

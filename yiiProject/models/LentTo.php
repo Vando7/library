@@ -30,6 +30,7 @@ class LentTo extends \yii\db\ActiveRecord
         return 'lent_to';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -46,6 +47,7 @@ class LentTo extends \yii\db\ActiveRecord
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['employee_id' => 'id']],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -64,6 +66,7 @@ class LentTo extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * Gets query for [[BookIsbn]].
      *
@@ -73,6 +76,7 @@ class LentTo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Book::className(), ['isbn' => 'book_isbn']);
     }
+
 
     /**
      * Gets query for [[Employee]].
@@ -84,6 +88,7 @@ class LentTo extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'employee_id']);
     }
 
+    
     /**
      * Gets query for [[User]].
      *

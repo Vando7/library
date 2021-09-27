@@ -3,6 +3,7 @@
 namespace app\models;
 use yii\web\IdentityInterface;
 
+
 use Yii;
 
 /**
@@ -37,6 +38,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return 'user';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +55,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email'], 'unique'],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -80,6 +83,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
+
     /**
      * Gets query for [[LentTos]].
      *
@@ -89,6 +93,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(LentTo::className(), ['user_id' => 'id']);
     }
+
 
     /**
      * Gets query for [[LentTos0]].
@@ -100,14 +105,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(LentTo::className(), ['employee_id' => 'id']);
     }
 
+
     public static function findByEmail($email){
         return self::findOne(['email'=>$email]);
     }
+
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return self::findOne(['access_token' => $token]);
     }
+
 
     /**
      * Finds user by username
@@ -120,6 +128,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return self::findOne(['username' => $email]);
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -127,6 +136,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->id;
     }
+
 
     /**
      * {@inheritdoc}
@@ -136,6 +146,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->auth_key;
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -143,6 +154,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->auth_key === $auth_key;
     }
+
 
     /**
      * Validates password
@@ -155,6 +167,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($password,$this->password);
     }
 
+
      /**
      * {@inheritdoc}
      */
@@ -162,4 +175,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return self::findOne($id);
     }
+
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->auth_key = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

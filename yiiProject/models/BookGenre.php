@@ -23,6 +23,7 @@ class BookGenre extends \yii\db\ActiveRecord
         return 'book_genre';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -37,6 +38,7 @@ class BookGenre extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -48,6 +50,7 @@ class BookGenre extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * Gets query for [[BookIsbn]].
      *
@@ -58,6 +61,7 @@ class BookGenre extends \yii\db\ActiveRecord
         return $this->hasOne(Book::className(), ['isbn' => 'book_isbn']);
     }
 
+    
     /**
      * Gets query for [[Genre]].
      *
