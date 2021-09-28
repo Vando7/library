@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>librarian2</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/Form-Select---Full-Date---Month-Day-Year.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
+    <link rel="stylesheet" href="assets/css/MUSA_panel-table-1.css">
+    <link rel="stylesheet" href="assets/css/MUSA_panel-table.css">
+    <link rel="stylesheet" href="assets/css/Pretty-Registration-Form.css">
+    <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
+    <link rel="stylesheet" href="assets/css/registration-form.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Table-With-Search-1.css">
+    <link rel="stylesheet" href="assets/css/Table-With-Search.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="#">Library</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#">Books</a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="readers-non-selected.html">Readers</a></li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="login.html">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="col text-right ml-auto"><button class="btn btn-primary" type="button" data-target="#modal-3" data-toggle="modal">Donald Donaldson&nbsp;&nbsp;<span class="badge badge-success">41</span></button><a class="btn btn-danger" role="button" style="margin-left: 6px;" href="index.html">Cancel&nbsp;<i class="fa fa-window-close"></i>&nbsp;</a></div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>Books with the removed genre(s) will no longer have it, this change cannot be undone.</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-success" type="button" data-dismiss="modal" data-target="#modal-1" data-toggle="modal">Yes</button><button class="btn btn-danger" type="button">No</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">How many books?</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>Input the number of books you wish to add:</p><input class="border rounded form-control-sm" type="number" min="1" max="21" step="1" value="1" placeholder="1">
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal">Add</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-top: 21px;">
+        <div class="table-responsive table table-hover table-bordered" style="max-width: 1000px;margin: auto;">
+            <table class="table table-striped table-hover">
+                <thead class="bill-header cs" style="background: rgba(184,184,184,0.56);">
+                    <tr>
+                        <th></th>
+                        <th>
+                            <form>
+                                <div style="display: inline-flex;max-width: 700px;padding-top: 0px;margin-bottom: 15px;" responsive="">
+                                    <div class="input-group text-center"><input class="border rounded form-control" type="text" placeholder="Search...">
+                                        <div class="input-group-append"><button class="btn btn-primary btn-sm" type="button" style="padding: 0px 3px;background: rgb(117,183,255);">🔍</button></div>
+                                    </div>
+                                </div>
+                                <div style="display: inline-flex;" responsive="">
+                                    <div class="dropdown" style="margin-left: 7px;margin-bottom: 0px;"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button" style="background: rgb(255,255,255);color: rgb(0,0,0);margin-top: -7px;">Select Genres</button>
+                                        <div class="dropdown-menu"><a class="dropdown-item" href="#"><input type="checkbox">&nbsp;Western</a><a class="dropdown-item" href="#"><input type="checkbox">&nbsp;Adventure</a><a class="dropdown-item" href="#"><input type="checkbox">&nbsp;Science Fiction</a><button class="btn btn-success btn-block" type="button">Apply Filter</button><button class="btn btn-primary btn-block" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-pencil"></i>Manage Genre</button></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    <tr href="book.html" style="max-height: 200px;">
+                        <td align="center" style="max-height: 300px;padding: 2px;"><a href="book.html"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image.png" style="max-height: 200px;"></a></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>No Country for Old Men (2016)</strong><br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Cormac McCarthy</em><br>Western<br><span class="badge badge-dark">17 Available</span><span class="badge badge-danger">1 Reserved</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2 align-content-center" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 2px;"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-1.png" style="max-height: 200px;"></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Hunger Games</strong>(2008)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Suzanne Collins</em><br>Adventure, Science Fiction<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px;" align="center">
+                            <div><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-2.png" style="max-height: 200px;"></div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Harry Potter and the Philosopher's Stone&nbsp;</strong>(1997)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>J.K. Rowling</em><br>Fantasy<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr href="book.html" style="max-height: 200px;">
+                        <td align="center" style="max-height: 300px;padding: 2px;"><a href="book.html"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image.png" style="max-height: 200px;"></a></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>No Country for Old Men (2016)</strong><br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Cormac McCarthy</em><br>Western<br><span class="badge badge-dark">17 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2 align-content-center" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 2px;"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-1.png" style="max-height: 200px;"></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Hunger Games</strong>(2008)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Suzanne Collins</em><br>Adventure, Science Fiction<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px;" align="center">
+                            <div><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-2.png" style="max-height: 200px;"></div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Harry Potter and the Philosopher's Stone&nbsp;</strong>(1997)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>J.K. Rowling</em><br>Fantasy<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr href="book.html" style="max-height: 200px;">
+                        <td align="center" style="max-height: 300px;padding: 2px;"><a href="book.html"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image.png" style="max-height: 200px;"></a></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>No Country for Old Men (2016)</strong><br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Cormac McCarthy</em><br>Western<br><span class="badge badge-dark">17 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2 align-content-center" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 2px;"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-1.png" style="max-height: 200px;"></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Hunger Games</strong>(2008)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Suzanne Collins</em><br>Adventure, Science Fiction<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px;" align="center">
+                            <div><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-2.png" style="max-height: 200px;"></div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Harry Potter and the Philosopher's Stone&nbsp;</strong>(1997)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>J.K. Rowling</em><br>Fantasy<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr href="book.html" style="max-height: 200px;">
+                        <td align="center" style="max-height: 300px;padding: 2px;"><a href="book.html"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image.png" style="max-height: 200px;"></a></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>No Country for Old Men (2016)</strong><br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Cormac McCarthy</em><br>Western<br><span class="badge badge-dark">17 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2 align-content-center" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 2px;"><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-1.png" style="max-height: 200px;"></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Hunger Games</strong>(2008)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>Suzanne Collins</em><br>Adventure, Science Fiction<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px;" align="center">
+                            <div><img class="rounded img-fluid" src="assets/img/Tempclipboard-image-2.png" style="max-height: 200px;"></div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div><a href="book.html" style="color: rgb(0,0,0);"><strong>Harry Potter and the Philosopher's Stone&nbsp;</strong>(1997)<br></a></div>
+                                    <p style="margin-bottom: 0px;"><em>J.K. Rowling</em><br>Fantasy<br><span class="badge badge-dark">21 Available</span><br></p>
+                                    <p class="lead" style="font-size: 14px;">ISBN 978-0375706677<br></p>
+                                </div>
+                                <div class="col-2 col-xl-2" style="padding: 0px;">
+                                    <div></div><button class="btn btn-primary" type="button" data-target="#modal-1" data-toggle="modal"><i class="fa fa-plus-square"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container align-content-center">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-3">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Give books</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-close" style="color: #ff0000;"></i>&nbsp;The Hunger Games, 1 copy</li>
+                        <li><i class="fa fa-close" style="color: #ff0000;"></i>&nbsp;No country for old men, 40 copies<br></li>
+                    </ul><label>Deadline:&nbsp;</label><input type="date">
+                    <ul class="list-group"></ul><small class="form-text text-primary">About user: One book returned wet, One book returned with missing pages</small>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><a class="btn btn-primary" role="button" href="readers-non-selected.html"><i class="fa fa-hand-lizard-o"></i>&nbsp;Give</a></div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/Table-With-Search.js"></script>
+</body>
+
+</html>

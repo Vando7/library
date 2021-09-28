@@ -37,7 +37,7 @@ $config = [
             'useFileTransport' => true,
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['admin','librarian','reader'],
         ],
         'log' => [
