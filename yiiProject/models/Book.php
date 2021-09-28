@@ -43,6 +43,7 @@ class Book extends \yii\db\ActiveRecord
             [['isbn'], 'string', 'max' => 13],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
+            ['pictures','default','value' => NULL]
         ];
     }
 

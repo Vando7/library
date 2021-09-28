@@ -46,6 +46,32 @@ class UserController extends Controller
     }
 
 
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (Yii::$app->user->isGuest  
+            && !($this->action->id == 'login') 
+            && !($this->action->id == 'signup')) 
+        {
+            return $this->redirect(['login']);
+        }
+
+        return true;
+    }
+
+
+    public function beforeSave() {
+        foreach ($this->attributes as $key => $value)
+            if (!$value){
+                $this->$key = NULL;
+            }
+    
+        return parent::beforeSave();
+    }
+    
+
     /**
      * Lists all User models.
      * @return mixed
@@ -84,18 +110,18 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+    
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
-
+    
         return $this->render('create', [
-            'model' => $model,
-        ]);
+                'model' => $model,
+            ]);
     }
 
 
@@ -109,6 +135,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+    
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -173,7 +200,7 @@ class UserController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['book']);
         }
 
         $model = new LoginForm();
@@ -204,6 +231,10 @@ class UserController extends Controller
 
     
     public function actionSignup(){
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['book']);
+        }
+
         $model = new SignupForm();
        
         if($model->load(Yii::$app->request->post()) && $model->signup()){

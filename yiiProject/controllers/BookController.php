@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Book;
 use app\models\BookSearch;
 use yii\web\Controller;
@@ -31,7 +32,37 @@ class BookController extends Controller
         );
     }
 
+
+    public function init(){
+        parent::init();
+        /*
+        if (Yii::app()->urlManager->showScriptName == false){
+            if (strpos(Yii::app()->request->requestUri, '/index.php') !== false){
+                $_uri = str_replace("/index.php", "", Yii::app()->request->requestUri);
+                $_uri = str_replace("//", "", $_uri);
+                $this->redirect($_uri);
+            }
+        }
+        */
+    }
+
+
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (Yii::$app->user->isGuest  
+            && !($this->action->id == 'login') 
+            && !($this->action->id == 'signup')) 
+        {
+            return $this->goHome();
+        }
+
+        return true;
+    }
     
+
     /**
      * Lists all Book models.
      * @return mixed
@@ -69,6 +100,10 @@ class BookController extends Controller
      */
     public function actionCreate()
     {
+        if(!\Yii::$app->user->can('addBook')){
+            $this->redirect(['index']);
+        }
+
         $model = new Book();
 
         if ($this->request->isPost) {

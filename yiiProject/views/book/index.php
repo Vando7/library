@@ -24,8 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'isbn',
             'pictures:ntext',
             'title',
@@ -35,7 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
             //'total_count',
             //'available_count',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'urlCreator' => function($action,$model,$key,$index){
+                 if($action == 'view'){
+                     return 'view?isbn='.$model->isbn;
+                 }
+
+                 if($action == 'update'){
+                     return 'update?isbn='.$model->isbn;
+                 }
+
+                 if($action == 'delete'){
+                     return 'delete?isbn='.$model->isbn;
+                 }
+             }],
         ],
     ]); ?>
 

@@ -1,0 +1,14 @@
+insert into genre(name) values ('Literary Fiction');
+insert into genre(name) values ('Mystery');
+insert into genre(name) values ('Thriller');
+insert into genre(name) values ('Horror');
+insert into genre(name) values ('Historical');
+insert into genre(name) values ('Romance');
+insert into genre(name) values ('Western');
+insert into genre(name) values ('Bildugsroman');
+insert into genre(name) values ('Speculative Fiction');
+insert into genre(name) values ('Science Fiction');
+insert into genre(name) values ('Fantasy');
+insert into genre(name) values ('Dystopian');
+insert into genre(name) values ('Magical Realism');
+insert into genre(name) values ('Realist Literature');

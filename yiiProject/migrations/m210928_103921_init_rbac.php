@@ -1,11 +1,11 @@
-<?php
+<?php 
 
 use yii\db\Migration;
 
 /**
- * Class m210927_140040_init_rbac
+ * Class m210928_103921_init_rbac
  */
-class m210927_140040_init_rbac extends Migration
+class m210928_103921_init_rbac extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,6 +13,9 @@ class m210927_140040_init_rbac extends Migration
     public function safeUp()
     {
         $auth = Yii::$app->authManager;
+
+        $rule = new \app\rbac\UserGroupRule;
+        $auth->add($rule);
 
         // Reader permissions.
         $reader = $auth->createRole('reader');

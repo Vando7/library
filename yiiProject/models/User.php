@@ -53,6 +53,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email', 'password'], 'string', 'max' => 255],
             [['phone'], 'unique'],
             [['email'], 'unique'],
+            ['suspended_status','default','value' => NULL],
         ];
     }
 
@@ -125,7 +126,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($email)
     {
-        return self::findOne(['username' => $email]);
+        return self::findOne(['email' => $email]);
     }
 
 
