@@ -78,6 +78,9 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->role == 'reader'){
+            return $this->actionView(Yii::$app->user->identity->id);
+        }
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -95,8 +98,14 @@ class UserController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        return $this->render('view', [
+    { 
+        if(Yii::$app->user->identity->role == 'reader'){
+            return $this->render('view', [
+                'model' => $this->findModel(Yii::$app->user->identity->id),
+            ]);
+        }
+
+        return $this->render('viewLibrarian', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -109,6 +118,10 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->role != 'admin'){
+            return $this->goHome();
+        }
+
         $model = new User();
     
         if ($this->request->isPost) {
@@ -134,9 +147,16 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-    
+        // Reader and librarian can only update own profiles.
+        $currentUser = Yii::$app->user->identity;
 
+        if($currentUser->role == 'reader'){
+            $model = $this->findModel($currentUser->id);
+        } else {
+            $model = $this->findModel($id);
+        }
+
+        // Process Request
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -156,7 +176,12 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        // Reader and librarian can only update own profiles.
+        $currentUser = Yii::$app->user->identity;
+
+        if($currentUser->role == 'admin' ){
+            $this->findModel($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }
@@ -205,7 +230,7 @@ class UserController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            Yii::$app->setHomeUrl(Url::to(['/book/index']));
+            Yii::$app->setHomeUrl(Url::to(['/book']));
             return $this->goHome();
         }
 
