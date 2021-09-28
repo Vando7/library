@@ -8,7 +8,6 @@ use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
 $this->title = 'Signup';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="site-login">

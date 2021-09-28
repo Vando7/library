@@ -27,18 +27,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'role')->dropDownList([ 'reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin', ], ['prompt' => 'Set user role']) ?>
-
-    <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'register_date')->textInput(['readonly'=>true]) ?>
-
-    <?= $form->field($model, 'suspended_status')->dropDownList([ 'no' => 'No', 'yes' => 'Yes', ], ['prompt' => 'Set suspended status']) ?>
-
-    <?= $form->field($model, 'suspended_date')->textInput() ?>
-
-    <?= $form->field($model, 'suspended_reason')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+  
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

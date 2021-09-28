@@ -12,27 +12,27 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'first_name',['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'first_name')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'last_name',['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'last_name')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'country',['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'country')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'city',['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'city')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'street', ['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'street')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'phone', ['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phone')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'email',['readonly'=>true])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true,'readonly'=>true]) ?>
 
-    <?= $form->field($model, 'role', ['readonly'=>true])->dropDownList([ 'reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin', ], ['prompt' => 'Set user role']) ?>
+    <?= $form->field($model, 'role')->dropDownList([ 'reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin', ], ['prompt' => 'Set user role','readonly'=>true]) ?>
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'register_date',['readonly'=>true])->textInput() ?>
+    <?= $form->field($model, 'register_date')->textInput() ?>
 
-    <?= $form->field($model, 'suspended_status',['readonly'=>true])->dropDownList([ 'no' => 'No', 'yes' => 'Yes', ], ['prompt' => 'Set suspended status']) ?>
+    <?= $form->field($model, 'suspended_status')->dropDownList([ 'no' => 'No', 'yes' => 'Yes', ], ['prompt' => 'Set suspended status']) ?>
 
     <?= $form->field($model, 'suspended_date')->textInput() ?>
 

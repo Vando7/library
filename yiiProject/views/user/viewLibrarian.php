@@ -31,13 +31,20 @@ $currentUser = Yii::$app->user->identity;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'id',
             'first_name',
             'last_name',
             'country',
             'city',
             'street',
             'phone',
-            'email:email'
+            'email:email',
+            'role',
+            'note:ntext',
+            'register_date',
+            'suspended_status',
+            'suspended_date',
+            'suspended_reason:ntext',
         ],
     ]) ?>
 

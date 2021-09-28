@@ -100,10 +100,6 @@ class BookController extends Controller
      */
     public function actionCreate()
     {
-        if(!\Yii::$app->user->can('addBook')){
-            $this->redirect(['index']);
-        }
-
         $model = new Book();
 
         if ($this->request->isPost) {
