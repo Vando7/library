@@ -37,8 +37,9 @@ $config = [
             'useFileTransport' => true,
         ],
         'authManager' => [
-            'class' => 'yii\rbac\PhpManager',
+            'class' => 'yii\rbac\DbManager',
             'defaultRoles' => ['admin','librarian','reader'],
+            'cache' => 'cache',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
