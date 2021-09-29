@@ -16,7 +16,6 @@ $config = [
     'components' => [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-            'defaultRoles' => ['admin','librarian','reader'],
             'cache' => 'cache',
         ],
         'cache' => [

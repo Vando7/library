@@ -38,7 +38,6 @@ $config = [
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-            'defaultRoles' => ['admin','librarian','reader'],
             'cache' => 'cache',
         ],
         'log' => [

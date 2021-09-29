@@ -189,6 +189,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return false;
     }
 
+    public function afterSave($id,$newRole){
+        /* ASSIGN ROLE CHANGE.
+        $auth = \Yii::$app->authManager;
+        $userRole = $auth->getRole($newRole);
 
+        $user= self::findIdentity($id);
+        $user->role = $newRole;
+        $user->update();
 
+        $auth->assign($userRole, $id);
+        return true;*/
+    }
 }

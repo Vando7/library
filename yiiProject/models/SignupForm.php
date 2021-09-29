@@ -46,8 +46,11 @@ class SignupForm extends Model{
         $user->password = \Yii::$app->security->generatePasswordHash($this->password);
         $user->access_token=\Yii::$app->security->generateRandomString();
         $user->auth_key=\Yii::$app->security->generateRandomString();
-
+        
         if($user->save()){
+            $auth = \Yii::$app->authManager;
+            $authorRole = $auth->getRole('reader');
+            $auth->assign($authorRole, $user->getId());
             return true;
         }
 

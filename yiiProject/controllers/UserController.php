@@ -78,16 +78,18 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->identity->role == 'reader'){
-            return $this->actionView(Yii::$app->user->identity->id);
-        }
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $currentUser = \Yii::$app->user;
+        
+        if($currentUser->can('viewAllProfilesLibrary')){
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
+    
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }  
+        else return $this->actionView($currentUser->identity->id);
     }
 
 
@@ -99,15 +101,17 @@ class UserController extends Controller
      */
     public function actionView($id)
     { 
-        if(Yii::$app->user->identity->role == 'reader'){
+        $currentUser = Yii::$app->user->identity;
+
+        if($currentUser->role == 'reader'){
             return $this->render('view', [
-                'model' => $this->findModel(Yii::$app->user->identity->id),
+                'model' => $this->findModel($currentUser ->id),
+            ]);
+        } else{
+            return $this->render('viewLibrarian', [
+                'model' => $this->findModel($id),
             ]);
         }
-
-        return $this->render('viewLibrarian', [
-            'model' => $this->findModel($id),
-        ]);
     }
 
 
