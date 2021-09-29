@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\DetailView;;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -9,24 +10,20 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="user-form">
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'first_name',
+            'last_name',
+            'country',
+            'city',
+            'street',
+            'phone',
+            'email:email'
+        ],
+    ]) ?>
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'first_name')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'last_name')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'country')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'city')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'street')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true,'readonly'=>true]) ?>
-
-    <?= $form->field($model, 'role')->dropDownList([ 'reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin', ], ['prompt' => 'Set user role','readonly'=>true]) ?>
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 

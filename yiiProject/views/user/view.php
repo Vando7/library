@@ -7,8 +7,9 @@ use yii\widgets\DetailView;
 /* @var $model app\models\User */
 
 $this->title = $model->first_name." ".$model->last_name;
-\yii\web\YiiAsset::register($this);
 $currentUser = Yii::$app->user->identity;
+
+\yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
 

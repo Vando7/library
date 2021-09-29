@@ -122,23 +122,23 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        if(Yii::$app->user->identity->role != 'admin'){
-            return $this->goHome();
-        }
-
-        $model = new User();
-    
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if(Yii::$app->user->can('manageUsers')){
+            $model = new User();
+            
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
-    
-        return $this->render('create', [
+
+            return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        
+        return $this->actionIndex();
     }
 
 
@@ -160,7 +160,6 @@ class UserController extends Controller
             $model = $this->findModel($id);
         }
 
-        // Process Request
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -180,10 +179,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        // Reader and librarian can only update own profiles.
-        $currentUser = Yii::$app->user->identity;
-
-        if($currentUser->role == 'admin' ){
+        if(Yii::$app->user->can('manageUsers')){
             $this->findModel($id)->delete();
         }
 
@@ -204,7 +200,7 @@ class UserController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Cannot find the page of the user you are looking for :/');
     }
 
 
