@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\SignupForm;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -160,7 +161,29 @@ class UserController extends Controller
             $model = $this->findModel($id);
         }
 
+        /// Get current role object for user($id)
+        $auth = \Yii::$app->authManager;
+        $oldRole = $auth->getAssignments($id);
+        $oldRole = array_keys($oldRole)[0];  // Get role name as string.
+        $oldRole = $auth->getRole($oldRole); // Get role object by string... Yeah, I know.
+        $newRole = NULL;
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            // If roles change in user table, apply changes in the RBAC,
+            $newRole = $auth->getRole($model->role);
+            if($newRole != $oldRole->name && $newRole != NULL){
+               $auth->revoke($oldRole, $id);
+               $auth->assign($newRole, $id);
+            }
+
+            // Apply changes to password.
+            
+
+            if($model->newPassword){
+                $model->setPassword($model->newPassword);
+            }
+            $model->save();
+            
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

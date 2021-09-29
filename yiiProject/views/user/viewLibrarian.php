@@ -31,7 +31,6 @@ $currentUser = Yii::$app->user->identity;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'first_name',
             'last_name',
             'country',

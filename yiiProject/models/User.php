@@ -30,6 +30,8 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    public $newPassword;
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +55,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email', 'password'], 'string', 'max' => 255],
             [['phone'], 'unique'],
             [['email'], 'unique'],
+            ['newPassword','string'],
             ['suspended_status','default','value' => NULL],
         ];
     }
@@ -166,6 +169,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password,$this->password);
+    }
+
+
+    public function setPassword($password){
+        $this->password = \Yii::$app->security->generatePasswordHash($password);
     }
 
 
