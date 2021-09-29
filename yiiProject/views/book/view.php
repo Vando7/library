@@ -7,8 +7,8 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Book */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Books', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$currentUser = Yii::$app->user;
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="book-view">
@@ -16,14 +16,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'isbn' => $model->isbn], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'isbn' => $model->isbn], [
+        <?= $currentUser->can('manageBook') ? Html::a('Update', ['update', 'isbn' => $model->isbn], ['class' => 'btn btn-primary']) : '' ?>
+        <?= $currentUser->can('manageBook') ? Html::a('Delete', ['delete', 'isbn' => $model->isbn], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]) 
+        : '';?>
     </p>
 
     <?= DetailView::widget([

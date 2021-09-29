@@ -6,9 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Book */
 
 $this->title = 'Update Book: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Books', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'isbn' => $model->isbn]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 <div class="book-update">
 

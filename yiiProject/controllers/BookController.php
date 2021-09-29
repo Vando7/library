@@ -100,19 +100,22 @@ class BookController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Book();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'isbn' => $model->isbn]);
+        if(Yii::$app->user->can('manageBook')){
+            $model = new Book();
+    
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'isbn' => $model->isbn]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
+    
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        else return $this->actionIndex();
     }
 
 
@@ -127,13 +130,18 @@ class BookController extends Controller
     {
         $model = $this->findModel($isbn);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'isbn' => $model->isbn]);
-        }
+        if(Yii::$app->user->can('manageBook')){
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'isbn' => $model->isbn]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+        else
+            return $this->redirect(['view', 'isbn' => $model->isbn]);
     }
 
 
@@ -146,8 +154,9 @@ class BookController extends Controller
      */
     public function actionDelete($isbn)
     {
-        $this->findModel($isbn)->delete();
-
+        if(Yii::$app->user->can('manageBook')){
+            $this->findModel($isbn)->delete();
+        }
         return $this->redirect(['index']);
     }
 

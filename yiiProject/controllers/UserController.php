@@ -230,7 +230,7 @@ class UserController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            Yii::$app->setHomeUrl(Url::to(['/book']));
+            Yii::$app->setHomeUrl(Url::to(['book/index']));
             return $this->goHome();
         }
 
@@ -257,7 +257,7 @@ class UserController extends Controller
     
     public function actionSignup(){
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['book']);
+            return $this->redirect(['book/index']);
         }
 
         $model = new SignupForm();

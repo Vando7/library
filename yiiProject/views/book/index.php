@@ -8,14 +8,15 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Books';
-$this->params['breadcrumbs'][] = $this->title;
+$currentUser = Yii::$app->user->identity;
+
 ?>
 <div class="book-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,7 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'isbn',
+            [
+                'label' => 'ISBN',
+                'format' => 'raw',
+                'value' => function ($model){ 
+                    return Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn);
+                },
+            ],
             'pictures:ntext',
             'title',
             'author',
@@ -32,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'description:ntext',
             //'total_count',
             //'available_count',
-
+            $currentUser->role == 'reader' ? 'Hi' :(
             ['class' => 'yii\grid\ActionColumn',
-             'urlCreator' => function($action,$model,$key,$index){
+             'urlCreator' => function($action,$model){
                  if($action == 'view'){
                      return 'view?isbn='.$model->isbn;
                  }
@@ -46,7 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
                  if($action == 'delete'){
                      return 'delete?isbn='.$model->isbn;
                  }
-             }],
+             }
+            ]
+            )
         ],
     ]); ?>
 
