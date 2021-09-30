@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "book".
@@ -28,7 +29,20 @@ class Book extends \yii\db\ActiveRecord
     {
         return 'book';
     }
+    
 
+     /**
+     * @var bookCover
+     */
+    public $bookCover;
+
+    /**
+     * @var bonusImages[]
+     */
+    public $bonusImages;
+
+
+    public $allImagesJson;
 
     /**
      * {@inheritdoc}
@@ -43,8 +57,39 @@ class Book extends \yii\db\ActiveRecord
             [['isbn'], 'string', 'max' => 13],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
-            ['pictures','default','value' => NULL]
+            ['pictures','default','value' => NULL],
+            [['bookCover'],'file','skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['bonusImages'], 'file', 'skipOnEmpty' => false,  'extensions' => 'png, jpg', 'maxFiles' => 10],
         ];
+    }
+
+    public function upload(){
+        if($this->validate()){
+            $newPictures = [];
+
+            if($this->bookCover){
+                $this->bookCover->saveAs('upload/'. $this->isbn .'_cover.'.$this->bookCover->extension);
+                $newPictures += ['cover' => 'upload/'. $this->isbn .'_cover.'.$this->bookCover->extension];
+            }
+
+            if($this->bonusImages){
+                $counter = 1;
+                foreach ($this->bonusImages as $files){
+                    $files->saveAs('upload/'. $this->isbn . '_extra' . $counter . '.' . $files->extension);
+                    $newPictures += ['extra'.$counter => 'upload/'. $this->isbn .'_cover.'.$this->bookCover->extension];
+                    ++$counter;
+                }
+            }
+
+            if(!empty($newPictures)){
+                $allImagesJson = Json::encode($newPictures);
+                error_log($allImagesJson,3,'ivan_log.txt');
+            }
+            //TODO: MAKE/UPDATE JSON HERE
+            return true;
+        }
+
+        return false;
     }
 
 

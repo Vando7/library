@@ -8,6 +8,7 @@ use app\models\BookSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -131,11 +132,17 @@ class BookController extends Controller
         $model = $this->findModel($isbn);
 
         if(Yii::$app->user->can('manageBook')){
+            
+            if ($this->request->isPost && $model->load($this->request->post()) ) {
+                $model->bookCover = UploadedFile::getInstance($model,'bookCover');
+                $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
+                $model->save();
+                $model->upload();
+                $model->pictures = $model->allImagesJson;
 
-            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }
-
+            
             return $this->render('update', [
                 'model' => $model,
             ]);

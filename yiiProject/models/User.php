@@ -55,6 +55,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email', 'password'], 'string', 'max' => 255],
             [['phone'], 'unique'],
             [['email'], 'unique'],
+            ['email','email'],
             ['newPassword','string'],
             ['suspended_status','default','value' => NULL],
         ];
@@ -195,18 +196,5 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             return true;
         }
         return false;
-    }
-
-    public function afterSave($id,$newRole){
-        /* ASSIGN ROLE CHANGE.
-        $auth = \Yii::$app->authManager;
-        $userRole = $auth->getRole($newRole);
-
-        $user= self::findIdentity($id);
-        $user->role = $newRole;
-        $user->update();
-
-        $auth->assign($userRole, $id);
-        return true;*/
     }
 }
