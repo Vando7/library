@@ -13,7 +13,6 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\SignupForm;
 use yii\helpers\Url;
-use yii\helpers\VarDumper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -123,6 +122,7 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
+
         if(Yii::$app->user->can('manageUsers')){
             $model = new User();
             
@@ -177,8 +177,6 @@ class UserController extends Controller
             }
 
             // Apply changes to password.
-            
-
             if($model->newPassword){
                 $model->setPassword($model->newPassword);
             }
