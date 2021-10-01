@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\helpers\Json;
+use yii\helpers\VarDumper;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -31,20 +33,6 @@ class BookController extends Controller
                 ],
             ]
         );
-    }
-
-
-    public function init(){
-        parent::init();
-        /*
-        if (Yii::app()->urlManager->showScriptName == false){
-            if (strpos(Yii::app()->request->requestUri, '/index.php') !== false){
-                $_uri = str_replace("/index.php", "", Yii::app()->request->requestUri);
-                $_uri = str_replace("//", "", $_uri);
-                $this->redirect($_uri);
-            }
-        }
-        */
     }
 
 
@@ -88,8 +76,19 @@ class BookController extends Controller
      */
     public function actionView($isbn)
     {
+        $model = $this->findModel($isbn);
+
+        $genresQuery = $model->genres;
+        $genres = [];
+
+        foreach($genresQuery as $genreObject){
+            array_push($genres,$genreObject->name);
+        }
+
+        //error_log(VarDumper::dumpAsString($genres),3,'ivan_log.txt');
         return $this->render('view', [
-            'model' => $this->findModel($isbn),
+            'model' => $model,
+            'genres' => $genres,
         ]);
     }
 
@@ -136,9 +135,23 @@ class BookController extends Controller
             if ($this->request->isPost && $model->load($this->request->post()) ) {
                 $model->bookCover = UploadedFile::getInstance($model,'bookCover');
                 $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
+
+                $newPictures = [];
+                $counter = 0;
+                if($model->bookCover){
+                    $newPictures += ['cover' => 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension];
+                }
+    
+                if($model->bonusImages){
+                    $counter = 1;
+                    foreach ($model->bonusImages as $files){
+                        $newPictures += ['extra'.$counter => 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension];
+                        ++$counter;
+                    }
+                }
+                $model->pictures = Json::encode($newPictures);
                 $model->save();
                 $model->upload();
-                $model->pictures = $model->allImagesJson;
 
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }

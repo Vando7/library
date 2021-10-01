@@ -56,4 +56,8 @@ class Genre extends \yii\db\ActiveRecord
     {
         return $this->hasMany(BookGenre::className(), ['genre_id' => 'id']);
     }
+
+    public function getName($id){
+        return $this->findOne($id);
+    }
 }

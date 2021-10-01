@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\Json;
 
 /**
  * This is the model class for table "book".
@@ -41,9 +40,6 @@ class Book extends \yii\db\ActiveRecord
      */
     public $bonusImages;
 
-
-    public $allImagesJson;
-
     /**
      * {@inheritdoc}
      */
@@ -65,27 +61,17 @@ class Book extends \yii\db\ActiveRecord
 
     public function upload(){
         if($this->validate()){
-            $newPictures = [];
 
             if($this->bookCover){
                 $this->bookCover->saveAs('upload/'. $this->isbn .'_cover.'.$this->bookCover->extension);
-                $newPictures += ['cover' => 'upload/'. $this->isbn .'_cover.'.$this->bookCover->extension];
             }
 
+            $counter = 1;
             if($this->bonusImages){
-                $counter = 1;
                 foreach ($this->bonusImages as $files){
                     $files->saveAs('upload/'. $this->isbn . '_extra' . $counter . '.' . $files->extension);
-                    $newPictures += ['extra'.$counter => 'upload/'. $this->isbn .'_cover.'.$this->bookCover->extension];
-                    ++$counter;
                 }
             }
-
-            if(!empty($newPictures)){
-                $allImagesJson = Json::encode($newPictures);
-                error_log($allImagesJson,3,'ivan_log.txt');
-            }
-            //TODO: MAKE/UPDATE JSON HERE
             return true;
         }
 
@@ -119,6 +105,12 @@ class Book extends \yii\db\ActiveRecord
     public function getBookGenres()
     {
         return $this->hasMany(BookGenre::className(), ['book_isbn' => 'isbn']);
+    }
+
+    public function getGenres()
+    {
+        return $this->hasMany(Genre::class, ['id' => 'genre_id'])
+            ->viaTable('book_genre', ['book_isbn' => 'isbn']);
     }
 
     

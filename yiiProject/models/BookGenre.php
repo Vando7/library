@@ -45,7 +45,7 @@ class BookGenre extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'book_isbn' => 'Book Isbn',
+            'book_isbn' => 'Book ISBN',
             'genre_id' => 'Genre ID',
         ];
     }
@@ -58,7 +58,7 @@ class BookGenre extends \yii\db\ActiveRecord
      */
     public function getBookIsbn()
     {
-        return $this->hasOne(Book::className(), ['isbn' => 'book_isbn']);
+        return $this->hasOne(Book::class, ['isbn' => 'book_isbn']);
     }
 
     
