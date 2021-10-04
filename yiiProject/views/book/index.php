@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BookSearch */
@@ -23,29 +24,65 @@ $currentUser = Yii::$app->user->identity;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             [
-                'label' => 'ISBN',
                 'format' => 'raw',
-                'value' => function ($model){ 
-                    return Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn);
-                },
+                'label' => "Cover",
+                'value' => function($model){
+                    if($model->pictures){
+                        $pictureJson = json_decode($model->pictures,true);
+                        $element = '';
+                        $element .= '<a href="/book/view?isbn='.$model->isbn.'" alt="book cover">';
+                        $element .= Html::img(
+                            '/'. Html::encode($pictureJson['cover']),[
+                            //'width'=>'100px',
+                            'style' => [
+                                'max-width' => '130px'
+                            ],
+                        ],
+                        );
+                        $element .= '</a>';
+                        return $element;
+                    }
+                }
             ],
-            'pictures:ntext',
-            'title',
-            'author',
-            'published',
+            [
+                'format' => 'html',
+                'label' => 'Info',
+                'value' => function($model){
+                    $elements = '';
+                    $elements .= '<b>' . Html::a(Html::encode($model->title),'view?isbn='.$model->isbn) . '</b><br>';
+                    $elements .= '<i>' . Html::encode($model->author) . '</i>' .'<br>';
+
+                    foreach($model->genres as $genreObj){
+                        $elements .= $genreObj -> name . " ";
+                    }
+                    $elements .= '<br>';
+
+                    $elements .= '<span class="badge badge-success">Available:' . Html::encode($model->available_count) . '</span><br>';
+                    $elements .= "ISBN " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
+                    return $elements;
+                    return DetailView::widget([
+                        'model' => $model,
+                        'attributes' => 
+                        [
+                            'isbn',
+                            'title',
+                            'author',
+                            'published',
+                        ],
+                    ]);
+                }
+            ],
+            //'title',
+            //'author',
+            //'published',
             //'description:ntext',
             //'total_count',
             //'available_count',
-            $currentUser->role == 'reader' ? 'Hi' :(
             ['class' => 'yii\grid\ActionColumn',
              'urlCreator' => function($action,$model){
-                 if($action == 'view'){
-                     return 'view?isbn='.$model->isbn;
-                 }
-
                  if($action == 'update'){
                      return 'update?isbn='.$model->isbn;
                  }
@@ -53,9 +90,10 @@ $currentUser = Yii::$app->user->identity;
                  if($action == 'delete'){
                      return 'delete?isbn='.$model->isbn;
                  }
-             }
+             },
+             'visible' => Yii::$app->user->can('manageBook'),
             ]
-            )
+            
         ],
     ]); ?>
 

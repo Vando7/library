@@ -50,7 +50,8 @@ class BookSearch extends Book
             'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
-            ]
+            ],
+            'sort' => ['defaultOrder' => ['pictures' => SORT_DESC]],
         ]);
 
         $this->load($params);
