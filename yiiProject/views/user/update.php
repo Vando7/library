@@ -14,15 +14,20 @@ $currentUser = Yii::$app->user->identity;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    
-    <?= $currentUser->role == 'reader' ? 
-        $this->render('_form', ['model' => $model]) 
-        : ( // if else if else
-            $currentUser->role == 'librarian' && $currentUser->id != $model->id ?
-                $this->render('_formLibrarian', ['model' => $model])
-                :
-                $this->render('_formAdmin', ['model' => $model])
-        )
-     ?>
+    <?php 
+    if($currentUser->role == 'admin' ){
+        echo $this->render('_formAdmin', ['model' => $model]);
+    } 
+    elseif ($currentUser->role == 'librarian'){
+        if($currentUser->id == $model->id){
+            echo $this->render('_form', ['model' => $currentUser]);
+        }
+        else {
+            echo $this->render('_formLibrarian', ['model' => $model]);
+        }
+    }else{
+        echo $this->render('_form', ['model' => $model]);
+    }
+    ?>
 
 </div>

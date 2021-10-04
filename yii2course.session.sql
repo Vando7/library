@@ -1,0 +1,1 @@
+alter table library.book change isbn VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY;

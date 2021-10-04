@@ -91,6 +91,43 @@ class BookController extends Controller
             'genres' => $genres,
         ]);
     }
+    
+
+    /**
+     * Uploads pictures specified in the create form.
+     */
+    public function uploadPictures($model){
+        $model->bookCover = UploadedFile::getInstance($model,'bookCover');
+        $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
+
+        $counter = 0;
+        $picturesJson = json_decode($model->pictures, true);
+
+        if($model->bookCover){
+            if(array_key_exists('cover',$picturesJson)){
+                $picturesJson['cover'] = 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension;
+            } else{
+                $picturesJson += ['cover' => 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension];
+            }
+        }
+
+        if($model->bonusImages){
+            $counter = 1;
+            foreach ($model->bonusImages as $files){
+                if(array_key_exists('cover',$picturesJson)){
+                    $picturesJson['extra'.$counter] = 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension;
+                } else{
+                    $picturesJson += ['extra'.$counter => 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension];
+                }
+                ++$counter;
+            }
+        }
+        $model->pictures = json_encode($picturesJson);
+  
+        $model->save();
+        $model->upload();
+
+    }
 
 
     /**
@@ -104,7 +141,8 @@ class BookController extends Controller
             $model = new Book();
     
             if ($this->request->isPost) {
-                if ($model->load($this->request->post()) && $model->save()) {
+                if ($model->load($this->request->post()) && $model->save() ) {
+                    $this->uploadPictures($model);   
                     return $this->redirect(['view', 'isbn' => $model->isbn]);
                 }
             } else {
@@ -117,7 +155,6 @@ class BookController extends Controller
         }
         else return $this->actionIndex();
     }
-
 
     /**
      * Updates an existing Book model.
@@ -132,27 +169,8 @@ class BookController extends Controller
 
         if(Yii::$app->user->can('manageBook')){
             
-            if ($this->request->isPost && $model->load($this->request->post()) ) {
-                $model->bookCover = UploadedFile::getInstance($model,'bookCover');
-                $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
-
-                $newPictures = [];
-                $counter = 0;
-                if($model->bookCover){
-                    $newPictures += ['cover' => 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension];
-                }
-    
-                if($model->bonusImages){
-                    $counter = 1;
-                    foreach ($model->bonusImages as $files){
-                        $newPictures += ['extra'.$counter => 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension];
-                        ++$counter;
-                    }
-                }
-                $model->pictures = Json::encode($newPictures);
-                $model->save();
-                $model->upload();
-
+            if ($this->request->isPost && $model->load($this->request->post())) {
+                $this->uploadPictures($model);
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }
             

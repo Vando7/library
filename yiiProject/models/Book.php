@@ -48,14 +48,14 @@ class Book extends \yii\db\ActiveRecord
         return [
             [['isbn', 'title', 'author', 'published', 'description', 'total_count'], 'required'],
             [['pictures', 'description'], 'string'],
-            [['published'], 'safe'],
+            [['published'], 'date', 'format' => 'php:Y-m-d'],
             [['total_count', 'available_count'], 'integer'],
-            [['isbn'], 'string', 'max' => 13],
+            [['isbn'], 'string', 'max' => 25],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
             ['pictures','default','value' => NULL],
             [['bookCover'],'file','skipOnEmpty' => true, 'extensions' => 'png, jpg'],
-            [['bonusImages'], 'file', 'skipOnEmpty' => false,  'extensions' => 'png, jpg', 'maxFiles' => 10],
+            [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg', 'maxFiles' => 10],
         ];
     }
 
@@ -70,6 +70,7 @@ class Book extends \yii\db\ActiveRecord
             if($this->bonusImages){
                 foreach ($this->bonusImages as $files){
                     $files->saveAs('upload/'. $this->isbn . '_extra' . $counter . '.' . $files->extension);
+                    ++$counter;
                 }
             }
             return true;

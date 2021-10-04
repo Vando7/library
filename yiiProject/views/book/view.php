@@ -26,18 +26,22 @@ $pictureJson = json_decode($model->pictures, true);
                 <div id="pictureCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" >
                         <div class="carousel-item active">
-                            <img class="w-100 d-block" src="/<?= $pictureJson['cover']; ?>" alt="First slide">
+                            <?= $model->pictures ? 
+                                '<img class="w-100 d-block" src="/' . Html::encode($pictureJson['cover']) . '"alt="First slide">' 
+                                : ''?>
                         </div>
                         
                         <?php 
-                            for($i = 1; $i < count($pictureJson); $i++){
-                                echo '<div class="carousel-item">';
-                                echo '<img class="w-100 d-block" src="/' . Html::encode($pictureJson['extra'.$i]) . '" alt="Slide">';
-                                echo '</div>';
+                            if($model->pictures){
+                                for($i = 1; $i < count($pictureJson); $i++){
+                                    echo '<div class="carousel-item">';
+                                    echo '<img class="w-100 d-block" src="/' . Html::encode($pictureJson['extra'.$i]) . '" alt="Slide">';
+                                    echo '</div>';
+                                }
                             }
                             ?>
                     </div>
-                    
+                   
                     <a class="carousel-control-prev" href="#pictureCarousel" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
@@ -88,8 +92,9 @@ $pictureJson = json_decode($model->pictures, true);
         
     </div>
 
+    <p><?= Html::encode(json_encode($model->pictures)); ?> </p>
     
-    <!-- <?= DetailView::widget([
+    <!-- DEBUG <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'isbn',
