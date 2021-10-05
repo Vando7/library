@@ -14,7 +14,6 @@ $this->title = 'Create Book';
     <?= $this->render('_form', [
             'model' => $model,
             'genreList' => $genreList,
-            'newGenre' => $newGenre,
     ]) ?>
 
 </div>

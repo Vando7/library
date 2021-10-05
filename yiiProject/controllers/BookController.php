@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Book;
 use app\models\Genre;
+use app\models\BookGenre;
 use app\models\BookSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,8 +71,6 @@ class BookController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'genreList' => $genreList,
-            'newGenre' => $newGenre,
         ]);
     }
 
@@ -157,12 +156,10 @@ class BookController extends Controller
     
             $genreDB    = New Genre;
             $genreList  = $genreDB->find()->all();
-            $newGenre   = New Genre;
 
             return $this->render('create', [
                 'model'     => $model,
                 'genreList' => $genreList,
-                'newGenre'  => $newGenre,
             ]);
         }
         else return $this->actionIndex();
@@ -182,20 +179,34 @@ class BookController extends Controller
         
         if(Yii::$app->user->can('manageBook')){
             if ($this->request->isPost && $model->load($this->request->post())) {
-
+                error_log(VarDumper::dumpAsString($model->genreList),3,"ivan_log.txt");
                 $this->uploadPictures($model);
+                $newGenre = New BookGenre;
+                foreach($model->genreList as $genreObj){
+                    $newGenre->id = $genreObj->id;
+                    $newGenre->link('book_isbn',$model);
+                }
 
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }
             
             $genreDB    = New Genre;
-            $genreList  = $genreDB->find()->all();
-            $newGenre   = New Genre;
+            $genreListRaw  = $genreDB->find()->all();
+            $genreList = [];
+
+            foreach ($genreListRaw as $genreObj){
+                $genreList += [$genreObj->id => $genreObj->name];
+            }
+
+            $genresQuery = $model->genres;
+
+            foreach($genresQuery as $genreObj){
+                array_push($model->genreList, $genreObj->id);
+            }
 
             return $this->render('update', [
                 'model'     => $model,
                 'genreList' => $genreList,
-                'newGenre'  => $newGenre,
             ]);
         }
         else

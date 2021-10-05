@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
 use yii\jui\DatePicker;
+use yii\helpers\VarDumper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Book */
@@ -36,6 +37,8 @@ $currentUser = Yii::$app->user->identity;
         
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'genreList')->checkboxList($genreList,['separator' => '<br>']) ?>
+
     <?= $form->field($model, 'total_count')->textInput() ?>
     <!-- pepehmm -->
     <?= $form->field($model, 'bookCover')->fileInput(['accept' => 'image/*']) ?>
@@ -48,7 +51,10 @@ $currentUser = Yii::$app->user->identity;
 
     <?php ActiveForm::end(); ?>
 
-   
+    <?= VarDumper::dump($model->genreList)?>
+
+    <?= VarDumper::dump($genreList)?>
+
     <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
             'value' => Url::to('/book/viewgenre'), 
             'class' => 'btn btn-primary', 
@@ -58,7 +64,7 @@ $currentUser = Yii::$app->user->identity;
 
     <?php $modal = Modal::begin([
             'title' => 'Manage genres', 
-            'id' => 'genreModal',
+            'id'    => 'genreModal',
         ]); 
         
         echo '<div id="genreModalContent"></div>';

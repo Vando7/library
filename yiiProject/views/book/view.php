@@ -16,12 +16,10 @@ $pictureJson = json_decode($model->pictures, true);
 ?>
 
 <div class="book-view" style="margin-top: 50px;">
-    <!-- scuff fix -->
-
-
     <div class="container">
         <div class="row">
-            <!-- ||||||| -->
+            <!-- Carousel -->
+
             <div class = "col-sm-4 col-md-6 col-lg-5" id="carouselColumn">
                 <div id="pictureCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" >
@@ -53,8 +51,9 @@ $pictureJson = json_decode($model->pictures, true);
                     </a>
 
                 </div>
-                <!-- ||||||| -->
             </div>
+
+            <!-- Book info -->
 
             <div class="col-sm-8 col-md-6 col-lg-6 offset-sm-0 offset-lg-0">
             <p>

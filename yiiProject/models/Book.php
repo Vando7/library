@@ -30,15 +30,23 @@ class Book extends \yii\db\ActiveRecord
     }
     
 
-     /**
-     * @var bookCover
-     */
+    /**
+    * @var bookCover
+    */
     public $bookCover;
+
 
     /**
      * @var bonusImages[]
      */
     public $bonusImages;
+
+
+    /**
+     * @var genreList[]
+     */
+    public $genreList = [];
+
 
     /**
      * {@inheritdoc}
@@ -56,6 +64,7 @@ class Book extends \yii\db\ActiveRecord
             ['pictures','default','value' => NULL],
             [['bookCover'],'file','skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg', 'maxFiles' => 10],
+            [['genreList'], 'safe'],
         ];
     }
 

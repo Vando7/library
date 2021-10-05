@@ -15,7 +15,6 @@ $this->title = 'Update Book: ' . $model->title;
     <?= $this->render('_form', [
         'model' => $model,
         'genreList' => $genreList,
-        'newGenre' => $newGenre,
     ]) ?>
 
 </div>
