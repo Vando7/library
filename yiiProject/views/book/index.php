@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use yii\bootstrap4\Modal;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BookSearch */
@@ -18,6 +20,20 @@ $currentUser = Yii::$app->user->identity;
 
     <p>
         <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
+            'value' => Url::to('/book/viewgenre'), 
+            'class' => 'btn btn-success', 
+            'id'    => 'genreModalButton',
+            ])?>
+
+        <?php $modal = Modal::begin([
+            'title' => 'Manage genres', 
+            'id' => 'genreModal',
+        ]); 
+        
+        echo '<div id="genreModalContent"></div>';
+        Modal::end();
+        ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

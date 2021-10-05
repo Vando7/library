@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Book;
+use app\models\Genre;
 use app\models\BookSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -11,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
+
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -58,12 +60,18 @@ class BookController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new BookSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $searchModel    = new BookSearch();
+        $dataProvider   = $searchModel->search($this->request->queryParams);
+
+        $genreDB    = New Genre;
+        $genreList  = $genreDB->find()->all();
+        $newGenre   = New Genre;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'genreList' => $genreList,
+            'newGenre' => $newGenre,
         ]);
     }
 
@@ -85,7 +93,6 @@ class BookController extends Controller
             array_push($genres,$genreObject->name);
         }
 
-        //error_log(VarDumper::dumpAsString($genres),3,'ivan_log.txt');
         return $this->render('view', [
             'model' => $model,
             'genres' => $genres,
@@ -97,16 +104,16 @@ class BookController extends Controller
      * Uploads pictures specified in the create form.
      */
     public function uploadPictures($model){
-        $model->bookCover = UploadedFile::getInstance($model,'bookCover');
+        $model->bookCover   = UploadedFile::getInstance($model,'bookCover');
         $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
 
         $counter = 0;
         $picturesJson = json_decode($model->pictures, true);
 
         if($model->bookCover){
-            if(array_key_exists('cover',$picturesJson)){
+            if(array_key_exists('cover', $picturesJson)){
                 $picturesJson['cover'] = 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension;
-            } else{
+            } else {
                 $picturesJson += ['cover' => 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension];
             }
         }
@@ -114,7 +121,7 @@ class BookController extends Controller
         if($model->bonusImages){
             $counter = 1;
             foreach ($model->bonusImages as $files){
-                if(array_key_exists('cover',$picturesJson)){
+                if(array_key_exists('cover', $picturesJson)){
                     $picturesJson['extra'.$counter] = 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension;
                 } else{
                     $picturesJson += ['extra'.$counter => 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension];
@@ -122,11 +129,10 @@ class BookController extends Controller
                 ++$counter;
             }
         }
-        $model->pictures = json_encode($picturesJson);
-  
-        $model->save();
-        $model->upload();
 
+        $model->pictures = json_encode($picturesJson);
+
+        return $model->save() && $model->upload();
     }
 
 
@@ -149,12 +155,19 @@ class BookController extends Controller
                 $model->loadDefaultValues();
             }
     
+            $genreDB    = New Genre;
+            $genreList  = $genreDB->find()->all();
+            $newGenre   = New Genre;
+
             return $this->render('create', [
-                'model' => $model,
+                'model'     => $model,
+                'genreList' => $genreList,
+                'newGenre'  => $newGenre,
             ]);
         }
         else return $this->actionIndex();
     }
+
 
     /**
      * Updates an existing Book model.
@@ -166,16 +179,23 @@ class BookController extends Controller
     public function actionUpdate($isbn)
     {
         $model = $this->findModel($isbn);
-
+        
         if(Yii::$app->user->can('manageBook')){
-            
             if ($this->request->isPost && $model->load($this->request->post())) {
+
                 $this->uploadPictures($model);
+
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }
             
+            $genreDB    = New Genre;
+            $genreList  = $genreDB->find()->all();
+            $newGenre   = New Genre;
+
             return $this->render('update', [
-                'model' => $model,
+                'model'     => $model,
+                'genreList' => $genreList,
+                'newGenre'  => $newGenre,
             ]);
         }
         else
@@ -212,6 +232,63 @@ class BookController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('The requested book does not exist.');
     }
+
+
+    protected function findGenre($id){
+        if(($model = Genre::findOne($id)) !== null){
+            return $model;
+        }
+        throw new NotFoundHttpException('The requested genre does not exist.');
+    }
+
+
+    public function actionCreategenre(){
+        if(Yii::$app->user->can('manageBook')){
+            $model = new Genre;
+
+            $model->load(Yii::$app->request->post());
+            $model->save();
+        }
+
+        $genreDB    = New Genre;
+        $genreList  = $genreDB->find()->all();
+        $newGenre   = New Genre;
+
+        return $this->render('viewGenre', [
+            'genreList' => $genreList,
+            'newGenre'  => $newGenre,
+        ]);
+    }
+
+
+    public function actionDeletegenre($id){
+        if(Yii::$app->user->can('manageBook')){
+            $this->findGenre($id)->delete();
+            $genreDB    = New Genre;
+            $genreList  = $genreDB->find()->all();
+            $newGenre   = New Genre;
+
+            return $this->render('viewGenre', [
+                'genreList' => $genreList,
+                'newGenre'  => $newGenre,
+
+                ]);
+        }
+        
+    }
+
+
+    public function actionViewgenre(){
+        $genreDB    = New Genre;
+        $genreList  = $genreDB->find()->all();
+        $newGenre   = New Genre;
+
+        return $this->renderAjax('viewGenre', [
+            'genreList' => $genreList,
+            'newGenre'  => $newGenre,
+        ]);
+    }
+
 }
