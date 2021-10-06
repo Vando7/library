@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Create Book';
 ?>
-<div class="book-create">
+<div class="book-create" style="margin:auto;max-width:500px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -75,13 +75,15 @@ $currentUser = Yii::$app->user->identity;
                         });
                     ');
                     ?>
-                    <?= Html::Button('Refresh', ['class' => 'btn btn-primary', 'id'=>'refresh']) ?>  
-                    <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
-                        'value' => Url::to('/book/viewgenre'), 
-                        'class' => 'btn btn-primary', 
-                        'id'    => 'genreModalButton',
-                        ])?>
-
+                    
+                    <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Open in new tab">
+                        <a class="btn btn-primary mr-auto"  href="/book/viewgenre?isModal=0" role="button" target="_blank"> 
+                        Manage genres <i class="bi bi-box-arrow-up-right"></i> 
+                    </a>
+                    </span>
+                    <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Warning: clears selection!">
+                        <?= Html::Button('Refresh', ['class' => 'btn btn-primary', 'id'=>'refresh']) ?>  
+                    </span>
                     <button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
                 </div>
             </div>
@@ -101,13 +103,14 @@ $currentUser = Yii::$app->user->identity;
 
     <?php ActiveForm::end(); ?>
 
-    <?php $modal = Modal::begin([
-            'title' => 'Manage genres', 
-            'id'    => 'genreModal',
-        ]); 
+    <?php 
+    // $modal = Modal::begin([
+    //         'title' => 'Manage genres', 
+    //         'id'    => 'genreModal',
+    //     ]); 
         
-        echo '<div id="genreModalContent"></div>';
-        Modal::end();
+    //     echo '<div id="genreModalContent"></div>';
+    //     Modal::end();
     ?>
     
 

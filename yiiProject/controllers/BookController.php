@@ -101,30 +101,25 @@ class BookController extends Controller
 
     /**
      * Uploads pictures specified in the create form.
+     * - maybe  can be moved to book model.
      */
     public function uploadPictures($model){
         $model->bookCover   = UploadedFile::getInstance($model,'bookCover');
         $model->bonusImages = UploadedFile::getInstances($model,'bonusImages');
 
         $counter = 0;
+        $picturesJson = [];
         $picturesJson = json_decode($model->pictures, true);
 
         if($model->bookCover){
-            if(array_key_exists('cover', $picturesJson)){
-                $picturesJson['cover'] = 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension;
-            } else {
-                $picturesJson += ['cover' => 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension];
-            }
+            $picturesJson['cover'] = 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension;
         }
 
         if($model->bonusImages){
             $counter = 1;
             foreach ($model->bonusImages as $files){
-                if(array_key_exists('cover', $picturesJson)){
-                    $picturesJson['extra'.$counter] = 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension;
-                } else{
-                    $picturesJson += ['extra'.$counter => 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension];
-                }
+                $picturesJson['extra'.$counter] = 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension;
+
                 ++$counter;
             }
         }
@@ -185,7 +180,7 @@ class BookController extends Controller
 
     /**
      * Removes previous genres the book had and writes the
-     * ones written in $model->genreList
+     * ones currently written in $model->genreList
      */
     public function saveBookGenres($model ){
         $bookGenreList = $model->genres;
@@ -297,28 +292,22 @@ class BookController extends Controller
         $genreList  = $genreDB->find()->all();
         $newGenre   = New Genre;
 
-        return $this->render('viewGenre', [
+        return $this->renderAjax('viewGenre', [
             'genreList' => $genreList,
             'newGenre'  => $newGenre,
         ]);
     }
 
 
-    public function actionAddGenre($name){
-        $model = new Genre;
-        $model->name = $name;
-        return $model->save();
-    }
-
-
     public function actionDeletegenre($id){
         if(Yii::$app->user->can('manageBook')){
             $this->findGenre($id)->delete();
+
             $genreDB    = New Genre;
             $genreList  = $genreDB->find()->all();
             $newGenre   = New Genre;
 
-            return $this->render('viewGenre', [
+            return $this->renderAjax('viewGenre', [
                 'genreList' => $genreList,
                 'newGenre'  => $newGenre,
                 ]);
@@ -326,12 +315,18 @@ class BookController extends Controller
     }
 
 
-    public function actionViewgenre(){
+    public function actionViewgenre($isModal = true){
         $genreDB    = New Genre;
         $genreList  = $genreDB->find()->all();
         $newGenre   = New Genre;
+        if($isModal){
+            return $this->renderAjax('viewGenre', [
+                'genreList' => $genreList,
+                'newGenre'  => $newGenre,
+            ]);
+        }
 
-        return $this->renderAjax('viewGenre', [
+        return $this->render('viewGenre', [
             'genreList' => $genreList,
             'newGenre'  => $newGenre,
         ]);
