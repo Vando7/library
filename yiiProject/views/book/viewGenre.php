@@ -16,7 +16,7 @@ use yii\helpers\Url;
 
 <div class="genre-modal" >
     <?php 
-    Pjax::begin(['id' => 'genresList']);
+    Pjax::begin(['id' => 'genresList', 'enablePushState' => false]);
 
     echo '<div class="form-check">' . "\n";
     foreach($genreList as $genreObj){
@@ -47,25 +47,26 @@ use yii\helpers\Url;
 
     ?>
 
+<?php Pjax::begin(['id' => 'new_genre', 'enablePushState' => true, 'timeout'=>false,], ) ?>    
     <div class="genre-form">
 
-        <?php Pjax::begin(['id' => 'new_genre',]) ?>
-
+        
         <?php $form = ActiveForm::begin([
             'options' => ['data-pjax' => true ],
             'action' => 'creategenre'
-            ]); ?>
+        ]); ?>
 
-        <?= $form->field($newGenre, 'name')->textInput(['maxlength' => 200]) ?>
+<?= $form->field($newGenre, 'name')->textInput(['maxlength' => 200]) ?>
 
-        <div class="form-group">
+<div class="form-group">
             <?= Html::submitButton($newGenre->isNewRecord ? "Create" : "Haha Jonathan", ['class' => $newGenre->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ;?>
+            
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
-
         <?php ActiveForm::end(); ?>
-
-        <?php Pjax::end() ?>
-
+        
+        
     </div>
+    <?php Pjax::end() ?>
 
 </div>

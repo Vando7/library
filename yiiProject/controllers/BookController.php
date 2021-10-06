@@ -147,22 +147,64 @@ class BookController extends Controller
     
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save() ) {
-                    $this->uploadPictures($model);   
+
+                    $this->uploadPictures($model); 
+                    $this->saveBookGenres($model);
+
                     return $this->redirect(['view', 'isbn' => $model->isbn]);
                 }
             } else {
                 $model->loadDefaultValues();
             }
-    
-            $genreDB    = New Genre;
-            $genreList  = $genreDB->find()->all();
 
             return $this->render('create', [
                 'model'     => $model,
-                'genreList' => $genreList,
+                'genreList' => $this->getGenreNames(),
             ]);
         }
         else return $this->actionIndex();
+    }
+
+
+    /**
+     * Returns a list of all book genres in the following format:
+     * [ genre_id => genre_name ]
+     */
+    public function getGenreNames(){
+        $genreDB    = New Genre;
+        $genreListRaw  = $genreDB->find()->all();
+        $genreList = [];
+
+        foreach ($genreListRaw as $genreObj){
+            $genreList += [$genreObj->id => $genreObj->name];
+        }
+
+        return $genreList;
+    }
+
+
+    /**
+     * Removes previous genres the book had and writes the
+     * ones written in $model->genreList
+     */
+    public function saveBookGenres($model ){
+        $bookGenreList = $model->genres;
+
+        foreach($bookGenreList as $bookGenreObj){
+            $model->unlink('genres',$bookGenreObj,true);
+        }
+
+        foreach($model->genreList as $genreObj){
+            $newGenre = New BookGenre;
+            $newGenre->genre_id = $genreObj;
+            $newGenre->link('bookIsbn',$model);
+        }
+
+        error_log(VarDumper::dumpAsString($model),3,"ivan_log.txt");
+
+        $model->genreList = null;
+
+        return true;
     }
 
 
@@ -179,23 +221,11 @@ class BookController extends Controller
         
         if(Yii::$app->user->can('manageBook')){
             if ($this->request->isPost && $model->load($this->request->post())) {
-                error_log(VarDumper::dumpAsString($model->genreList),3,"ivan_log.txt");
+                
                 $this->uploadPictures($model);
-                $newGenre = New BookGenre;
-                foreach($model->genreList as $genreObj){
-                    $newGenre->id = $genreObj->id;
-                    $newGenre->link('book_isbn',$model);
-                }
+                $this->saveBookGenres($model);
 
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
-            }
-            
-            $genreDB    = New Genre;
-            $genreListRaw  = $genreDB->find()->all();
-            $genreList = [];
-
-            foreach ($genreListRaw as $genreObj){
-                $genreList += [$genreObj->id => $genreObj->name];
             }
 
             $genresQuery = $model->genres;
@@ -206,7 +236,7 @@ class BookController extends Controller
 
             return $this->render('update', [
                 'model'     => $model,
-                'genreList' => $genreList,
+                'genreList' => $this->getGenreNames(),
             ]);
         }
         else
@@ -274,6 +304,13 @@ class BookController extends Controller
     }
 
 
+    public function actionAddGenre($name){
+        $model = new Genre;
+        $model->name = $name;
+        return $model->save();
+    }
+
+
     public function actionDeletegenre($id){
         if(Yii::$app->user->can('manageBook')){
             $this->findGenre($id)->delete();
@@ -284,10 +321,8 @@ class BookController extends Controller
             return $this->render('viewGenre', [
                 'genreList' => $genreList,
                 'newGenre'  => $newGenre,
-
                 ]);
         }
-        
     }
 
 

@@ -36,7 +36,7 @@ $currentUser = Yii::$app->user->identity;
         ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -46,8 +46,8 @@ $currentUser = Yii::$app->user->identity;
                 'format' => 'raw',
                 'label' => "Cover",
                 'value' => function($model){
-                    if($model->pictures){
-                        $pictureJson = json_decode($model->pictures,true);
+                    $pictureJson = json_decode($model->pictures,true);
+                    if($pictureJson){
                         $element = '';
                         $element .= '<a href="/book/view?isbn='.$model->isbn.'" alt="book cover">';
                         $element .= Html::img(

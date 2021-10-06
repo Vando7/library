@@ -23,17 +23,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'author') ?>
 
-    <?= $form->field($model, 'published') ?>
+    <?php // $form->field($model, 'published') ?>
 
-    <?php // echo $form->field($model, 'description') ?>
+    <?php // $form->field($model, 'description') ?>
 
-    <?php // echo $form->field($model, 'total_count') ?>
+    <?php // $form->field($model, 'total_count') ?>
 
-    <?php // echo $form->field($model, 'available_count') ?>
+    <?php // $form->field($model, 'available_count') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
