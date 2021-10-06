@@ -15,13 +15,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'isbn') ?>
+    <?= $form->field($model, 'globalSearch') ?>
 
-    <?= $form->field($model, 'pictures') ?>
+    <?php // $form->field($model, 'pictures') ?>
 
-    <?= $form->field($model, 'title') ?>
+    <?php // $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'author') ?>
+    <?php // $form->field($model, 'author') ?>
 
     <?php // $form->field($model, 'published') ?>
 

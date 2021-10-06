@@ -11,6 +11,7 @@ use app\models\Book;
  */
 class BookSearch extends Book
 {
+    public $globalSearch = "";
     /**
      * {@inheritdoc}
      */
@@ -69,11 +70,22 @@ class BookSearch extends Book
             'available_count' => $this->available_count,
         ]);
 
-        $query->andFilterWhere(['like', 'isbn', $this->isbn])
-            ->andFilterWhere(['like', 'pictures', $this->pictures])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'author', $this->author])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        // $query->andFilterWhere(['like', 'isbn', $this->isbn])
+        //     ->andFilterWhere(['like', 'pictures', $this->pictures])
+        //     ->andFilterWhere(['like', 'title', $this->title])
+        //     ->andFilterWhere(['like', 'author', $this->author])
+        //     ->andFilterWhere(['like', 'description', $this->description]);
+
+        $globalsearch = $this->title . $this->author . $this->isbn . $this->published;
+
+        $query->andFilterWhere([ 'OR',
+            ['like', 'title', $this->$globalsearch],
+            ['like', 'author', $this->$globalsearch],
+            ['like', 'isbn', $this->$globalsearch],
+            ['like', 'pictures', $this->$globalsearch],
+            ['like', 'description', $this->description]
+        ]);
+
 
         return $dataProvider;
     }
