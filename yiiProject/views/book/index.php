@@ -16,13 +16,6 @@ $currentUser = Yii::$app->user->identity;
 ?>
 <div class="book-index">
     <p>
-        <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
-            'value' => Url::to('/book/viewgenre'), 
-            'class' => 'btn btn-success', 
-            'id'    => 'genreModalButton',
-            ])?>
-
         <?php $modal = Modal::begin([
             'title' => 'Manage genres', 
             'id' => 'genreModal',
@@ -33,10 +26,18 @@ $currentUser = Yii::$app->user->identity;
         ?>
     </p>
 
-    <?php echo $this->render('_search', [
+
+    <?= $this->render('_search', [
         'model' => $searchModel, 
         'genreList' => $genreList,
-        ]); ?>
+    ]); ?>
+    
+    <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
+        'value' => Url::to('/book/viewgenre'), 
+        'class' => 'btn btn-success', 
+        'id'    => 'genreModalButton',
+        ])?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -96,12 +97,6 @@ $currentUser = Yii::$app->user->identity;
                     ]);
                 }
             ],
-            //'title',
-            //'author',
-            //'published',
-            //'description:ntext',
-            //'total_count',
-            //'available_count',
             ['class' => 'yii\grid\ActionColumn',
              'urlCreator' => function($action,$model){
                  if($action == 'update'){
