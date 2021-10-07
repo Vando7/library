@@ -24,13 +24,13 @@ $pictureJson = json_decode($model->pictures, true);
                 <div id="pictureCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" >
                         <div class="carousel-item active">
-                            <?= $model->pictures ? 
+                            <?= $pictureJson ? 
                                 '<img class="w-100 d-block" src="/' . Html::encode($pictureJson['cover']) . '"alt="First slide">' 
                                 : ''?>
                         </div>
                         
                         <?php 
-                            if($model->pictures){
+                            if($pictureJson){
                                 for($i = 1; $i < count($pictureJson); $i++){
                                     echo '<div class="carousel-item">';
                                     echo '<img class="w-100 d-block" src="/' . Html::encode($pictureJson['extra'.$i]) . '" alt="Slide">';

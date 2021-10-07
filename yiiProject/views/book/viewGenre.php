@@ -54,7 +54,7 @@ use yii\helpers\Url;
     <div class="genre-form"> 
         <?php $form = ActiveForm::begin([
             'options' => ['data-pjax' => true ],
-            'action' => 'creategenre'
+            'action' => ['creategenre','goBack'],
         ]); ?>
 
         <?= $form->field($newGenre, 'name')->textInput(['maxlength' => 40]) ?>

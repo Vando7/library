@@ -5,20 +5,25 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Book;
+use yii\helpers\VarDumper;
 
 /**
  * BookSearch represents the model behind the search form of `app\models\Book`.
  */
 class BookSearch extends Book
 {
+    /**
+    * @var globalSearch
+    */
     public $globalSearch = "";
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['isbn', 'pictures', 'title', 'author', 'published', 'description'], 'safe'],
+            [['isbn', 'pictures', 'title', 'author', 'published', 'description', 'globalSearch'], 'safe'],
             [['total_count', 'available_count'], 'integer'],
         ];
     }
@@ -76,16 +81,14 @@ class BookSearch extends Book
         //     ->andFilterWhere(['like', 'author', $this->author])
         //     ->andFilterWhere(['like', 'description', $this->description]);
 
-        $globalsearch = $this->title . $this->author . $this->isbn . $this->published;
+        error_log(VarDumper::DumpAsString($this->globalSearch),3,"ivan_log.txt");
 
-        $query->andFilterWhere([ 'OR',
-            ['like', 'title', $this->$globalsearch],
-            ['like', 'author', $this->$globalsearch],
-            ['like', 'isbn', $this->$globalsearch],
-            ['like', 'pictures', $this->$globalsearch],
-            ['like', 'description', $this->description]
+        $query->andFilterWhere(['OR', 
+            ['like', 'title', $this->globalSearch],
+            ['like', 'author', $this->globalSearch],
+            ['like', 'isbn', $this->globalSearch],
+            ['like', 'published', $this->globalSearch],
         ]);
-
 
         return $dataProvider;
     }

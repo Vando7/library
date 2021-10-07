@@ -69,8 +69,9 @@ class BookController extends Controller
         $newGenre   = New Genre;
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'searchModel'   => $searchModel,
+            'dataProvider'  => $dataProvider,
+            'pageSize'      => 10,
         ]);
     }
 
@@ -194,8 +195,6 @@ class BookController extends Controller
             $newGenre->genre_id = $genreObj;
             $newGenre->link('bookIsbn',$model);
         }
-
-        error_log(VarDumper::dumpAsString($model),3,"ivan_log.txt");
 
         $model->genreList = null;
 

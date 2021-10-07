@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'globalSearch') ?>
+    <?= $form->field($model, 'globalSearch')->textInput(['placeholder' => 'Search']); ?>
 
     <?php // $form->field($model, 'pictures') ?>
 
