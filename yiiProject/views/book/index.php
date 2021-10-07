@@ -36,7 +36,10 @@ $currentUser = Yii::$app->user->identity;
         ?>
     </p>
 
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', [
+        'model' => $searchModel, 
+        'genreList' => $genreList,
+        ]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

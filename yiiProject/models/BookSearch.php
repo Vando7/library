@@ -17,13 +17,20 @@ class BookSearch extends Book
     */
     public $globalSearch = "";
 
+
+    /**
+    * @var genreSearch
+    */
+    public $genreSearch = [];
+
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['isbn', 'pictures', 'title', 'author', 'published', 'description', 'globalSearch'], 'safe'],
+            [['isbn', 'pictures', 'title', 'author', 'published', 'description', 'globalSearch','genreSearch', 'genre.id'], 'safe'],
             [['total_count', 'available_count'], 'integer'],
         ];
     }
@@ -68,6 +75,11 @@ class BookSearch extends Book
             return $dataProvider;
         }
 
+        
+        if($this->genreSearch){
+            $query->select(['`book`.* ,COUNT(*)']);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'published' => $this->published,
@@ -80,15 +92,27 @@ class BookSearch extends Book
         //     ->andFilterWhere(['like', 'title', $this->title])
         //     ->andFilterWhere(['like', 'author', $this->author])
         //     ->andFilterWhere(['like', 'description', $this->description]);
+        
+        if($this->genreSearch){
+            $query->joinWith('genres AS genre')
+                    ->where(['genre.id' => $this->genreSearch])
+                    ->GroupBy('book.isbn')
+                    ->having(['=', "COUNT(*)" , count($this->genreSearch)]); // this is fine ignore the warning :)
+        }else{
+            $query->joinWith('genres AS genre')
+                    ->groupBy('book.isbn');
+        }
 
-        error_log(VarDumper::DumpAsString($this->globalSearch),3,"ivan_log.txt");
 
-        $query->andFilterWhere(['OR', 
+        $query->andFilterWhere([
+            'OR', 
             ['like', 'title', $this->globalSearch],
             ['like', 'author', $this->globalSearch],
             ['like', 'isbn', $this->globalSearch],
             ['like', 'published', $this->globalSearch],
+            //['IN', 'genre.id', $this->genreSearch],
         ]);
+
 
         return $dataProvider;
     }

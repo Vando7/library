@@ -72,6 +72,7 @@ class BookController extends Controller
             'searchModel'   => $searchModel,
             'dataProvider'  => $dataProvider,
             'pageSize'      => 10,
+            'genreList'     => $this->getGenreNames(),
         ]);
     }
 
