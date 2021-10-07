@@ -1,68 +1,60 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\BookSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="book-search">
+<div class="book-search" style="margin:auto;max-width:500px;">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'globalSearch')->textInput(['placeholder' => 'Search']); ?>
 
-    <?= $form->field($model, 'genreSearch', ['template' => "
-        <div class='dropdown'>
+    <?= $form->field($model, 'globalSearch')
+                ->textInput(['placeholder' => 'Title, Author, ISBN etc.'])
+                ->label('Book search',['class'=>'label-class'])?>
 
-            <button
-            class='btn btn-default dropdown-toggle'
-            data-toggle='dropdown'
-            type='button'>
-                <span>Select genres</span>
-                <span class='caret'></span>
-            </button>
+    <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
 
-            <div style=\"overflow-y:scroll;\">
-            {input}
-            </div>
+        <?= $form->field($model, 'genreSearch', ['template' => "
+            <div class='dropdown'>
 
-        </div>"])->checkboxList($genreList,
-        [
-            'tag' => 'ul',
-            'class' => 'dropdown-menu',
-            'style' => 'height:300px; overflow-y:auto;',
-            'item' => function ($index, $label, $name, $checked, $value) {
-                return '<a class="dropdown-item" href="#">' . Html::checkbox($name, $checked, [
-                    'value' => $value,
-                    'label' => Html::encode($label),
-                ]) . '</a>';
-            }
-    ]); ?>
+                <button
+                class='btn btn-info dropdown-toggle'
+                data-toggle='dropdown'
+                type='button'>
+                    <span>Select genres</span>
+                    <span class='caret'></span>
+                </button>
 
-    <?php // $form->field($model, 'pictures') ?>
+                <div style=\"overflow-y:scroll;\">
+                {input}
+                </div>
 
-    <?php // $form->field($model, 'title') ?>
+            </div>"])->checkboxList($genreList,
+            [
+                'tag' => 'ul',
+                'class' => 'dropdown-menu',
+                'style' => 'height:300px; overflow-y:auto;',
+                'item' => function ($index, $label, $name, $checked, $value) {
+                    return '<a class="dropdown-item" href="#">' . Html::checkbox($name, $checked, [
+                        'value' => $value,
+                        'label' => Html::encode($label),
+                    ]) . '</a>';
+                }
+        ]); ?>
 
-    <?php // $form->field($model, 'author') ?>
+        <div class="form-group">
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary ml-2 btn-block']) ?>
+        </div>
 
-    <?php // $form->field($model, 'published') ?>
-
-    <?php // $form->field($model, 'description') ?>
-
-    <?php // $form->field($model, 'total_count') ?>
-
-    <?php // $form->field($model, 'available_count') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

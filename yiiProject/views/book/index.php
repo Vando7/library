@@ -15,9 +15,6 @@ $currentUser = Yii::$app->user->identity;
 
 ?>
 <div class="book-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
         <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
@@ -70,17 +67,22 @@ $currentUser = Yii::$app->user->identity;
                 'format' => 'html',
                 'label' => 'Info',
                 'value' => function($model){
+                    $publishYear = DateTime::createFromFormat("Y-m-d",$model->published);
+                    $publishYear = $publishYear->format('Y');
+                    
                     $elements = '';
-                    $elements .= '<b>' . Html::a(Html::encode($model->title),'view?isbn='.$model->isbn) . '</b><br>';
+                    $elements .= '<b>' . Html::a(Html::encode($model->title),'view?isbn='.$model->isbn) . '</b> ('.$publishYear.')<br>';
                     $elements .= '<i>' . Html::encode($model->author) . '</i>' .'<br>';
 
-                    foreach($model->genres as $genreObj){
-                        $elements .= $genreObj -> name . " ";
+                    for($i = 0; $i < count($model->genres); ++$i){
+                        if($i == 0) $elements .= $model->genres[$i]->name;
+                        else        $elements .= ", ".$model->genres[$i]->name;
                     }
-                    $elements .= '<br>';
 
+                    $elements .= '<br>';
                     $elements .= '<span class="badge badge-success">Available:' . Html::encode($model->available_count) . '</span><br>';
-                    $elements .= "ISBN " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
+                    $elements .= "ISBN6 " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
+                    
                     return $elements;
                     return DetailView::widget([
                         'model' => $model,
