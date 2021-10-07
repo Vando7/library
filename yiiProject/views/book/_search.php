@@ -51,7 +51,8 @@ use yii\bootstrap4\ActiveForm;
         ]); ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Search', ['class' => 'btn btn-primary ml-2 btn-block']) ?>
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary ml-2']) ?>
+            <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

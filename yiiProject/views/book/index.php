@@ -41,7 +41,6 @@ $currentUser = Yii::$app->user->identity;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             [
                 'format' => 'raw',
@@ -53,7 +52,6 @@ $currentUser = Yii::$app->user->identity;
                         $element .= '<a href="/book/view?isbn='.$model->isbn.'" alt="book cover">';
                         $element .= Html::img(
                             '/'. Html::encode($pictureJson['cover']),[
-                            //'width'=>'100px',
                             'style' => [
                                 'max-width' => '130px'
                             ],
@@ -68,33 +66,29 @@ $currentUser = Yii::$app->user->identity;
                 'format' => 'html',
                 'label' => 'Info',
                 'value' => function($model){
+                    // Book title row, title clickable
+                    $elements = '';
+                    $elements .= '<b>';
+                    $elements .= Html::a(Html::encode($model->title),'view?isbn='.$model->isbn);
                     $publishYear = DateTime::createFromFormat("Y-m-d",$model->published);
                     $publishYear = $publishYear->format('Y');
-                    
-                    $elements = '';
-                    $elements .= '<b>' . Html::a(Html::encode($model->title),'view?isbn='.$model->isbn) . '</b> ('.$publishYear.')<br>';
+                    $elements .= '</b> ('.$publishYear.')<br>';
                     $elements .= '<i>' . Html::encode($model->author) . '</i>' .'<br>';
-
+                    
+                    // Genre list
                     for($i = 0; $i < count($model->genres); ++$i){
                         if($i == 0) $elements .= $model->genres[$i]->name;
                         else        $elements .= ", ".$model->genres[$i]->name;
                     }
-
+                    
+                    // Avaliable copies badge
                     $elements .= '<br>';
                     $elements .= '<span class="badge badge-success">Available:' . Html::encode($model->available_count) . '</span><br>';
-                    $elements .= "ISBN6 " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
+                   
+                    // Book ISBN - clickable
+                    $elements .= "ISBN " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
                     
                     return $elements;
-                    return DetailView::widget([
-                        'model' => $model,
-                        'attributes' => 
-                        [
-                            'isbn',
-                            'title',
-                            'author',
-                            'published',
-                        ],
-                    ]);
                 }
             ],
             ['class' => 'yii\grid\ActionColumn',

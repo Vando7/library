@@ -86,12 +86,6 @@ class BookSearch extends Book
             'total_count' => $this->total_count,
             'available_count' => $this->available_count,
         ]);
-
-        // $query->andFilterWhere(['like', 'isbn', $this->isbn])
-        //     ->andFilterWhere(['like', 'pictures', $this->pictures])
-        //     ->andFilterWhere(['like', 'title', $this->title])
-        //     ->andFilterWhere(['like', 'author', $this->author])
-        //     ->andFilterWhere(['like', 'description', $this->description]);
         
         if($this->genreSearch){
             $query->joinWith('genres AS genre')
@@ -106,11 +100,10 @@ class BookSearch extends Book
 
         $query->andFilterWhere([
             'OR', 
-            ['like', 'title', $this->globalSearch],
-            ['like', 'author', $this->globalSearch],
-            ['like', 'isbn', $this->globalSearch],
+            ['like', 'title',   $this->globalSearch],
+            ['like', 'author',  $this->globalSearch],
+            ['like', 'isbn',    $this->globalSearch],
             ['like', 'published', $this->globalSearch],
-            //['IN', 'genre.id', $this->genreSearch],
         ]);
 
 

@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="user-search">
+<div class="lentTo-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,9 +18,10 @@ use yii\widgets\ActiveForm;
         ]
     ]); ?>
 
-    <?= $form->field($model, 'globalSearch')
-                ->textInput(['placeholder' => 'Names, e-mail, phone etc.'])
-                ->label('User search',['class'=>'label-class']);?>
+    <?= $form->field($model, 'book_isbn')?>
+    <?= $form->field($model, 'user_id')?>
+    <?= $form->field($model, 'employee_id')?>
+    <?= $form->field($model, 'amount')?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

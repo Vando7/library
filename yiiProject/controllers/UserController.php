@@ -3,15 +3,20 @@
 namespace app\controllers;
 
 use Yii;
+
 use app\models\User;
 use app\models\UserSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\AccessControl;
-use yii\web\Response;
-use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\SignupForm;
+use app\models\LentToSearch;
+
+use yii\web\Response;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
 use yii\helpers\Url;
 
 /**
@@ -275,18 +280,49 @@ class UserController extends Controller
         return $this->goHome();
     }
 
+
+    public function actionLendform()
+    {
+        $model = new \app\models\LentTo();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                // form inputs are valid, do something here
+                return;
+            }
+        }
+
+        return $this->render('_lendForm', [
+            'model' => $model,
+        ]);
+    }
+
     
-    public function actionSignup(){
+    
+    public function actionSignup()
+    {
         if (!Yii::$app->user->isGuest) {
             return $this->redirect(['book/index']);
         }
-
+        
         $model = new SignupForm();
-       
+        
         if($model->load(Yii::$app->request->post()) && $model->signup()){
             return $this->redirect(Yii::$app->homeUrl);
         }
-
+        
         return $this->render("signup",['model'=>$model]);
+    }
+
+
+    public function actionLendhistory()
+    {
+        $searchModel = new LentToSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('lendHistory', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

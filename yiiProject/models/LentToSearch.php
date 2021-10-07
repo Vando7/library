@@ -4,31 +4,24 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\User;
+use app\models\LentTo;
+use yii\helpers\VarDumper;
 
-/**
- * UserSearch represents the model behind the search form of `app\models\User`.
- */
-class UserSearch extends User
+
+class LentToSearch extends LentTo
 {
-    /**
-     * Global Search string
-     * @var globalSearch
-     */
-    public $globalSearch = "";
-    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['first_name', 'last_name', 'country', 'city', 'street', 'phone', 'email', 'password', 'role', 'note', 'register_date', 'suspended_status', 'suspended_date', 'suspended_reason','globalSearch'], 'safe'],
+            [['book_isbn','user_id','employee_id','amount','date_lent','date_returned','deadline','status'], 'safe'],
+            [['amount'], 'integer'],
         ];
     }
 
-    
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = LentTo::find();
 
         // add conditions that should always apply here
 
@@ -56,7 +49,7 @@ class UserSearch extends User
             'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
-            ]
+            ],
         ]);
 
         $this->load($params);
@@ -66,22 +59,7 @@ class UserSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'register_date' => $this->register_date,
-            'suspended_date' => $this->suspended_date,
-        ]);
-
-        $query->andFilterWhere([
-            'OR',
-            ['like', 'first_name',  $this->globalSearch],
-            ['like', 'last_name',   $this->globalSearch],
-            ['like', 'email',   $this->globalSearch],
-            ['like', 'phone',   $this->globalSearch],
-        ]);
-
+        
         return $dataProvider;
     }
 }

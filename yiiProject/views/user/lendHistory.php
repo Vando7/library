@@ -4,30 +4,21 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\UserSearch */
+/* @var $searchModel app\models\LentToSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
 ?>
-<div class="user-index">
+<div class="lentTo-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
-
-    <p>
-        <?= Yii::$app->user->isGuest ? '' : 
-            ( Yii::$app->user->identity->role == 'admin' ?
-                (Html::a('Create User', ['create'], ['class' => 'btn btn-success']))
-                :
-                '') ?>
-    </p>
 
     <?php Pjax::begin();?>
-    <?= $this->render('_search', ['model' => $searchModel]) ?>
+    <?= $this->render('_searchLentTo', ['model' => $searchModel]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+            /*
             [
                 'format' => 'raw',
                 'label'  => 'User info',
@@ -49,7 +40,14 @@ $this->title = 'Users';
                     return $element;
                 }
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            */
+            'book_isbn',
+            'user_id', 
+            'employee_id',
+            'amount',
+            'date_lent',
+            'date_returned',
+            
         ],
     ]); ?>
     <?php Pjax::end();?>
