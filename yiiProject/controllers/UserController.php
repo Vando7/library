@@ -113,8 +113,15 @@ class UserController extends Controller
                 'model' => $this->findModel($currentUser ->id),
             ]);
         } else{
+            $searchModel    = new LentToSearch();
+            $historyDataProvider   = $searchModel->search($this->request->queryParams, $id, false);
+            $myBooksDataProvider   = $searchModel->search($this->request->queryParams, $id, true);
+
             return $this->render('viewLibrarian', [
                 'model' => $this->findModel($id),
+                'searchModel' => $searchModel,
+                'historyDataProvider' => $historyDataProvider,
+                'myBooksDataProvider' => $myBooksDataProvider,
             ]);
         }
     }
@@ -267,6 +274,13 @@ class UserController extends Controller
     }
 
 
+    public function actionSuspend($id){
+        if(Yii::$app->user->can('suspendOrNote')){
+            $model= $this->findModel($id);
+        }
+    }
+
+
     /**
      * Logout action.
      *
@@ -297,7 +311,6 @@ class UserController extends Controller
         ]);
     }
 
-    
     
     public function actionSignup()
     {

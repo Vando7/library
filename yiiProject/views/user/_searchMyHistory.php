@@ -11,8 +11,10 @@ use yii\bootstrap4\ActiveForm;
 <div class="lentTo-search text-right">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['myhistory'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1,
+        ]
     ]); ?>
 
     <div class="btn-group" role="group" aria-label="Basic example">

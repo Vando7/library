@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php echo  $this->render('_searchMyHistory', ['model' => $searchModel]) ?>
+    <?= $this->render('_searchMyHistory', ['model' => $searchModel]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
