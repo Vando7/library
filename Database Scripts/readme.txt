@@ -9,7 +9,7 @@ Steps to setting up the database
     load_user_dummy.sql
 
 3. Important: set roles for the users
-    generate_role_assignment
+    generate_role_assignment.py
 
     Note: At this point you would want to create an admin account for 
     the app. One way is to sign up a new account in the app. The new 
