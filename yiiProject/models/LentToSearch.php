@@ -16,10 +16,17 @@ class LentToSearch extends LentTo
     public function rules()
     {
         return [
-            [['book_isbn','user_id','employee_id','amount','date_lent','date_returned','deadline','status'], 'safe'],
+            [['book_isbn','user_id','employee_id','amount','date_lent','date_returned','deadline','status','statusQuery'], 'safe'],
             [['amount'], 'integer'],
         ];
     }
+
+
+    /**
+     * Status query variable 
+     * @var statusQuery
+     */
+    public $statusQuery = "";
 
 
     /**
@@ -48,7 +55,7 @@ class LentToSearch extends LentTo
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 30,
+                'pageSize' => 10,
             ],
         ]);
 
@@ -59,6 +66,8 @@ class LentToSearch extends LentTo
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
         
         return $dataProvider;
     }

@@ -12,13 +12,18 @@ use yii\widgets\Pjax;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php Pjax::begin();?>
     <?= $this->render('_searchLentTo', ['model' => $searchModel]) ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            [
+    <?php 
+    $dependency = [
+        'class' => 'yii\caching\DbDependency',
+        'sql' => 'SELECT COUNT(*) FROM lent_to'
+    ];
+    if ($this->beginCache("lendHistoryCache",['dependency' => $dependency, 'duration' => 18000])) {
+        echo GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                [
                 'format' => 'raw',
                 'label'  => 'Book info',
                 'value'  => function($model){
@@ -98,7 +103,8 @@ use yii\widgets\Pjax;
             'status',
             */
         ],
-    ]); ?>
-    <?php Pjax::end();?>
-
+        ]);
+    $this->endCache();
+    }
+    ?>
 </div>
