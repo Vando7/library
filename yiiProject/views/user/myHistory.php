@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_searchLentTo', ['model' => $searchModel]) ?>
+    <?php echo  $this->render('_searchMyHistory', ['model' => $searchModel]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -54,10 +54,6 @@ use yii\widgets\Pjax;
                 // ISBN
                 $element .= "ISBN " . Html::encode($model->book_isbn) . '<br>';
 
-                // Employee info
-                $element .= "Given by <br>";
-                $element .= Html::encode($model->employee->first_name . " " . $model->employee->last_name);
-
                 return $element;
             }
         ],
@@ -66,13 +62,6 @@ use yii\widgets\Pjax;
             'label'  => 'Library info',
             'value'  => function($model){
                 $element = '';
-
-                // User names
-                $user = $model->user;
-                $element .=  '<i class="bi bi-person"></i> '. Html::a(Html::encode($user->first_name." ".$user->last_name),"/user/view?id=".$user->id )."<br>";
-
-                // User Phone
-                $element .= '<i class="bi bi-telephone"></i> ' . Html::encode($user->phone) . "<br>";
                 
                 // Date lent
                 $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";

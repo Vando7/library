@@ -325,4 +325,15 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionMyhistory(){
+        $searchModel    = new LentToSearch();
+        $dataProvider   = $searchModel->search($this->request->queryParams, Yii::$app->User->id);
+        //->where('=','user_id',Yii::$app->User->id);
+
+        return $this->render('myHistory', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 }

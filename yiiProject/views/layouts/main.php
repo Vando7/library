@@ -44,7 +44,7 @@ AppAsset::register($this);
             
             // Pages viewable for all users
             Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => ['/user/view?id='.Yii::$app->user->identity->id]]),
-            Yii::$app->user->isGuest ? '' : (['label' => 'My History - TODO...', 'url' => NULL]),
+            Yii::$app->user->isGuest ? '' : (['label' => 'My History', 'url' => '/user/myhistory']),
             Yii::$app->user->isGuest ? '' : (['label' => 'My Books - TODO...', 'url' => NULL]),
             
             Yii::$app->user->isGuest ? (

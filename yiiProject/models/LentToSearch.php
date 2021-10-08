@@ -46,7 +46,7 @@ class LentToSearch extends LentTo
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $user_id = NULL)
     {
         $query = LentTo::find();
 
@@ -59,7 +59,6 @@ class LentToSearch extends LentTo
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'date_returned' => SORT_DESC,
                     'date_lent' => SORT_DESC,
                 ]
             ],
@@ -74,6 +73,10 @@ class LentToSearch extends LentTo
         }
 
         $query->joinWith(['bookIsbn','user', 'employee']);
+
+        if($user_id != NULL) {
+            $query->andFilterWhere(['=','user_id',$user_id]);
+        }
 
         if($this->statusQuery === 'late'){
             $query->andFilterWhere([
