@@ -46,7 +46,7 @@ class LentToSearch extends LentTo
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $user_id = NULL)
+    public function search($params, $user_id = NULL, $isMyBooks = false)
     {
         $query = LentTo::find();
 
@@ -74,11 +74,17 @@ class LentToSearch extends LentTo
 
         $query->joinWith(['bookIsbn','user', 'employee']);
 
+        // User querying their own history
         if($user_id != NULL) {
             $query->andFilterWhere(['=','user_id',$user_id]);
         }
 
-        if($this->statusQuery === 'late'){
+        // Checking only books that have to be Returned
+        if($isMyBooks && $this->statusQuery === ''){
+            error_log("hi",3,'ivan_log.txt');
+            $query->andFilterWhere(['like', 'status',   'taken']);
+        } // Filter by status
+        else if($this->statusQuery === 'late'){ 
             $query->andFilterWhere([
                 'AND',
                 ['like', 'status',   'taken'],
@@ -91,7 +97,8 @@ class LentToSearch extends LentTo
                 ['like', 'status',   'taken'],
                 ['<','deadline',date("Y-m-d H:i:s"),],
             ]);
-        }else{
+        }
+        else{
             $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
         }
         

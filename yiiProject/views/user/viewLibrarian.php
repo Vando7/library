@@ -10,6 +10,8 @@ $this->title = $model->first_name." ".$model->last_name;
 \yii\web\YiiAsset::register($this);
 $currentUser = Yii::$app->user->identity;
 ?>
+
+
 <div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>

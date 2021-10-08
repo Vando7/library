@@ -43,9 +43,9 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'History', 'url' => '/user/lendhistory'])),
             
             // Pages viewable for all users
-            Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => ['/user/view?id='.Yii::$app->user->identity->id]]),
+            Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => '/user/view?id='.Yii::$app->user->identity->id]),
             Yii::$app->user->isGuest ? '' : (['label' => 'My History', 'url' => '/user/myhistory']),
-            Yii::$app->user->isGuest ? '' : (['label' => 'My Books - TODO...', 'url' => NULL]),
+            Yii::$app->user->isGuest ? '' : (['label' => 'My Books',   'url' => '/user/mybooks']),
             
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/user/login']]

@@ -326,12 +326,24 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionMyhistory(){
-        $searchModel    = new LentToSearch();
-        $dataProvider   = $searchModel->search($this->request->queryParams, Yii::$app->User->id);
-        //->where('=','user_id',Yii::$app->User->id);
+    
+    public function actionMybooks(){
+        $notReturnedOnly = true;
+        return $this->userHistory(Yii::$app->User->id, $notReturnedOnly);
+    }
 
-        return $this->render('myHistory', [
+
+    public function actionMyhistory(){
+        $allCategories = false;
+        return $this->userHistory(Yii::$app->User->id, $allCategories);
+    }
+
+
+    public function userHistory($user_id, $notReturnedOnly){
+        $searchModel    = new LentToSearch();
+        $dataProvider   = $searchModel->search($this->request->queryParams, $user_id, $notReturnedOnly);
+
+        return $this->render('myBooks', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
