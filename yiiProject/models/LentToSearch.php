@@ -57,6 +57,12 @@ class LentToSearch extends LentTo
             'pagination' => [
                 'pageSize' => 10,
             ],
+            'sort' => [
+                'defaultOrder' => [
+                    'date_returned' => SORT_DESC,
+                    'date_lent' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
@@ -68,7 +74,23 @@ class LentToSearch extends LentTo
         }
 
         $query->joinWith(['bookIsbn','user', 'employee']);
-        $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
+
+        if($this->statusQuery === 'late'){
+            $query->andFilterWhere([
+                'AND',
+                ['like', 'status',   'taken'],
+                ['>=','deadline',date("Y-m-d H:i:s"),],
+            ]);
+        }
+        else if($this->statusQuery === 'taken'){
+            $query->andFilterWhere([
+                'AND',
+                ['like', 'status',   'taken'],
+                ['<','deadline',date("Y-m-d H:i:s"),],
+            ]);
+        }else{
+            $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
+        }
         
         return $dataProvider;
     }

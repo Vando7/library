@@ -29,7 +29,7 @@ use yii\widgets\Pjax;
                 'value'  => function($model){
                     // Book name
                     $element  = '';
-                    $element .= '<b>';
+                    $element .= '<b><i class="bi bi-book"></i> ';
                     $element .= Html::a( Html::encode($model->bookIsbn->title),"/book/view?isbn=".$model->book_isbn );
                     $element .= '</b><br>';
 
@@ -75,13 +75,13 @@ use yii\widgets\Pjax;
 
                     // User names
                     $user = $model->user;
-                    $element .= "<b>Reader</b> ". Html::a(Html::encode($user->first_name." ".$user->last_name),"/user/view?id=".$user->id )."<br>";
+                    $element .=  '<i class="bi bi-person"></i> '. Html::a(Html::encode($user->first_name." ".$user->last_name),"/user/view?id=".$user->id )."<br>";
 
                     // User Phone
-                    $element .= "<b>Phone</b> " . Html::encode($user->phone) . "<br>";
+                    $element .= '<i class="bi bi-telephone"></i> ' . Html::encode($user->phone) . "<br>";
                     
                     // Date lent
-                    $element .= "<b>Given</b> " . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
+                    $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
 
                     // Date returned 
                     $element .= "<b>Returned</b> " . ($model->date_returned ? date('Y-m-d', strtotime($model->date_returned)) : "No") . '<br>';

@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="user-search">
+<div class="user-search text-right">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,15 +18,17 @@ use yii\widgets\ActiveForm;
         ]
     ]); ?>
 
-    <?= $form->field($model, 'globalSearch')
-                ->textInput(['placeholder' => 'Names, e-mail, phone etc.'])
-                ->label('User search',['class'=>'label-class']);?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <?= $form->field($model, 'globalSearch')
+                    ->textInput(['placeholder' => 'Names, e-mail, phone etc.'])
+                    ->label(false);?>
+
+        <div class="form-group ml-3">
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>
