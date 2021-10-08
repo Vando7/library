@@ -67,6 +67,7 @@ class LentToSearch extends LentTo
             return $dataProvider;
         }
 
+        $query->joinWith(['bookIsbn','user', 'employee']);
         $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
         
         return $dataProvider;

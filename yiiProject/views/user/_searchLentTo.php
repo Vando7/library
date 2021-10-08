@@ -11,14 +11,13 @@ use yii\widgets\ActiveForm;
 <div class="lentTo-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['lendhistory'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'book_isbn')?>
-    <?= $form->field($model, 'user_id')?>
-    <?= $form->field($model, 'employee_id')?>
-    <?= $form->field($model, 'amount')?>
+    
+
+    <?= $form->field($model, 'statusQuery')?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

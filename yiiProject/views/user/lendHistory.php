@@ -15,11 +15,11 @@ use yii\widgets\Pjax;
     <?= $this->render('_searchLentTo', ['model' => $searchModel]) ?>
 
     <?php 
-    $dependency = [
-        'class' => 'yii\caching\DbDependency',
-        'sql' => 'SELECT COUNT(*) FROM lent_to'
-    ];
-    if ($this->beginCache("lendHistoryCache",['dependency' => $dependency, 'duration' => 18000])) {
+    // $dependency = [
+    //     'class' => 'yii\caching\DbDependency',
+    //     'sql' => 'SELECT COUNT(*) FROM lent_to'
+    // ];
+    // if ($this->beginCache("lendHistoryCache",['dependency' => $dependency, 'duration' => 18000])) {
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [
@@ -92,19 +92,9 @@ use yii\widgets\Pjax;
                     return $element;
                 }
             ],
-            /*
-            'book_isbn',
-            'user_id', 
-            'employee_id',
-            'amount',
-            'date_lent',
-            'date_returned',
-            'deadline',
-            'status',
-            */
         ],
         ]);
-    $this->endCache();
-    }
+    // $this->endCache();
+    // }
     ?>
 </div>
