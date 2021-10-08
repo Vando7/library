@@ -65,8 +65,6 @@ class BookController extends Controller
         $dataProvider   = $searchModel->search($this->request->queryParams);
 
         $genreDB    = New Genre;
-        $genreList  = $genreDB->find()->all();
-        $newGenre   = New Genre;
 
         return $this->render('index', [
             'searchModel'   => $searchModel,

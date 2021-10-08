@@ -40,7 +40,7 @@ AppAsset::register($this);
         'items' => [
             Yii::$app->user->isGuest ? '' : (['label' => 'Books', 'url' => ['/book/index']]),
             Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'Users', 'url' => ['/user/index']])),
-            Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'History - TODO...', 'url' => NULL])),
+            Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'History', 'url' => '/user/lendhistory'])),
             
             // Pages viewable for all users
             Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => ['/user/view?id='.Yii::$app->user->identity->id]]),
