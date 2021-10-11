@@ -8,9 +8,10 @@ use app\models\Genre;
 use app\models\BookGenre;
 use app\models\BookSearch;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
+
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
 
@@ -115,17 +116,22 @@ class BookController extends Controller
             $picturesJson['cover'] = 'upload/'. $model->isbn .'_cover.'.$model->bookCover->extension;
         }
 
+        $counter = 1;
         if($model->bonusImages){
-            $counter = 1;
             foreach ($model->bonusImages as $files){
                 $picturesJson['extra'.$counter] = 'upload/'. $model->isbn . '_extra' . $counter . '.'  . $files->extension;
 
                 ++$counter;
             }
+
+            while( file_exists('upload/'. $model->isbn . '_extra' . $counter ) ){
+                unlink('upload/'. $model->isbn . '_extra' . $counter);
+
+                ++$counter;
+            }
         }
-
+        
         $model->pictures = json_encode($picturesJson);
-
         return $model->save() && $model->upload();
     }
 
@@ -286,12 +292,11 @@ class BookController extends Controller
             $model->save();
         }
 
-        $genreDB    = New Genre;
-        $genreList  = $genreDB->find()->all();
         $newGenre   = New Genre;
+        $genreListRaw  = $newGenre->find()->all();
 
         return $this->renderAjax('viewGenre', [
-            'genreList' => $genreList,
+            'genreList' => $genreListRaw,
             'newGenre'  => $newGenre,
         ]);
     }
@@ -301,12 +306,11 @@ class BookController extends Controller
         if(Yii::$app->user->can('manageBook')){
             $this->findGenre($id)->delete();
 
-            $genreDB    = New Genre;
-            $genreList  = $genreDB->find()->all();
             $newGenre   = New Genre;
+            $genreListRaw  = $newGenre->find()->all();
 
             return $this->renderAjax('viewGenre', [
-                'genreList' => $genreList,
+                'genreList' => $genreListRaw,
                 'newGenre'  => $newGenre,
                 ]);
         }
@@ -314,18 +318,18 @@ class BookController extends Controller
 
 
     public function actionViewgenre($isModal = true){
-        $genreDB    = New Genre;
-        $genreList  = $genreDB->find()->all();
         $newGenre   = New Genre;
+        $genreListRaw  = $newGenre->find()->all();
+
         if($isModal){
             return $this->renderAjax('viewGenre', [
-                'genreList' => $genreList,
+                'genreList' => $genreListRaw,
                 'newGenre'  => $newGenre,
             ]);
         }
 
         return $this->render('viewGenre', [
-            'genreList' => $genreList,
+            'genreList' => $genreListRaw,
             'newGenre'  => $newGenre,
         ]);
     }

@@ -1,8 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
-
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Book */
@@ -57,8 +55,8 @@ $pictureJson = json_decode($model->pictures, true);
 
             <div class="col-sm-8 col-md-6 col-lg-6 offset-sm-0 offset-lg-0">
             <p>
-                <?= $currentUser->can('manageBook') ? Html::a('Update', ['update', 'isbn' => $model->isbn], ['class' => 'btn btn-primary']) : '' ?>
-                <?= $currentUser->can('manageBook') ? Html::a('Delete', ['delete', 'isbn' => $model->isbn], [
+                <?= $currentUser->can('manageBook') ? Html::a('<i class="bi bi-pencil-square"></i> Update', ['update', 'isbn' => $model->isbn], ['class' => 'btn btn-primary']) : '' ?>
+                <?= $currentUser->can('manageBook') ? Html::a('<i class="bi bi-trash"></i> Delete', ['delete', 'isbn' => $model->isbn], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => 'Are you sure you want to delete this item?',
@@ -90,21 +88,4 @@ $pictureJson = json_decode($model->pictures, true);
         </div>
         
     </div>
-
-    <p><?= Html::encode(json_encode($model->pictures)); ?> </p>
-    
-    <!-- DEBUG <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'isbn',
-            'pictures',
-            'title',
-            'author',
-            'published',
-            'description:ntext',
-            'total_count',
-            'available_count',
-        ],
-    ]) ?> -->
-
 </div>

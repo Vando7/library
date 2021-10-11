@@ -16,7 +16,7 @@ $currentUser = Yii::$app->user->identity;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="bi bi-pencil-square"></i> Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= $currentUser->role == 'admin' ? ( // Render delete button only for admin.
                 Html::a('Delete', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',

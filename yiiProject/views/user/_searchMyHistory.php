@@ -27,7 +27,7 @@ use yii\bootstrap4\ActiveForm;
         )->label(false);?>
 
         <div class="form-group ml-3">
-            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('<i class="bi bi-search"></i> Search', ['class' => 'btn btn-primary']) ?>
         </div>
     </div>
 

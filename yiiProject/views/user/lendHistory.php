@@ -52,7 +52,7 @@ use yii\widgets\Pjax;
                 $element .= '<span class="badge badge-' . $badgeType . '">'. $status .'</span><br>';
 
                 // ISBN
-                $element .= "ISBN " . Html::encode($model->book_isbn) . '<br>';
+                $element .= "<b>ISBN</b> " . Html::encode($model->book_isbn) . '<br>';
 
                 // Employee info
                 $element .= "Given by <br>";
@@ -63,7 +63,7 @@ use yii\widgets\Pjax;
         ],
         [
             'format' => 'raw',
-            'label'  => 'Library info',
+            'label'  => 'Given To',
             'value'  => function($model){
                 $element = '';
 

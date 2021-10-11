@@ -19,16 +19,17 @@ use yii\helpers\Url;
     echo '<div class="form-check">' . "\n";
 
     foreach($genreList as $genreObj){
-
-        $deleteIcon = '<i class="bi bi-x-lg"></i>';
-
-        $deleteButton = Html::a($deleteIcon,['deletegenre', 'id' => $genreObj->id,],[
-            'class' => 'badge badge-danger',
-            'id' => 'deleteButton',
-        ]);
-
-        $genreLabel = Html::encode($genreObj->name);
-        echo $deleteButton . " " . $genreLabel . '<br>' . "\n";
+        if($genreObj){
+            $deleteIcon = '<i class="bi bi-x-lg"></i>';
+    
+            $deleteButton = Html::a($deleteIcon,['deletegenre', 'id' => $genreObj->id,],[
+                'class' => 'badge badge-danger',
+                'id' => 'deleteButton',
+            ]);
+    
+            $genreLabel = Html::encode($genreObj->name);
+            echo $deleteButton . " " . $genreLabel . '<br>' . "\n";
+        }
     } 
 
     echo '</div>'. "\n";

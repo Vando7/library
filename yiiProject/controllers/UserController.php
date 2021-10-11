@@ -5,8 +5,8 @@ namespace app\controllers;
 use Yii;
 
 use app\models\User;
-use app\models\UserSearch;
 use app\models\LoginForm;
+use app\models\UserSearch;
 use app\models\SignupForm;
 use app\models\LentToSearch;
 
@@ -277,6 +277,7 @@ class UserController extends Controller
     public function actionSuspend($id){
         if(Yii::$app->user->can('suspendOrNote')){
             $model= $this->findModel($id);
+            // TODO...
         }
     }
 
@@ -330,13 +331,17 @@ class UserController extends Controller
 
     public function actionLendhistory()
     {
-        $searchModel = new LentToSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if(Yii::$app->user->can('viewAllHistory')){
+            $searchModel = new LentToSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
+    
+            return $this->render('lendHistory', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
 
-        return $this->render('lendHistory', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->redirect(['book/index']);
     }
 
     
@@ -353,6 +358,10 @@ class UserController extends Controller
 
 
     public function userHistory($user_id, $notReturnedOnly){
+        if(Yii::$app->user->can('viewAllProfilesLibrary' == false)){
+            $user_id = Yii::$app->user->identity->id;
+        }
+
         $searchModel    = new LentToSearch();
         $dataProvider   = $searchModel->search($this->request->queryParams, $user_id, $notReturnedOnly);
 

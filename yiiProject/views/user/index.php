@@ -22,7 +22,6 @@ $this->title = 'Users';
                 '') ?>
     </p>
 
-    <?php Pjax::begin();?>
     <?= $this->render('_search', ['model' => $searchModel]) ?>
 
     <?= GridView::widget([
@@ -34,7 +33,7 @@ $this->title = 'Users';
                 'value'  => function($model){
                     // First and last names - clickable
                     $element = '';
-                    $element .= '<b>';
+                    $element .= '<b><i class="bi bi-person"></i> ';
                     $element .= Html::a( Html::encode($model->first_name. " " .$model->last_name),"view?id=".$model->id );
                     $element .= '</b><br>';
 
@@ -52,6 +51,4 @@ $this->title = 'Users';
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    <?php Pjax::end();?>
-
 </div>

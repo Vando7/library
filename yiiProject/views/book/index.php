@@ -32,8 +32,8 @@ $currentUser = Yii::$app->user->identity;
         'genreList' => $genreList,
     ]); ?>
     
-    <?= $currentUser->role == 'reader' ? '' : Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
-    <?= $currentUser->role == 'reader' ? '' : Html::Button('Manage Genres', [
+    <?= $currentUser->role == 'reader' ? '' : Html::a('<i class="bi bi-plus-circle"></i> Add Book', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= $currentUser->role == 'reader' ? '' : Html::Button('<i class="bi bi-pencil-square"></i> Manage Genres', [
         'value' => Url::to('/book/viewgenre'), 
         'class' => 'btn btn-success', 
         'id'    => 'genreModalButton',
@@ -41,6 +41,9 @@ $currentUser = Yii::$app->user->identity;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'tableOptions' => [
+            'class' => 'table table-striped',
+        ],
         'columns' => [
             [
                 'format' => 'raw',

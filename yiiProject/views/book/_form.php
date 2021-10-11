@@ -13,14 +13,13 @@ use yii\helpers\VarDumper;
 /* @var $form yii\widgets\ActiveForm */
 
 $currentUser = Yii::$app->user->identity;
+
+natcasesort($genreList);
 ?>
 
 <div class="book-form">
 
-    <?php $form = ActiveForm::begin([
-        'options' => ['class' => 'form-horizontal'],
-    ],
-    ); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
 
@@ -29,7 +28,6 @@ $currentUser = Yii::$app->user->identity;
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'published')->widget(DatePicker::classname(), [
-    //'language' => 'ru',
     'dateFormat' => 'yyyy-MM-dd',
     'clientOptions' =>[
         'changeYear' => 'true',
@@ -45,6 +43,7 @@ $currentUser = Yii::$app->user->identity;
         Select genres
     </button>
 
+    <?= json_encode($genreList) ?>
 
     <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -78,18 +77,19 @@ $currentUser = Yii::$app->user->identity;
                     
                     <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Open in new tab">
                         <a class="btn btn-primary mr-auto"  href="/book/viewgenre?isModal=0" role="button" target="_blank"> 
-                        Manage genres <i class="bi bi-box-arrow-up-right"></i> 
-                    </a>
+                         Manage genres <i class="bi bi-box-arrow-up-right"></i> 
+                        </a>
                     </span>
+
                     <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Warning: clears selection!">
                         <?= Html::Button('Refresh', ['class' => 'btn btn-primary', 'id'=>'refresh']) ?>  
-                    </span>
+                    </span> 
+
                     <button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
                 </div>
             </div>
         </div>
     </div>
-
 
     <?= $form->field($model, 'total_count')->textInput() ?>
     <!-- pepehmm -->
@@ -102,16 +102,6 @@ $currentUser = Yii::$app->user->identity;
     </div>
 
     <?php ActiveForm::end(); ?>
-
-    <?php 
-    // $modal = Modal::begin([
-    //         'title' => 'Manage genres', 
-    //         'id'    => 'genreModal',
-    //     ]); 
-        
-    //     echo '<div id="genreModalContent"></div>';
-    //     Modal::end();
-    ?>
     
 
 </div>
