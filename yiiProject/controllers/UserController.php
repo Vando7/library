@@ -14,10 +14,13 @@ use yii\web\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
+use yii\bootstrap4\ActiveForm;
+
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -60,7 +63,7 @@ class UserController extends Controller
             && !($this->action->id == 'login') 
             && !($this->action->id == 'signup')) 
         {
-            return $this->redirect(['login']);
+            return $this->redirect(['login'])->send();
         }
 
         return true;
@@ -320,6 +323,12 @@ class UserController extends Controller
         }
         
         $model = new SignupForm();
+
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            error_log(VarDumper::dumpAsString($model),3,'ivan_log.txt');
+            return ActiveForm::validate($model);
+        } 
         
         if($model->load(Yii::$app->request->post()) && $model->signup()){
             return $this->redirect(Yii::$app->homeUrl);

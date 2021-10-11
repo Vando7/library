@@ -10,6 +10,7 @@ use app\models\BookSearch;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
+use yii\web\CreateUrl;
 use yii\filters\VerbFilter;
 
 use yii\helpers\Json;
@@ -49,10 +50,9 @@ class BookController extends Controller
             && !($this->action->id == 'login') 
             && !($this->action->id == 'signup')) 
         {
-            return $this->goHome();
+            return $this->redirect(['user/login'])->send();
         }
-
-        return true;
+        return parent::beforeAction($action);
     }
     
 

@@ -14,6 +14,11 @@ class SignupForm extends Model{
     public $street;
     public $email;
     public $phone;
+    public $role;
+    public $note;
+    public $suspended_status;
+    public $suspended_reason;
+    public $suspended_date;
     public $password;
     public $password_repeat;
 
@@ -26,10 +31,11 @@ class SignupForm extends Model{
             [['first_name', 'last_name', 'country', 'city', 'street'], 'string', 'max' => 64],
             [['phone'], 'string', 'max' => 20],
             [['email', 'password'], 'string', 'max' => 255],
-            [['phone'], 'unique'],
-            [['email'], 'unique', 'message' => 'Account with this e-mail already exists.'],
+            [['phone'], 'unique', 'targetClass' =>  User::class, 'targetAttribute' => 'phone'],
+            [['email'],'unique', 'targetClass' =>  User::class, 'targetAttribute' => 'email'],
             ['email', 'email', 'message' => 'Please enter a valid e-mail address'],
-            ['password_repeat','compare','compareAttribute'=>'password'],
+            ['password_repeat','compare','compareAttribute'=>'password','message'=>'Passwords do not match'],
+            [['password','password_repeat'],'match','pattern' => '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/'],
         ];
     }
 

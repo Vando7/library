@@ -97,14 +97,12 @@ class BookSearch extends Book
                     ->groupBy('book.isbn');
         }
 
-
-        $query->andFilterWhere([
-            'OR', 
-            ['like', 'title',   $this->globalSearch],
-            ['like', 'author',  $this->globalSearch],
-            ['like', 'isbn',    $this->globalSearch],
-            ['like', 'published', $this->globalSearch],
-        ]);
+        $words = explode(' ', $this->globalSearch);
+            $query
+            ->orFilterWhere( ['or like', 'title',   $words],)
+            ->orFilterWhere( ['or like', 'author',  $words] )
+            ->orFilterWhere( ['or like', 'isbn',    $words], )
+            ->orFilterWhere( ['or like', 'published', $words], );
 
 
         return $dataProvider;

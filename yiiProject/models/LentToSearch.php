@@ -81,7 +81,6 @@ class LentToSearch extends LentTo
 
         // Checking only books that have to be Returned
         if($isMyBooks && $this->statusQuery === ''){
-            error_log("hi",3,'ivan_log.txt');
             $query->andFilterWhere(['like', 'status',   'taken']);
         } // Filter by status
         else if($this->statusQuery === 'late'){ 

@@ -74,12 +74,12 @@ class UserSearch extends User
             'suspended_date' => $this->suspended_date,
         ]);
 
-        $query->andFilterWhere([
-            'OR',
-            ['like', 'first_name',  $this->globalSearch],
-            ['like', 'last_name',   $this->globalSearch],
-            ['like', 'email',   $this->globalSearch],
-            ['like', 'phone',   $this->globalSearch],
+        $words = explode(" ", $this->globalSearch);
+        $query->orFilterWhere(['or',
+            ['like', 'first_name',  $words],
+            ['like', 'last_name',   $words],
+            ['like', 'email',   $words],
+            ['like', 'phone',   $words],
         ]);
 
         return $dataProvider;
