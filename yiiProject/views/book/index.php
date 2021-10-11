@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 
@@ -27,6 +27,7 @@ $currentUser = Yii::$app->user->identity;
     </p>
 
 
+    <?php Pjax::begin();?>
     <?= $this->render('_search', [
         'model' => $searchModel, 
         'genreList' => $genreList,
@@ -95,7 +96,8 @@ $currentUser = Yii::$app->user->identity;
                 }
             ],
             ['class' => 'yii\grid\ActionColumn',
-             'urlCreator' => function($action,$model){
+            'template' => '{add} {view} {update} {delete} {return}',
+            'urlCreator' => function($action,$model){
                  if($action == 'update'){
                      return 'update?isbn='.$model->isbn;
                  }
@@ -104,11 +106,50 @@ $currentUser = Yii::$app->user->identity;
                      return 'delete?isbn='.$model->isbn;
                  }
              },
+                'buttons' => [
+                    'add' => function($url, $model){
+                        // Modal Start ----
+                        $modal = Modal::begin([
+                            'title' => 'Select quantity', 
+                            'id' => 'bookModal'.$model->isbn,
+                        ]); 
+
+                        // Number input field
+                        $element = '';
+                        $element .= 'Input number ';
+                        $element .= Html::input('number','amount','1', $options=[
+                            'class'=>'form-control', 
+                            'maxlength'=>10, 
+                        ]);
+
+                        // Input button
+                        
+
+                        // Footer
+                        $element .= '<br><div class="modal-footer">';
+                        $element .= '<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>';
+                        $element .= '</div>';
+
+                        echo $element;
+                        
+                        echo '<div id="genreModalContent'.$model->isbn.'"></div>';
+                        Modal::end();
+                        // Modal end ----
+
+                        return html::a('Add <i class="bi bi-plus-square"></i>',$url,[
+                            'give',
+                            'class'=>"btn btn-success",
+                            'data-toggle'=>"modal",
+                            'data-target'=>"#bookModal".$model->isbn,
+                        ]);
+                    }
+                ],
              'visible' => Yii::$app->user->can('manageBook'),
             ]
             
         ],
     ]); ?>
+    
 
-
+    <?php Pjax::end(); ?>
 </div>

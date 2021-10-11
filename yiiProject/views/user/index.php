@@ -48,7 +48,15 @@ $this->title = 'Users';
                     return $element;
                 }
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{give} {view} {update} {delete} {return}',
+                'buttons' => [
+                    'give' => function($url, $model){
+                        return html::a('Give <i class="bi bi-book-half"></i>',$url,['give','class'=>"btn btn-success"]);
+                    }
+                ]
+        ],
         ],
     ]); ?>
 </div>

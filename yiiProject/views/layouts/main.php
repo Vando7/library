@@ -9,6 +9,7 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+use yii\helpers\VarDumper;
 
 AppAsset::register($this);
 ?>
@@ -72,8 +73,9 @@ AppAsset::register($this);
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+            ]) ?>
         <?= Alert::widget() ?>
+        <?= Yii::$app->session->has('cart') ? Html::encode(VarDumper::DumpAsString(Yii::$app->session['cart'])) : '' ?>
         <?= $content ?>
     </div>
 </main>

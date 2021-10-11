@@ -379,4 +379,27 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+
+    public function actionGive($id){
+        if(Yii::$app->user->can('manageBook') == false){
+            return $this->redirect(['index']);
+        }
+
+        $session = Yii::$app->session;
+        
+        if($session->has('cart')){
+            $session->remove('cart');
+        }
+
+        $cart = [
+            'user' => $id,
+            'librarian' => Yii::$app->user->identity->id,
+            'book' => [],
+        ];
+
+        $session->set('cart',$cart);
+        
+        return $this->redirect(['/book/index']);
+    }
 }

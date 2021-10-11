@@ -333,5 +333,25 @@ class BookController extends Controller
             'newGenre'  => $newGenre,
         ]);
     }
+    
 
+    public function addTocart($isbn, $amount){
+        if(Yii::$app->user->can('manageBook') == false){
+            return $this->redirect(['index']);
+        }
+
+        $session = Yii::$app->session;
+
+        if($session->has('cart') == false){
+            $session->setFlash('error',"No user selected!");
+            return $this->redirect(['index']);
+        }
+
+        if($session['book']->has($isbn)){
+            $session['book'][$isbn] = $amount;
+        }
+        else{
+            $session['book']->set($isbn,$amount);
+        }
+    }
 }

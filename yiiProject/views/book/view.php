@@ -79,7 +79,7 @@ $pictureJson = json_decode($model->pictures, true);
                     }               
                     ?>
                 </p>
-                <p><?=Html::encode($model->description)?></p>
+                <p class="text-justify"><?=Html::encode($model->description)?></p>
                 <p class="text-secondary">
                     <em>ISBN <?= Html::encode($model->isbn)?></em>
                     <span class="badge badge-success">Available: <?= Html::encode($model->available_count) ?></span>
