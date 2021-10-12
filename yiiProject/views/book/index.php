@@ -1,10 +1,15 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+
 use yii\widgets\Pjax;
+
 use yii\bootstrap4\Modal;
+use yii\bootstrap4\ActiveForm;
+
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\helpers\VarDumper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BookSearch */
@@ -108,24 +113,26 @@ $currentUser = Yii::$app->user->identity;
              },
                 'buttons' => [
                     'add' => function($url, $model){
+                        $session = Yii::$app->session;
+                        if($session->has('cart') == false){
+                            return '';
+                        }
+                        
                         // Modal Start ----
                         $modal = Modal::begin([
                             'title' => 'Select quantity', 
                             'id' => 'bookModal'.$model->isbn,
                         ]); 
 
-                        // Number input field
-                        $element = '';
-                        $element .= 'Input number ';
-                        $element .= Html::input('number','amount','1', $options=[
-                            'class'=>'form-control', 
-                            'maxlength'=>10, 
-                        ]);
+                        $cart = new app\models\Cart;
 
-                        // Input button
+                        echo $this->render('_cartForm', [
+                            'model' => $model, 
+                            'cart'  => $cart,
+                        ]); 
                         
-
                         // Footer
+                        $element  = '';
                         $element .= '<br><div class="modal-footer">';
                         $element .= '<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>';
                         $element .= '</div>';

@@ -3,10 +3,14 @@
 namespace app\controllers;
 
 use Yii;
+
+use app\models\Cart;
 use app\models\Book;
 use app\models\Genre;
+use app\models\LentTo;
 use app\models\BookGenre;
 use app\models\BookSearch;
+
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
@@ -65,13 +69,14 @@ class BookController extends Controller
         $searchModel    = new BookSearch();
         $dataProvider   = $searchModel->search($this->request->queryParams);
 
-        $genreDB    = New Genre;
+        $cartModel = Yii::$app->session->has('cart') ? new Cart : 'NULL';
 
         return $this->render('index', [
             'searchModel'   => $searchModel,
             'dataProvider'  => $dataProvider,
             'pageSize'      => 10,
             'genreList'     => $this->getGenreNames(),
+            'cartModel'     => $cartModel,
         ]);
     }
 
@@ -335,23 +340,63 @@ class BookController extends Controller
     }
     
 
-    public function addTocart($isbn, $amount){
+    public function actionAddtocart($isbn, $availableBooks){
+        
         if(Yii::$app->user->can('manageBook') == false){
             return $this->redirect(['index']);
         }
 
         $session = Yii::$app->session;
+        $model = new Cart;
 
-        if($session->has('cart') == false){
-            $session->setFlash('error',"No user selected!");
-            return $this->redirect(['index']);
+        if ($this->request->isPost && $model->load($this->request->post())){
+            if($model->amount > $availableBooks){
+                $session->setFlase('warning','The amount you requested is greater than the one available.');
+                return $this->redirect(['index']);
+            }
+
+            $cart = $session['cart'];
+
+            if( array_key_exists($isbn,$cart['book'])){
+                $cart['book'][$isbn] = $model->amount;
+            }
+            else{
+                $cart['book'] += [$isbn => $model->amount];
+            }
+
+            $session['cart'] = $cart;
+            error_log($isbn." ".$model->amount ."\n", 3,'ivan_log.txt');
         }
 
-        if($session['book']->has($isbn)){
-            $session['book'][$isbn] = $amount;
+        return $this->redirect(['index']);
+    }
+
+
+    public function actionClearcart(){
+        $session = Yii::$app->session;
+
+        if($session->has('cart')){
+            $session->remove('cart');
         }
-        else{
-            $session['book']->set($isbn,$amount);
+
+        return $this->redirect(['index']);
+    }
+
+
+    public function actionClearcartitems(){
+        $session = Yii::$app->session;
+
+        if($session->has('cart')){
+            $cart = $session['cart'];
+            $cart['book'] = [];
+            $session['cart'] = $cart;
         }
+        return $this->redirect(['index']);
+    }
+
+
+    public function actionCheckout(){
+        $model = new LentTo;
+
     }
 }

@@ -47,6 +47,8 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => '/user/view?id='.Yii::$app->user->identity->id]),
             Yii::$app->user->isGuest ? '' : (['label' => 'My History', 'url' => '/user/myhistory']),
             Yii::$app->user->isGuest ? '' : (['label' => 'My Books',   'url' => '/user/mybooks']),
+            Yii::$app->user->isGuest ? '' : ( Yii::$app->session->has('cart') ? (['label' => 'Cancel cart',   'url' => '/book/clearcart']) : '' ),
+            Yii::$app->user->isGuest ? '' : ( Yii::$app->session->has('cart') ? (['label' => 'Clear Cart Items',   'url' => '/book/clearcartitems']) : '' ),
             
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/user/login']]

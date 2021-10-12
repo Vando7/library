@@ -326,7 +326,6 @@ class UserController extends Controller
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())){
             Yii::$app->response->format = Response::FORMAT_JSON;
-            error_log(VarDumper::dumpAsString($model),3,'ivan_log.txt');
             return ActiveForm::validate($model);
         } 
         
