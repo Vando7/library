@@ -58,7 +58,7 @@ class Book extends \yii\db\ActiveRecord
             [['pictures', 'description'], 'string'],
             [['published'], 'date', 'format' => 'php:Y-m-d'],
             [['total_count', 'available_count'], 'integer'],
-            [['isbn'], 'string', 'max' => 25],
+            [['isbn'], 'string', 'max' => 20],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
             ['pictures','default','value' => NULL],

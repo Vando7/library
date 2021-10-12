@@ -36,6 +36,29 @@ AppAsset::register($this);
             'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
         ],
     ]);
+
+    $session = Yii::$app->session;
+
+    if($session->has('cart')){
+        $cancelCart = (['label' => 'Cancel cart', 'url' => '/book/clearcart']);
+
+        $cart = $session['cart'];
+        if( empty($cart['book']) == false ){
+            $clearCart  = (['label' => 'Clear Cart',  'url' => '/book/clearcartitems']);
+            $checkout = (['label' => 'Checkout',   'url' => '/book/checkout']);
+        }
+        else {
+            $clearCart = '';
+            $checkout = '';
+        }
+    } 
+    else {
+        $cancelCart = '';
+        $clearCart  = '';
+        $checkout = '';
+    }
+     
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
@@ -47,8 +70,9 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => '/user/view?id='.Yii::$app->user->identity->id]),
             Yii::$app->user->isGuest ? '' : (['label' => 'My History', 'url' => '/user/myhistory']),
             Yii::$app->user->isGuest ? '' : (['label' => 'My Books',   'url' => '/user/mybooks']),
-            Yii::$app->user->isGuest ? '' : ( Yii::$app->session->has('cart') ? (['label' => 'Cancel cart',   'url' => '/book/clearcart']) : '' ),
-            Yii::$app->user->isGuest ? '' : ( Yii::$app->session->has('cart') ? (['label' => 'Clear Cart Items',   'url' => '/book/clearcartitems']) : '' ),
+            Yii::$app->user->isGuest ? '' : $cancelCart,
+            Yii::$app->user->isGuest ? '' : $clearCart,
+            Yii::$app->user->isGuest ? '' : $checkout,
             
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/user/login']]

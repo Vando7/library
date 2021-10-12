@@ -355,17 +355,30 @@ class BookController extends Controller
                 return $this->redirect(['index']);
             }
 
+            $bookModel = $this->findModel($isbn);
             $cart = $session['cart'];
-
+            
             if( array_key_exists($isbn,$cart['book'])){
-                $cart['book'][$isbn] = $model->amount;
+                if($model->amount <= 0){
+                    unset($cart['book'][$isbn]);
+                }
+                else {
+                    $cart['book'][$isbn] = [
+                        'title' => $bookModel->title,
+                        'amount'=> $model->amount,
+                    ];
+                }
             }
             else{
-                $cart['book'] += [$isbn => $model->amount];
+                $cart['book'] += [
+                    $isbn =>[
+                        'title' => $bookModel->title,
+                        'amount'=> $model->amount,
+                    ]
+                ];
             }
 
             $session['cart'] = $cart;
-            error_log($isbn." ".$model->amount ."\n", 3,'ivan_log.txt');
         }
 
         return $this->redirect(['index']);
@@ -396,7 +409,46 @@ class BookController extends Controller
 
 
     public function actionCheckout(){
-        $model = new LentTo;
+        $session = Yii::$app->session;
+        if($session->has('cart') == false){
+            return $this->redirect(['index']);
+        }
+        
+        $cart = $session['cart'];
 
+        if($cart['book'] === []){
+            return $this->redirect(['index']);
+        }
+
+        foreach($cart['book'] as $isbn=>$bookInfo){
+            $model = new LentTo;
+            $model->book_isbn   = $isbn;
+            $model->user_id     = $cart['user'];
+            $model->employee_id = $cart['librarian'];
+            $model->amount      = $bookInfo['amount'];
+            $model->date_lent   = date("Y-m-d H:i:s");
+            $model->deadline    = date("Y-m-d H:i:s",strtotime('+30 days'));
+            $model->status      = 'taken';
+
+            $book = $this->findModel($model);
+            $book->available_count -= $bookInfo['amount'];
+
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+            try{
+                $book->save();
+                $model->save();
+                unset($session['cart']);
+
+                $transaction->commit();
+            }catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+
+        }
+
+
+        return $this->redirect(['index']);
     }
 }

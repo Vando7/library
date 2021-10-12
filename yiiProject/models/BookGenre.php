@@ -32,7 +32,7 @@ class BookGenre extends \yii\db\ActiveRecord
         return [
             [['book_isbn', 'genre_id'], 'required'],
             [['genre_id'], 'integer'],
-            [['book_isbn'], 'string', 'max' => 13],
+            [['book_isbn'], 'string', 'max' => 20],
             [['book_isbn'], 'exist', 'skipOnError' => true, 'targetClass' => Book::className(), 'targetAttribute' => ['book_isbn' => 'isbn']],
             [['genre_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genre::className(), 'targetAttribute' => ['genre_id' => 'id']],
         ];

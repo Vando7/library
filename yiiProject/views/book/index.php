@@ -137,13 +137,14 @@ $currentUser = Yii::$app->user->identity;
                         $element .= '<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>';
                         $element .= '</div>';
 
-                        echo $element;
+                        // Uncomment to display footer with "Done" dismiss button.
+                        //echo $element;
                         
                         echo '<div id="genreModalContent'.$model->isbn.'"></div>';
                         Modal::end();
                         // Modal end ----
 
-                        return html::a('Add <i class="bi bi-plus-square"></i>',$url,[
+                        return html::a('<i class="bi bi-cart-plus"></i> Add</i></i>',$url,[
                             'give',
                             'class'=>"btn btn-success",
                             'data-toggle'=>"modal",

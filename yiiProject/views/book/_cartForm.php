@@ -2,15 +2,21 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 ?>
 
 <div class="input-form">
-    <?php $form = ActiveForm::begin([
+    <?php 
+    Pjax::begin();
+    $form = ActiveForm::begin([
         'action' => [
             'addtocart', 
             'isbn' => $model->isbn, 
             'availableBooks' => $model->available_count,
-        ]
+        ],
+        'options' => [
+            'data-pjax' => 1,
+        ],
     ]); ?>
     
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -20,6 +26,7 @@ use yii\widgets\ActiveForm;
                         'type' => 'number', 
                         'placeholder' => 'Select book amount',
                         'max' => $model->available_count,
+                        'value' => 1,
                         ])
                     ->label(false); ?>
         
@@ -28,5 +35,8 @@ use yii\widgets\ActiveForm;
         </div>
 
     </div>
-    <?php ActiveForm::end(); ?>
+    <?php 
+    ActiveForm::end(); 
+    Pjax::end();
+    ?>
 </div>
