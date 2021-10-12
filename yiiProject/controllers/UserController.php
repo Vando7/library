@@ -390,9 +390,13 @@ class UserController extends Controller
         if($session->has('cart')){
             $session->remove('cart');
         }
+        $userModel = $this->findModel($id);
 
         $cart = [
-            'user' => $id,
+            'user' => [
+                'id' => $id,
+                'name' => "{$userModel->first_name} {$userModel->last_name}",
+            ],
             'librarian' => Yii::$app->user->identity->id,
             'book' => [],
         ];

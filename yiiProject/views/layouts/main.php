@@ -28,6 +28,13 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    
+
     <?php
     NavBar::begin([
         'brandLabel' => 'Library',
@@ -40,7 +47,14 @@ AppAsset::register($this);
     $session = Yii::$app->session;
 
     if($session->has('cart')){
-        $cancelCart = (['label' => 'Cancel cart', 'url' => '/book/clearcart']);
+        $cart = $session['cart'];
+        $cancelCart   = (['label' => 'Cancel cart', 'url' => '/book/clearcart']);
+
+        $modalButton  = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartModal">';
+        $modalButton .= '<i class="bi bi-cart-check-fill"></i> ';
+        $modalButton .= $cart['user']['name'];
+        $modalButton .= ' <span class="badge badge-info">'.count($cart['book']).'</span>';
+        $modalButton .= '</button>';
 
         $cart = $session['cart'];
         if( empty($cart['book']) == false ){
@@ -53,11 +67,11 @@ AppAsset::register($this);
         }
     } 
     else {
+        $modalButton = '';
         $cancelCart = '';
         $clearCart  = '';
         $checkout = '';
     }
-     
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
@@ -73,9 +87,10 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : $cancelCart,
             Yii::$app->user->isGuest ? '' : $clearCart,
             Yii::$app->user->isGuest ? '' : $checkout,
+            Yii::$app->user->isGuest ? '' : $modalButton,
             
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/user/login']]
+                    ['label' => 'Login', 'url' => ['/user/login']]
                 ) : (
                     '<li>'
                     . Html::beginForm(['/user/logout'], 'post', ['class' => 'form-inline'])
@@ -92,7 +107,12 @@ AppAsset::register($this);
         ],
     ]);
     NavBar::end();
+    
+    echo $this->render('/book/_checkout');
     ?>
+
+    
+
 </header>
 
 <main role="main" class="flex-shrink-0">

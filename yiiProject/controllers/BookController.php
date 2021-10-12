@@ -423,7 +423,7 @@ class BookController extends Controller
         foreach($cart['book'] as $isbn=>$bookInfo){
             $model = new LentTo;
             $model->book_isbn   = $isbn;
-            $model->user_id     = $cart['user'];
+            $model->user_id     = $cart['user']['id'];
             $model->employee_id = $cart['librarian'];
             $model->amount      = $bookInfo['amount'];
             $model->date_lent   = date("Y-m-d H:i:s");
