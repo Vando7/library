@@ -68,6 +68,14 @@ class LentTo extends \yii\db\ActiveRecord
     }
 
 
+    public function getRow($isbn,$user,$date_lent){
+        return $this->hasOne(Book::className(), [
+            'isbn' => 'book_isbn',
+            ''
+        ]);
+    }
+
+
     /**
      * Gets query for [[BookIsbn]].
      *
@@ -99,4 +107,5 @@ class LentTo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
 }

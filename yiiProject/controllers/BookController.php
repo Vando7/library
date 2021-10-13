@@ -8,6 +8,7 @@ use app\models\Cart;
 use app\models\Book;
 use app\models\Genre;
 use app\models\LentTo;
+use app\models\LentToSearch;
 use app\models\BookGenre;
 use app\models\BookSearch;
 
@@ -441,12 +442,13 @@ class BookController extends Controller
                 if($cartModel->deadline == null){
                     $cartModel->deadline = date("Y-m-d",strtotime('+30 days'));
                 }
+                
                 $model = new LentTo;
                 $model->book_isbn   = $isbn;
                 $model->user_id     = $cart['user']['id'];
                 $model->employee_id = $cart['librarian'];
                 $model->amount      = $bookInfo['amount'];
-                $model->date_lent   = date("Y-m-d H:i:s");
+                $model->date_lent   = date("Y-m-d H:i:s"); // today
                 $model->deadline    = $cartModel->deadline;
                 $model->status      = 'taken';
     
@@ -472,7 +474,37 @@ class BookController extends Controller
     }
 
 
-    public function actionReturnbook($user_id,$isbn,$date_given){
-        // todo
+    public function actionReturn($id){
+        if(Yii::$app->user->can('manageBook') == false){
+            return $this->redirect(['index']);
+        }
+
+        $searchModel    = new LentToSearch;
+        $dataProvider   = $searchModel->search($this->request->queryParams, $id, true);
+
+        return $this->render('_returnForm', [
+            'user_id' => $id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionReturnbook($id,$isbn,$dateLent){
+        if(Yii::$app->user->can('manageBook') == false){
+            return $this->redirect(['index']);
+        }
+        
+        $key = [
+            'user_id' => $id,
+            'book_isbn' => $isbn,
+            'date_lent' => $dateLent,
+        ];
+        
+        $lentTo = LentTo::findOne($key);
+        $lentTo->status = 'returned';
+        $lentTo->date_returned = date("Y-m-d H:i:s");;
+        $lentTo->save();
+
+        return $this->redirect(['return', 'id'=>$id]);
     }
 }

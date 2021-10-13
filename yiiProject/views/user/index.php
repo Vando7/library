@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\bootstrap4\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -50,10 +51,19 @@ $this->title = 'Users';
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{give} {view} {update} {delete} {return}',
+                'template' => '{give} {return}',
                 'buttons' => [
                     'give' => function($url, $model){
                         return html::a('Give <i class="bi bi-book-half"></i>',$url,['give','class'=>"btn btn-success"]);
+                    },
+                    'return' => function($url, $model){
+                        if(yii::$app->session->has('cart')) return '';
+                        $element  = '';
+                        $element .= Html::a('Return <i class="bi bi-box-arrow-in-down-left"></i>',"/book/return?id=".$model->id,[
+                            'class' => 'btn btn-warning'
+                        ] );
+                        $element .= '</b><br>';
+                        return $element;
                     }
                 ]
         ],

@@ -136,7 +136,6 @@ $currentUser = Yii::$app->user->identity;
                         $element .= '<br><div class="modal-footer">';
                         $element .= '<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>';
                         $element .= '</div>';
-
                         // Uncomment to display footer with "Done" dismiss button.
                         //echo $element;
                         

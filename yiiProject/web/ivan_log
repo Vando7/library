@@ -1,0 +1,93 @@
+app\models\LentTo#1
+(
+    [yii\db\BaseActiveRecord:_attributes] => [
+        'book_isbn' => '978-0451524935'
+        'user_id' => 1
+        'employee_id' => 1
+        'amount' => 1
+        'date_lent' => '2021-10-12 13:31:47'
+        'date_returned' => null
+        'deadline' => '2021-11-11 13:31:47'
+        'status' => 'taken'
+    ]
+    [yii\db\BaseActiveRecord:_oldAttributes] => [
+        'book_isbn' => '978-0451524935'
+        'user_id' => 1
+        'employee_id' => 1
+        'amount' => 1
+        'date_lent' => '2021-10-12 13:31:47'
+        'date_returned' => null
+        'deadline' => '2021-11-11 13:31:47'
+        'status' => 'taken'
+    ]
+    [yii\db\BaseActiveRecord:_related] => []
+    [yii\db\BaseActiveRecord:_relationsDependencies] => []
+    [yii\base\Model:_errors] => null
+    [yii\base\Model:_validators] => null
+    [yii\base\Model:_scenario] => 'default'
+    [yii\base\Component:_events] => []
+    [yii\base\Component:_eventWildcards] => []
+    [yii\base\Component:_behaviors] => []
+)app\models\LentTo#1
+(
+    [yii\db\BaseActiveRecord:_attributes] => [
+        'book_isbn' => '978-0451524935'
+        'user_id' => 1
+        'employee_id' => 1
+        'amount' => 1
+        'date_lent' => '2021-10-12 13:31:47'
+        'date_returned' => null
+        'deadline' => '2021-11-11 13:31:47'
+        'status' => 'taken'
+    ]
+    [yii\db\BaseActiveRecord:_oldAttributes] => [
+        'book_isbn' => '978-0451524935'
+        'user_id' => 1
+        'employee_id' => 1
+        'amount' => 1
+        'date_lent' => '2021-10-12 13:31:47'
+        'date_returned' => null
+        'deadline' => '2021-11-11 13:31:47'
+        'status' => 'taken'
+    ]
+    [yii\db\BaseActiveRecord:_related] => []
+    [yii\db\BaseActiveRecord:_relationsDependencies] => []
+    [yii\base\Model:_errors] => null
+    [yii\base\Model:_validators] => null
+    [yii\base\Model:_scenario] => 'default'
+    [yii\base\Component:_events] => []
+    [yii\base\Component:_eventWildcards] => []
+    [yii\base\Component:_behaviors] => []
+)[
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+][
+    'user_id' => '1'
+    'book_isbn' => '978-0451524935'
+    'date_lent' => '2021-10-12 13:31:47'
+]bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh
