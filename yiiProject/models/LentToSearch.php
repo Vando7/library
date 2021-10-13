@@ -87,14 +87,14 @@ class LentToSearch extends LentTo
             $query->andFilterWhere([
                 'AND',
                 ['like', 'status',   'taken'],
-                ['>=','deadline',date("Y-m-d H:i:s"),],
+                ['<','deadline',date("Y-m-d H:i:s"),],
             ]);
         }
         else if($this->statusQuery === 'taken'){
             $query->andFilterWhere([
                 'AND',
                 ['like', 'status',   'taken'],
-                ['<','deadline',date("Y-m-d H:i:s"),],
+                ['>','deadline',date("Y-m-d H:i:s"),],
             ]);
         }
         else{
@@ -103,4 +103,78 @@ class LentToSearch extends LentTo
         
         return $dataProvider;
     }
+
+
+    public function searchProblemDays($params)
+    {
+        $query = LentTo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith(['bookIsbn','user', 'employee']);
+
+        
+        $query->select(['user_id','count(*) as count','book_isbn','employee_id','status'])
+                ->from('lent_to')
+                ->andFilterWhere(['like','status','taken'])
+                ->groupBy('user_id')
+                ->orderBy(['count'=>SORT_DESC])->all();
+
+        
+        
+        return $dataProvider;
+    }
+
+
+    public function searchProblemLate($params)
+    {
+        $query = LentTo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith(['user']);
+
+        $query->select(['user_id','min(deadline) as deadline','book_isbn','employee_id','status',])
+                ->from('lent_to')
+                ->andFilterWhere(['and',
+                    ['like','status','taken'],
+                ])
+                ->groupBy('user_id')
+                ->orderBy(['min(deadline)'=>SORT_ASC])->all();
+
+        
+        
+        return $dataProvider;
+    }
+    
 }

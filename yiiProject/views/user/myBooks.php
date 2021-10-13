@@ -41,7 +41,7 @@ use yii\widgets\Pjax;
                     $deadline = strtotime($model->deadline);
                     $today    = strtotime('now');
                     
-                    if($deadline > $today){
+                    if($deadline < $today){
                         $badgeType = 'danger';
                         $status = 'Past Deadline';
                     } else {

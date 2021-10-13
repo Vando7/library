@@ -277,7 +277,8 @@ class UserController extends Controller
     }
 
 
-    public function actionSuspend($id){
+    public function actionSuspend($id)
+    {
         if(Yii::$app->user->can('suspendOrNote')){
             $model= $this->findModel($id);
             // TODO...
@@ -353,19 +354,22 @@ class UserController extends Controller
     }
 
     
-    public function actionMybooks(){
+    public function actionMybooks()
+    {
         $notReturnedOnly = true;
         return $this->userHistory(Yii::$app->User->id, $notReturnedOnly);
     }
 
 
-    public function actionMyhistory(){
+    public function actionMyhistory()
+    {
         $allCategories = false;
         return $this->userHistory(Yii::$app->User->id, $allCategories);
     }
 
 
-    public function userHistory($user_id, $notReturnedOnly){
+    public function userHistory($user_id, $notReturnedOnly)
+    {
         if(Yii::$app->user->can('viewAllProfilesLibrary' == false)){
             $user_id = Yii::$app->user->identity->id;
         }
@@ -380,7 +384,8 @@ class UserController extends Controller
     }
 
 
-    public function actionGive($id){
+    public function actionGive($id)
+    {
         if(Yii::$app->user->can('manageBook') == false){
             return $this->redirect(['index']);
         }
@@ -404,5 +409,22 @@ class UserController extends Controller
         $session->set('cart',$cart);
         
         return $this->redirect(['/book/index']);
+    }
+
+
+    public function actionProblemreaders()
+    {
+        if(Yii::$app->user->can('viewAllHistory') == false){
+            $this->redirect(['index']);
+        }
+
+        $searchModel= new LentToSearch();
+        $dataProviderDays = $searchModel->searchProblemDays($this->request->queryParams);
+        $dataProviderLate = $searchModel->searchProblemLate($this->request->queryParams);
+        return $this->render('problemReaders', [
+            'searchModel' => $searchModel,
+            'dataProviderDays' => $dataProviderDays,
+            'dataProviderLate' => $dataProviderLate,
+        ]);
     }
 }
