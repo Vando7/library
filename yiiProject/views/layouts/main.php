@@ -51,7 +51,11 @@ AppAsset::register($this);
         $cancelCart   = (['label' => 'Cancel cart', 'url' => '/book/clearcart']);
 
         $modalButton  = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartModal">';
-        $modalButton .= '<i class="bi bi-cart-check-fill"></i> ';
+        if($cart['book']!==[]){
+            $modalButton .= '<i class="bi bi-cart-fill"></i> ';
+        }else{
+            $modalButton .= '<i class="bi bi-cart"></i> ';
+        }
         $modalButton .= $cart['user']['name'];
         $modalButton .= ' <span class="badge badge-info">'.count($cart['book']).'</span>';
         $modalButton .= '</button>';
@@ -86,7 +90,6 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : (['label' => 'My Books',   'url' => '/user/mybooks']),
             Yii::$app->user->isGuest ? '' : $cancelCart,
             Yii::$app->user->isGuest ? '' : $clearCart,
-            Yii::$app->user->isGuest ? '' : $checkout,
             Yii::$app->user->isGuest ? '' : $modalButton,
             
             Yii::$app->user->isGuest ? (
@@ -108,7 +111,9 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     
-    echo $this->render('/book/_checkout');
+    if($session->has('cart')){
+        echo $this->render('/book/_checkout');
+    }
     ?>
 
     

@@ -12,6 +12,8 @@ class Cart extends Model
     public function rules(){
         return [
             ['amount', 'integer', 'min' => 0],
+            ['amount', 'default', 'value' => 1],
+            [['deadline'], 'default', 'value' => date("php:Y-m-d H:i:s",strtotime('+30 days'))],
             ['deadline', 'datetime', 'format' => 'php:Y-m-d H:i:s'],
         ];
     }

@@ -385,6 +385,21 @@ class BookController extends Controller
     }
 
 
+    public function actionRemovefromcart($isbn){
+        $session = Yii::$app->session;
+
+        if($session->has('cart') == false){
+            return $this->redirect(['index']);
+        }
+
+        $cart = $session['cart'];
+        unset($cart['book'][$isbn]);
+        $session['cart'] = $cart;
+        
+        return $this->redirect(['index']);
+    }
+
+
     public function actionClearcart(){
         $session = Yii::$app->session;
 
@@ -413,42 +428,51 @@ class BookController extends Controller
         if($session->has('cart') == false){
             return $this->redirect(['index']);
         }
-        
-        $cart = $session['cart'];
 
-        if($cart['book'] === []){
-            return $this->redirect(['index']);
-        }
-
-        foreach($cart['book'] as $isbn=>$bookInfo){
-            $model = new LentTo;
-            $model->book_isbn   = $isbn;
-            $model->user_id     = $cart['user']['id'];
-            $model->employee_id = $cart['librarian'];
-            $model->amount      = $bookInfo['amount'];
-            $model->date_lent   = date("Y-m-d H:i:s");
-            $model->deadline    = date("Y-m-d H:i:s",strtotime('+30 days'));
-            $model->status      = 'taken';
-
-            $book = $this->findModel($model);
-            $book->available_count -= $bookInfo['amount'];
-
-            $db = Yii::$app->db;
-            $transaction = $db->beginTransaction();
-            try{
-                $book->save();
-                $model->save();
-                unset($session['cart']);
-
-                $transaction->commit();
-            }catch(\Exception $e) {
-                $transaction->rollBack();
-                throw $e;
+        $cartModel = new Cart;
+        if ($this->request->isPost && $cartModel->load($this->request->post())){
+            $cart = $session['cart'];
+    
+            if($cart['book'] === []){
+                return $this->redirect(['index']);
             }
-
+    
+            foreach($cart['book'] as $isbn=>$bookInfo){
+                if($cartModel->deadline == null){
+                    $cartModel->deadline = date("Y-m-d",strtotime('+30 days'));
+                }
+                $model = new LentTo;
+                $model->book_isbn   = $isbn;
+                $model->user_id     = $cart['user']['id'];
+                $model->employee_id = $cart['librarian'];
+                $model->amount      = $bookInfo['amount'];
+                $model->date_lent   = date("Y-m-d H:i:s");
+                $model->deadline    = $cartModel->deadline;
+                $model->status      = 'taken';
+    
+                $book = $this->findModel($model);
+                $book->available_count -= $bookInfo['amount'];
+    
+                $db = Yii::$app->db;
+                $transaction = $db->beginTransaction();
+                try{
+                    $book->save();
+                    $model->save();
+                    unset($session['cart']);
+    
+                    $transaction->commit();
+                }catch(\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
         }
-
 
         return $this->redirect(['index']);
+    }
+
+
+    public function actionReturnbook($user_id,$isbn,$date_given){
+        // todo
     }
 }
