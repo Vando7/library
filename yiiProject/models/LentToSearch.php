@@ -177,4 +177,38 @@ class LentToSearch extends LentTo
         return $dataProvider;
     }
     
+
+    public function searchPerBook($params, $isbn)
+    {
+        $query = LentTo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'date_lent' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith(['bookIsbn','user', 'employee']);
+        $query->where(
+            ['like','book_isbn',$isbn]
+        );
+        
+        return $dataProvider;
+    }
 }

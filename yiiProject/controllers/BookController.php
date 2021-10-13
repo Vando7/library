@@ -99,9 +99,14 @@ class BookController extends Controller
             array_push($genres,$genreObject->name);
         }
 
+        $searchModel    = new LentToSearch();
+        $dataProvider   = $searchModel->searchPerBook($this->request->queryParams,$isbn);
+
         return $this->render('view', [
             'model' => $model,
             'genres' => $genres,
+            'searchModel'   => $searchModel,
+            'dataProvider'  => $dataProvider,
         ]);
     }
     
