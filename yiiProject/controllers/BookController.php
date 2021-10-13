@@ -502,9 +502,14 @@ class BookController extends Controller
         
         $lentTo = LentTo::findOne($key);
         $lentTo->status = 'returned';
-        $lentTo->date_returned = date("Y-m-d H:i:s");;
-        $lentTo->save();
+        $lentTo->date_returned = date("Y-m-d H:i:s");
 
+        $book = $this->findModel($isbn);
+        $book->available_count += $lentTo->amount;
+        
+        $book->save();
+        $lentTo->save();
+        
         return $this->redirect(['return', 'id'=>$id]);
     }
 }

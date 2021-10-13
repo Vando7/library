@@ -43,7 +43,7 @@ use yii\widgets\Pjax;
             <?php 
             $form = ActiveForm::begin([
                 'action' => [
-                    'checkout', 
+                    '/book/checkout', 
                 ],
             ]); ?>
 
