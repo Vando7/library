@@ -472,11 +472,11 @@ class BookController extends Controller
                     'user_id'   => $cart['user']['id'],
                     'status'    => 'reserved'
                 ]);
-                
+
                 $reservedAmount = 0;
-                if($reservedBook != null){
+                if ($reservedBook != null) {
                     $reservedAmount = 1;
-                    $book = Book::findOne(['isbn'=>$isbn]);
+                    $book = Book::findOne(['isbn' => $isbn]);
                     $book->available_count++;
                     $book->save();
                     $reservedBook->delete();

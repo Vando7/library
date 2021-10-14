@@ -285,7 +285,24 @@ class UserController extends Controller
     {
         if (Yii::$app->user->can('suspendOrNote')) {
             $model = $this->findModel($id);
-            // TODO...
+            
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->suspended_status == 'yes'){
+                    $model->suspended_date = date('Y-m-d');
+                }else {
+                    $model->suspended_date = null;
+                }
+
+                if(!$model->save()){
+                    Yii::$app->session->setFlash('error','Could not save changes to model');
+                }
+                return $this->redirect(['view','id'=>$id]);
+            }
+
+            return $this->render('_formSuspend',[
+                'id' => $id,
+                'model' => $model,
+            ]);
         }
     }
 

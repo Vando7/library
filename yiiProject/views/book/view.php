@@ -121,7 +121,7 @@ $pictureJson = json_decode($model->pictures, true);
                             // Book name
                             $element  = '';
                             $element .= '<b><i class="bi bi-book"></i> ';
-                            $element .= Html::a(Html::encode($model->bookIsbn->title), "/book/view?isbn=" . $model->book_isbn);
+                            $element .= Html::encode($model->bookIsbn->title);
                             $element .= '</b><br>';
 
                             // Amount
@@ -147,9 +147,6 @@ $pictureJson = json_decode($model->pictures, true);
                                 }
                             }
                             $element .= '<span class="badge badge-' . $badgeType . '">' . $status . '</span><br>';
-
-                            // ISBN
-                            $element .= "<b>ISBN</b> " . Html::encode($model->book_isbn) . '<br>';
 
                             // Employee info
                             $element .= "Given by <br>";

@@ -53,6 +53,9 @@ $this->title = 'Users';
                 'template' => '{give} {return}',
                 'buttons' => [
                     'give' => function ($url, $model) {
+                        if($model->suspended_status == 'yes'){
+                            return html::a('Suspended ☠', '#', ['give', 'class' => "btn btn-danger disabled"]);
+                        }
                         return html::a('Give <i class="bi bi-book-half"></i>', $url, ['give', 'class' => "btn btn-success"]);
                     },
                     'return' => function ($url, $model) {

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
 use app\models\Cart;
+use app\models\User;
 use yii\widgets\Pjax;
 ?>
 
@@ -37,6 +38,7 @@ use yii\widgets\Pjax;
                         }
                     }
                     $cartModel = new Cart;
+                    $user = User::findOne($cart['user']['id']);
                     ?>
 
                     <?php
@@ -64,6 +66,8 @@ use yii\widgets\Pjax;
                     ]) ?>
 
                 </div>
+
+                <?= "<p class='text text-primary text-sm text-center'>User note: ". Html::encode($user->note) ."</p>"?>
                 <div class="modal-footer">
                     <div class="form-group ml-3">
                         <?= Html::submitButton('Checkout', ['class' => 'btn btn-primary',]) ?>
