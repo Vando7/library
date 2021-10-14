@@ -61,6 +61,6 @@ class AuthAssignment extends \yii\db\ActiveRecord
 
     public function getUserRole($id)
     {
-        return $this->findOne(['user_id'=>$id]);
+        return $this->findOne(['user_id' => $id]);
     }
 }

@@ -24,19 +24,19 @@ natcasesort($genreList);
     <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    
+
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
-    
+
     <?= $form->field($model, 'published')->widget(DatePicker::classname(), [
-    'dateFormat' => 'yyyy-MM-dd',
-    'clientOptions' =>[
-        'changeYear' => 'true',
-        'changeMonth' => 'true',
-        'showButtonPanel' => true,
-        'yearRange' => '1400:2040',
-    ],
+        'dateFormat' => 'yyyy-MM-dd',
+        'clientOptions' => [
+            'changeYear' => 'true',
+            'changeMonth' => 'true',
+            'showButtonPanel' => true,
+            'yearRange' => '1400:2040',
+        ],
     ]) ?>
-        
+
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
@@ -48,17 +48,17 @@ natcasesort($genreList);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Select book genres</h5>
-                    
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <div class="modal-body">
-                    <?php 
-                        Pjax::begin(['id' => 'genresBookList',]);
-                        echo $form->field($model, 'genreList')->checkboxList($genreList,['separator' => '<br>']);
-                        Pjax::end();
+                    <?php
+                    Pjax::begin(['id' => 'genresBookList',]);
+                    echo $form->field($model, 'genreList')->checkboxList($genreList, ['separator' => '<br>']);
+                    Pjax::end();
                     ?>
                 </div>
 
@@ -72,16 +72,16 @@ natcasesort($genreList);
                         });
                     ');
                     ?>
-                    
+
                     <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Open in new tab">
-                        <a class="btn btn-primary mr-auto"  href="/book/viewgenre?isModal=0" role="button" target="_blank"> 
-                         Manage genres <i class="bi bi-box-arrow-up-right"></i> 
+                        <a class="btn btn-primary mr-auto" href="/book/viewgenre?isModal=0" role="button" target="_blank">
+                            Manage genres <i class="bi bi-box-arrow-up-right"></i>
                         </a>
                     </span>
 
                     <span class="d-inline-block mr-auto" tabindex="0" data-toggle="tooltip" title="Warning: clears selection!">
-                        <?= Html::Button('Refresh', ['class' => 'btn btn-primary', 'id'=>'refresh']) ?>  
-                    </span> 
+                        <?= Html::Button('Refresh', ['class' => 'btn btn-primary', 'id' => 'refresh']) ?>
+                    </span>
 
                     <button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
                 </div>
@@ -94,12 +94,12 @@ natcasesort($genreList);
     <?= $form->field($model, 'bookCover')->fileInput(['accept' => 'image/*']) ?>
 
     <?= $form->field($model, 'bonusImages[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-    
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? "Save" : "Update", ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-    
+
 
 </div>

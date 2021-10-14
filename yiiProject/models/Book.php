@@ -28,11 +28,11 @@ class Book extends \yii\db\ActiveRecord
     {
         return 'book';
     }
-    
+
 
     /**
-    * @var bookCover
-    */
+     * @var bookCover
+     */
     public $bookCover;
 
 
@@ -61,24 +61,25 @@ class Book extends \yii\db\ActiveRecord
             [['isbn'], 'string', 'max' => 20],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
-            ['pictures','default','value' => NULL],
-            [['bookCover'],'file','skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            ['pictures', 'default', 'value' => NULL],
+            [['bookCover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg', 'maxFiles' => 10],
             [['genreList'], 'safe'],
         ];
     }
 
-    public function upload(){
-        if($this->validate()){
+    public function upload()
+    {
+        if ($this->validate()) {
 
-            if($this->bookCover){
-                $this->bookCover->saveAs('upload/'. $this->isbn .'_cover.'.$this->bookCover->extension);
+            if ($this->bookCover) {
+                $this->bookCover->saveAs('upload/' . $this->isbn . '_cover.' . $this->bookCover->extension);
             }
 
             $counter = 1;
-            if($this->bonusImages){
-                foreach ($this->bonusImages as $files){
-                    $files->saveAs('upload/'. $this->isbn . '_extra' . $counter . '.' . $files->extension);
+            if ($this->bonusImages) {
+                foreach ($this->bonusImages as $files) {
+                    $files->saveAs('upload/' . $this->isbn . '_extra' . $counter . '.' . $files->extension);
                     ++$counter;
                 }
             }
@@ -123,7 +124,7 @@ class Book extends \yii\db\ActiveRecord
             ->viaTable('book_genre', ['book_isbn' => 'isbn']);
     }
 
-    
+
     /**
      * Gets query for [[LentTos]].
      *

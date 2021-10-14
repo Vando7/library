@@ -16,7 +16,7 @@ class UserSearch extends User
      * @var globalSearch
      */
     public $globalSearch = "";
-    
+
     /**
      * {@inheritdoc}
      */
@@ -24,11 +24,11 @@ class UserSearch extends User
     {
         return [
             [['id'], 'integer'],
-            [['first_name', 'last_name', 'country', 'city', 'street', 'phone', 'email', 'password', 'role', 'note', 'register_date', 'suspended_status', 'suspended_date', 'suspended_reason','globalSearch'], 'safe'],
+            [['first_name', 'last_name', 'country', 'city', 'street', 'phone', 'email', 'password', 'role', 'note', 'register_date', 'suspended_status', 'suspended_date', 'suspended_reason', 'globalSearch'], 'safe'],
         ];
     }
 
-    
+
     /**
      * {@inheritdoc}
      */
@@ -75,7 +75,8 @@ class UserSearch extends User
         ]);
 
         $words = explode(" ", $this->globalSearch);
-        $query->orFilterWhere(['or',
+        $query->orFilterWhere([
+            'or',
             ['like', 'first_name',  $words],
             ['like', 'last_name',   $words],
             ['like', 'email',   $words],

@@ -89,7 +89,7 @@ class LentTo extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'employee_id']);
     }
 
-    
+
     /**
      * Gets query for [[User]].
      *
@@ -99,9 +99,10 @@ class LentTo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-    
 
-    public function getCountTaken(){
-        return $this->hasMany(LentTo::className(), ['user_id' => 'user_id'])->where(['like','status','taken'])->count();
+
+    public function getCountTaken()
+    {
+        return $this->hasMany(LentTo::className(), ['user_id' => 'user_id'])->where(['like', 'status', 'taken'])->count();
     }
 }

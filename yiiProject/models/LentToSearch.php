@@ -16,7 +16,7 @@ class LentToSearch extends LentTo
     public function rules()
     {
         return [
-            [['book_isbn','user_id','employee_id','amount','date_lent','date_returned','deadline','status','statusQuery'], 'safe'],
+            [['book_isbn', 'user_id', 'employee_id', 'amount', 'date_lent', 'date_returned', 'deadline', 'status', 'statusQuery'], 'safe'],
             [['amount'], 'integer'],
         ];
     }
@@ -72,35 +72,33 @@ class LentToSearch extends LentTo
             return $dataProvider;
         }
 
-        $query->joinWith(['bookIsbn','user', 'employee']);
+        $query->joinWith(['bookIsbn', 'user', 'employee']);
 
         // User querying their own history
-        if($user_id != NULL) {
-            $query->andFilterWhere(['=','user_id',$user_id]);
+        if ($user_id != NULL) {
+            $query->andFilterWhere(['=', 'user_id', $user_id]);
         }
 
         // Checking only books that have to be Returned
-        if($isMyBooks && $this->statusQuery === ''){
+        if ($isMyBooks && $this->statusQuery === '') {
             $query->andFilterWhere(['like', 'status',   'taken']);
         } // Filter by status
-        else if($this->statusQuery === 'late'){ 
+        else if ($this->statusQuery === 'late') {
             $query->andFilterWhere([
                 'AND',
                 ['like', 'status',   'taken'],
-                ['<','deadline',date("Y-m-d H:i:s"),],
+                ['<', 'deadline', date("Y-m-d H:i:s"),],
             ]);
-        }
-        else if($this->statusQuery === 'taken'){
+        } else if ($this->statusQuery === 'taken') {
             $query->andFilterWhere([
                 'AND',
                 ['like', 'status',   'taken'],
-                ['>','deadline',date("Y-m-d H:i:s"),],
+                ['>', 'deadline', date("Y-m-d H:i:s"),],
             ]);
-        }
-        else{
+        } else {
             $query->andFilterWhere(['like', 'status',   $this->statusQuery]);
         }
-        
+
         return $dataProvider;
     }
 
@@ -126,16 +124,16 @@ class LentToSearch extends LentTo
             return $dataProvider;
         }
 
-        $query->joinWith(['bookIsbn','user', 'employee']);
+        $query->joinWith(['bookIsbn', 'user', 'employee']);
 
-        
-        $query->select(['user_id','count(*) as amount','book_isbn','employee_id','status'])
-                ->from('lent_to')
-                ->andFilterWhere(['like','status','taken'])
-                ->groupBy('user_id')
-                ->orderBy(['amount'=>SORT_DESC])->all();
 
-        
+        $query->select(['user_id', 'count(*) as amount', 'book_isbn', 'employee_id', 'status'])
+            ->from('lent_to')
+            ->andFilterWhere(['like', 'status', 'taken'])
+            ->groupBy('user_id')
+            ->orderBy(['amount' => SORT_DESC])->all();
+
+
         return $dataProvider;
     }
 
@@ -163,19 +161,20 @@ class LentToSearch extends LentTo
 
         $query->joinWith(['user']);
 
-        $query->select(['user_id','min(deadline) as deadline','book_isbn','employee_id','status',])
-                ->from('lent_to')
-                ->andFilterWhere(['and',
-                    ['like','status','taken'],
-                ])
-                ->groupBy('user_id')
-                ->orderBy(['min(deadline)'=>SORT_ASC])->all();
+        $query->select(['user_id', 'min(deadline) as deadline', 'book_isbn', 'employee_id', 'status',])
+            ->from('lent_to')
+            ->andFilterWhere([
+                'and',
+                ['like', 'status', 'taken'],
+            ])
+            ->groupBy('user_id')
+            ->orderBy(['min(deadline)' => SORT_ASC])->all();
 
-        
-        
+
+
         return $dataProvider;
     }
-    
+
 
     public function searchPerBook($params, $isbn)
     {
@@ -203,11 +202,11 @@ class LentToSearch extends LentTo
             return $dataProvider;
         }
 
-        $query->joinWith(['bookIsbn','user', 'employee']);
+        $query->joinWith(['bookIsbn', 'user', 'employee']);
         $query->where(
-            ['like','book_isbn',$isbn]
+            ['like', 'book_isbn', $isbn]
         );
-        
+
         return $dataProvider;
     }
 
@@ -238,11 +237,11 @@ class LentToSearch extends LentTo
             return $dataProvider;
         }
 
-        $query->joinWith(['bookIsbn','user']);
+        $query->joinWith(['bookIsbn', 'user']);
         $query->where(
-            ['like','status','reserved']
+            ['like', 'status', 'reserved']
         );
-        
+
         return $dataProvider;
     }
 }

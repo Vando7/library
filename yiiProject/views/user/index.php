@@ -13,11 +13,10 @@ $this->title = 'Users';
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
+
 
     <p>
-        <?= Yii::$app->user->isGuest ? '' : 
-            ( Yii::$app->user->identity->role == 'admin' ?
+        <?= Yii::$app->user->isGuest ? '' : (Yii::$app->user->identity->role == 'admin' ?
                 (Html::a('Create User', ['create'], ['class' => 'btn btn-success']))
                 :
                 '') ?>
@@ -31,11 +30,11 @@ $this->title = 'Users';
             [
                 'format' => 'raw',
                 'label'  => 'User info',
-                'value'  => function($model){
+                'value'  => function ($model) {
                     // First and last names - clickable
                     $element = '';
                     $element .= '<b><i class="bi bi-person"></i> ';
-                    $element .= Html::a( Html::encode($model->first_name. " " .$model->last_name),"view?id=".$model->id );
+                    $element .= Html::a(Html::encode($model->first_name . " " . $model->last_name), "view?id=" . $model->id);
                     $element .= '</b><br>';
 
                     // Phone number
@@ -53,20 +52,20 @@ $this->title = 'Users';
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{give} {return}',
                 'buttons' => [
-                    'give' => function($url, $model){
-                        return html::a('Give <i class="bi bi-book-half"></i>',$url,['give','class'=>"btn btn-success"]);
+                    'give' => function ($url, $model) {
+                        return html::a('Give <i class="bi bi-book-half"></i>', $url, ['give', 'class' => "btn btn-success"]);
                     },
-                    'return' => function($url, $model){
-                        if(yii::$app->session->has('cart')) return '';
+                    'return' => function ($url, $model) {
+                        if (yii::$app->session->has('cart')) return '';
                         $element  = '';
-                        $element .= Html::a('Return <i class="bi bi-box-arrow-in-down-left"></i>',"/book/return?id=".$model->id,[
+                        $element .= Html::a('Return <i class="bi bi-box-arrow-in-down-left"></i>', "/book/return?id=" . $model->id, [
                             'class' => 'btn btn-warning'
-                        ] );
+                        ]);
                         $element .= '</b><br>';
                         return $element;
                     }
                 ]
-        ],
+            ],
         ],
     ]); ?>
 </div>

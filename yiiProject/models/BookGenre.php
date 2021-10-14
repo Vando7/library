@@ -61,7 +61,7 @@ class BookGenre extends \yii\db\ActiveRecord
         return $this->hasOne(Book::class, ['isbn' => 'book_isbn']);
     }
 
-    
+
     /**
      * Gets query for [[Genre]].
      *

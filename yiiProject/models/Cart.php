@@ -23,5 +23,3 @@ class Cart extends Model
         return true;
     }
 }
-
-?>

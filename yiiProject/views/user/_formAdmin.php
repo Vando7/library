@@ -29,9 +29,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'role')->dropDownList([ 'reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin'], ['prompt' => 'Set user role']) ?>
+    <?= $form->field($model, 'role')->dropDownList(['reader' => 'Reader', 'librarian' => 'Librarian', 'admin' => 'Admin'], ['prompt' => 'Set user role']) ?>
 
-    <?= $form->field($model, 'suspended_status')->dropDownList([ 'no' => 'No', 'yes' => 'Yes', ], ['prompt' => 'Set suspended status']) ?>
+    <?= $form->field($model, 'suspended_status')->dropDownList(['no' => 'No', 'yes' => 'Yes',], ['prompt' => 'Set suspended status']) ?>
 
     <?= $form->field($model, 'suspended_reason')->textarea(['rows' => 6]) ?>
 

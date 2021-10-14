@@ -2,11 +2,13 @@
 
 
 namespace app\models;
+
 use yii\base\Model;
 use yii\helpers\VarDumper;
 
 
-class SignupForm extends Model{
+class SignupForm extends Model
+{
     public $first_name;
     public $last_name;
     public $country;
@@ -22,8 +24,9 @@ class SignupForm extends Model{
     public $password;
     public $password_repeat;
 
-    
-    public function rules(){
+
+    public function rules()
+    {
         return [
             [['first_name', 'last_name', 'country', 'city', 'street', 'phone', 'email', 'password'], 'required'],
             [['role', 'note', 'suspended_status', 'suspended_reason'], 'string'],
@@ -32,15 +35,16 @@ class SignupForm extends Model{
             [['phone'], 'string', 'max' => 20],
             [['email', 'password'], 'string', 'max' => 255],
             [['phone'], 'unique', 'targetClass' =>  User::class, 'targetAttribute' => 'phone'],
-            [['email'],'unique', 'targetClass' =>  User::class, 'targetAttribute' => 'email'],
+            [['email'], 'unique', 'targetClass' =>  User::class, 'targetAttribute' => 'email'],
             ['email', 'email', 'message' => 'Please enter a valid e-mail address'],
-            ['password_repeat','compare','compareAttribute'=>'password','message'=>'Passwords do not match'],
-            [['password','password_repeat'],'match','pattern' => '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/'],
+            ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Passwords do not match'],
+            [['password', 'password_repeat'], 'match', 'pattern' => '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/'],
         ];
     }
 
 
-    public function signup(){
+    public function signup()
+    {
         $user = new User();
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
@@ -50,17 +54,17 @@ class SignupForm extends Model{
         $user->email = $this->email;
         $user->phone = $this->phone;
         $user->password = \Yii::$app->security->generatePasswordHash($this->password);
-        $user->access_token=\Yii::$app->security->generateRandomString();
-        $user->auth_key=\Yii::$app->security->generateRandomString();
-        
-        if($user->save()){
+        $user->access_token = \Yii::$app->security->generateRandomString();
+        $user->auth_key = \Yii::$app->security->generateRandomString();
+
+        if ($user->save()) {
             $auth = \Yii::$app->authManager;
             $authorRole = $auth->getRole('reader');
             $auth->assign($authorRole, $user->getId());
             return true;
         }
 
-        \Yii::error("User was not saved".VarDumper::dumpasString($user->errors));
+        \Yii::error("User was not saved" . VarDumper::dumpasString($user->errors));
         return false;
     }
 }

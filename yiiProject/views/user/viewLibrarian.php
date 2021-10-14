@@ -66,7 +66,7 @@ $currentUser = Yii::$app->user->identity;
 
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-            <?php 
+            <?php
             Pjax::begin();
             echo $this->render('myBooks', [
                 'searchModel' => $searchModel,
@@ -79,7 +79,7 @@ $currentUser = Yii::$app->user->identity;
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
             <?php
             Pjax::begin();
-             echo $this->render('myHistory', [
+            echo $this->render('myHistory', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $historyDataProvider,
             ]);

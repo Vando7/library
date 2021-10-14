@@ -13,14 +13,14 @@ use yii\helpers\VarDumper;
 class BookSearch extends Book
 {
     /**
-    * @var globalSearch
-    */
+     * @var globalSearch
+     */
     public $globalSearch = "";
 
 
     /**
-    * @var genreSearch
-    */
+     * @var genreSearch
+     */
     public $genreSearch = [];
 
 
@@ -30,7 +30,7 @@ class BookSearch extends Book
     public function rules()
     {
         return [
-            [['isbn', 'pictures', 'title', 'author', 'published', 'description', 'globalSearch','genreSearch', 'genre.id'], 'safe'],
+            [['isbn', 'pictures', 'title', 'author', 'published', 'description', 'globalSearch', 'genreSearch', 'genre.id'], 'safe'],
             [['total_count', 'available_count'], 'integer'],
         ];
     }
@@ -75,8 +75,8 @@ class BookSearch extends Book
             return $dataProvider;
         }
 
-        
-        if($this->genreSearch){
+
+        if ($this->genreSearch) {
             $query->select(['`book`.* ,COUNT(*)']);
         }
 
@@ -86,24 +86,24 @@ class BookSearch extends Book
             'total_count' => $this->total_count,
             'available_count' => $this->available_count,
         ]);
-        
-        if($this->genreSearch){
+
+        if ($this->genreSearch) {
             $query->joinWith('genres AS genre')
-                    ->where(['genre.id' => $this->genreSearch])
-                    ->GroupBy('book.isbn')
-                    ->having(['=', "COUNT(*)" , count($this->genreSearch)]); // this is fine ignore the warning
-        }else{
+                ->where(['genre.id' => $this->genreSearch])
+                ->GroupBy('book.isbn')
+                ->having(['=', "COUNT(*)", count($this->genreSearch)]); // this is fine ignore the warning
+        } else {
             $query->joinWith('genres AS genre')
-                    ->groupBy('book.isbn');
+                ->groupBy('book.isbn');
         }
 
         $words = explode(' ', $this->globalSearch);
 
         $query
-            ->andFilterWhere( ['like', 'title',   $words],)
-            ->andFilterWhere( ['like', 'author',  $words] )
-            ->andFilterWhere( ['like', 'isbn',    $words], )
-            ->andFilterWhere( ['like', 'published', $words], );
+            ->andFilterWhere(['like', 'title',   $words],)
+            ->andFilterWhere(['like', 'author',  $words])
+            ->andFilterWhere(['like', 'isbn',    $words],)
+            ->andFilterWhere(['like', 'published', $words],);
 
 
         return $dataProvider;

@@ -27,7 +27,7 @@ use yii\widgets\DetailView;;
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'suspended_status')->dropDownList([ 'no' => 'No', 'yes' => 'Yes', ], ['prompt' => 'Set suspended status']) ?>
+    <?= $form->field($model, 'suspended_status')->dropDownList(['no' => 'No', 'yes' => 'Yes',], ['prompt' => 'Set suspended status']) ?>
 
     <?= $form->field($model, 'suspended_reason')->textarea(['rows' => 6]) ?>
 

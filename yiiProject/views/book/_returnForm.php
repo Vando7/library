@@ -21,69 +21,70 @@ $this->title = "Return books";
         'dataProvider' => $dataProvider,
         'columns' => [
             [
-            'format' => 'raw',
-            'label'  => 'Book info',
-            'value'  => function($model){
-                // Book name
-                $element  = '';
-                $element .= '<b><i class="bi bi-book"></i> ';
-                $element .= Html::a( Html::encode($model->bookIsbn->title),"/book/view?isbn=".$model->book_isbn );
-                $element .= '</b><br>';
+                'format' => 'raw',
+                'label'  => 'Book info',
+                'value'  => function ($model) {
+                    // Book name
+                    $element  = '';
+                    $element .= '<b><i class="bi bi-book"></i> ';
+                    $element .= Html::a(Html::encode($model->bookIsbn->title), "/book/view?isbn=" . $model->book_isbn);
+                    $element .= '</b><br>';
 
-                // Amount
-                $element .= '<i>';
-                $element .= Html::encode($model->amount) . " " . ($model->amount > 1 ? " Copies": " Copy") . " ";
-                $element .= '</i>';
+                    // Amount
+                    $element .= '<i>';
+                    $element .= Html::encode($model->amount) . " " . ($model->amount > 1 ? " Copies" : " Copy") . " ";
+                    $element .= '</i>';
 
-                // Status
-                $badgeType = '';
-                $status    = $model->status;
-                if($model->status == 'returned') $badgeType = 'success';
-                if($model->status == 'reserved') $badgeType = 'warning';
-                if($model->status == 'taken') {
-                    $deadline = strtotime($model->deadline);
-                    $today    = strtotime('now');
-                    
-                    if($deadline > $today){
-                        $badgeType = 'danger';
-                        $status = 'Past Deadline';
-                    } else {
-                        $badgeType = 'primary';
-                        $status = 'Not Returned';
+                    // Status
+                    $badgeType = '';
+                    $status    = $model->status;
+                    if ($model->status == 'returned') $badgeType = 'success';
+                    if ($model->status == 'reserved') $badgeType = 'warning';
+                    if ($model->status == 'taken') {
+                        $deadline = strtotime($model->deadline);
+                        $today    = strtotime('now');
+
+                        if ($deadline > $today) {
+                            $badgeType = 'danger';
+                            $status = 'Past Deadline';
+                        } else {
+                            $badgeType = 'primary';
+                            $status = 'Not Returned';
+                        }
                     }
+                    $element .= '<span class="badge badge-' . $badgeType . '">' . $status . '</span><br>';
+                    // ISBN
+                    $element .= "ISBN " . Html::encode($model->book_isbn) . '<br>';
+
+                    return $element;
                 }
-                $element .= '<span class="badge badge-' . $badgeType . '">'. $status .'</span><br>';
-                // ISBN
-                $element .= "ISBN " . Html::encode($model->book_isbn) . '<br>';
+            ],
+            [
+                'format' => 'raw',
+                'label'  => 'Info',
+                'value'  => function ($model) {
+                    $element = '';
 
-                return $element;
-            }
-        ],
-        [
-            'format' => 'raw',
-            'label'  => 'Info',
-            'value'  => function($model){
-                $element = '';
-                
-                // Date lent
-                $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
+                    // Date lent
+                    $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
 
-                // Deadline 
-                $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                    // Deadline 
+                    $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
 
-                // Return button
-                $element .= Html::a( 'Return <i class="bi bi-box-arrow-in-down-left"></i>',
+                    // Return button
+                    $element .= Html::a(
+                        'Return <i class="bi bi-box-arrow-in-down-left"></i>',
                         "/book/returnbook?id={$model->user_id}&isbn={$model->book_isbn}&dateLent={$model->date_lent}",
                         ['class' => 'btn btn-warning'],
-                );
+                    );
 
-                $element .= '</b><br>';
+                    $element .= '</b><br>';
 
-                return $element;
-            }
+                    return $element;
+                }
+            ],
         ],
-    ],
-    ]);?>
+    ]); ?>
 
-    <?php Pjax::end(); ?> 
+    <?php Pjax::end(); ?>
 </div>

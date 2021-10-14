@@ -21,8 +21,8 @@ use yii\widgets\ActiveForm;
 
     <div class="btn-group" role="group" aria-label="Basic example">
         <?= $form->field($model, 'globalSearch')
-                    ->textInput(['placeholder' => 'Names, e-mail, phone etc.'])
-                    ->label(false);?>
+            ->textInput(['placeholder' => 'Names, e-mail, phone etc.'])
+            ->label(false); ?>
 
         <div class="form-group ml-3">
             <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

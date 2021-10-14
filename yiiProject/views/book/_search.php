@@ -17,8 +17,8 @@ use yii\bootstrap4\ActiveForm;
 
 
     <?= $form->field($model, 'globalSearch')
-                ->textInput(['placeholder' => 'Title, Author, ISBN etc.'])
-                ->label('Book search',['class'=>'label-class'])?>
+        ->textInput(['placeholder' => 'Title, Author, ISBN etc.'])
+        ->label('Book search', ['class' => 'label-class']) ?>
 
     <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
 
@@ -37,7 +37,8 @@ use yii\bootstrap4\ActiveForm;
                 {input}
                 </div>
 
-            </div>"])->checkboxList($genreList,
+            </div>"])->checkboxList(
+            $genreList,
             [
                 'tag' => 'ul',
                 'class' => 'dropdown-menu',
@@ -48,7 +49,8 @@ use yii\bootstrap4\ActiveForm;
                         'label' => Html::encode($label),
                     ]) . '</a>';
                 }
-        ]); ?>
+            ]
+        ); ?>
 
         <div class="form-group">
             <?= Html::submitButton('<i class="bi bi-search"></i> Search', ['class' => 'btn btn-primary ml-2']) ?>

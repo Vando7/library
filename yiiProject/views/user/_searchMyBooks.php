@@ -18,11 +18,13 @@ use yii\bootstrap4\ActiveForm;
     ]); ?>
 
     <div class="btn-group" role="group" aria-label="Basic example">
-        <?= $form->field($model, 'statusQuery')->dropDownList([
-            'taken'    => 'Not Returned',
-            'late'     => 'Past Deadline',
-        ], ['prompt'   =>'Filter by']
-        )->label(false);?>
+        <?= $form->field($model, 'statusQuery')->dropDownList(
+            [
+                'taken'    => 'Not Returned',
+                'late'     => 'Past Deadline',
+            ],
+            ['prompt'   => 'Filter by']
+        )->label(false); ?>
 
         <div class="form-group ml-3">
             <?= Html::submitButton('<i class="bi bi-search"></i> Search', ['class' => 'btn btn-primary']) ?>

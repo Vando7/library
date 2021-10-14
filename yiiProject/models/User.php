@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use yii\web\IdentityInterface;
 
 
@@ -55,9 +56,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email', 'password'], 'string', 'max' => 255],
             [['phone'], 'unique'],
             [['email'], 'unique'],
-            ['email','email'],
-            ['newPassword','string'],
-            ['suspended_status','default','value' => NULL],
+            ['email', 'email'],
+            ['newPassword', 'string'],
+            ['suspended_status', 'default', 'value' => NULL],
         ];
     }
 
@@ -111,8 +112,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
-    public static function findByEmail($email){
-        return self::findOne(['email'=>$email]);
+    public static function findByEmail($email)
+    {
+        return self::findOne(['email' => $email]);
     }
 
 
@@ -169,16 +171,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password,$this->password);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
 
-    public function setPassword($password){
+    public function setPassword($password)
+    {
         $this->password = \Yii::$app->security->generatePasswordHash($password);
     }
 
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)

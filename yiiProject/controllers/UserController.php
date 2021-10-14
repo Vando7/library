@@ -56,15 +56,17 @@ class UserController extends Controller
     }
 
 
-    public function beforeAction($action) {
+    public function beforeAction($action)
+    {
         if (!parent::beforeAction($action)) {
             return false;
         }
 
-        if (Yii::$app->user->isGuest  
-            && !($this->action->id == 'login') 
-            && !($this->action->id == 'signup')) 
-        {
+        if (
+            Yii::$app->user->isGuest
+            && !($this->action->id == 'login')
+            && !($this->action->id == 'signup')
+        ) {
             return $this->redirect(['login'])->send();
         }
 
@@ -72,15 +74,16 @@ class UserController extends Controller
     }
 
 
-    public function beforeSave() {
+    public function beforeSave()
+    {
         foreach ($this->attributes as $key => $value)
-            if (!$value){
+            if (!$value) {
                 $this->$key = NULL;
             }
-    
+
         return parent::beforeSave();
     }
-    
+
 
     /**
      * Lists all User models.
@@ -89,17 +92,16 @@ class UserController extends Controller
     public function actionIndex()
     {
         $currentUser = \Yii::$app->user;
-        
-        if($currentUser->can('viewAllProfilesLibrary')){
+
+        if ($currentUser->can('viewAllProfilesLibrary')) {
             $searchModel = new UserSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
-    
+
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
-        }  
-        else return $this->actionView($currentUser->identity->id);
+        } else return $this->actionView($currentUser->identity->id);
     }
 
 
@@ -110,14 +112,14 @@ class UserController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    { 
+    {
         $currentUser = Yii::$app->user->identity;
 
-        if($currentUser->role == 'reader'){
+        if ($currentUser->role == 'reader') {
             return $this->render('view', [
-                'model' => $this->findModel($currentUser ->id),
+                'model' => $this->findModel($currentUser->id),
             ]);
-        } else{
+        } else {
             $searchModel    = new LentToSearch();
             $historyDataProvider   = $searchModel->search($this->request->queryParams, $id, false);
             $myBooksDataProvider   = $searchModel->search($this->request->queryParams, $id, true);
@@ -140,9 +142,9 @@ class UserController extends Controller
     public function actionCreate()
     {
 
-        if(Yii::$app->user->can('manageUsers')){
+        if (Yii::$app->user->can('manageUsers')) {
             $model = new User();
-            
+
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
@@ -155,7 +157,7 @@ class UserController extends Controller
                 'model' => $model,
             ]);
         }
-        
+
         return $this->actionIndex();
     }
 
@@ -172,7 +174,7 @@ class UserController extends Controller
         // Reader and librarian can only update own profiles.
         $currentUser = Yii::$app->user->identity;
 
-        if($currentUser->role == 'reader'){
+        if ($currentUser->role == 'reader') {
             $model = $this->findModel($currentUser->id);
         } else {
             $model = $this->findModel($id);
@@ -188,17 +190,17 @@ class UserController extends Controller
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             // If roles change in user table, apply changes in the RBAC,
             $newRole = $auth->getRole($model->role);
-            if($newRole != $oldRole->name && $newRole != NULL){
-               $auth->revoke($oldRole, $id);
-               $auth->assign($newRole, $id);
+            if ($newRole != $oldRole->name && $newRole != NULL) {
+                $auth->revoke($oldRole, $id);
+                $auth->assign($newRole, $id);
             }
 
             // Apply changes to password.
-            if($model->newPassword){
+            if ($model->newPassword) {
                 $model->setPassword($model->newPassword);
             }
             $model->save();
-            
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -217,7 +219,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if(Yii::$app->user->can('manageUsers')){
+        if (Yii::$app->user->can('manageUsers')) {
             $this->findModel($id)->delete();
         }
 
@@ -281,8 +283,8 @@ class UserController extends Controller
 
     public function actionSuspend($id)
     {
-        if(Yii::$app->user->can('suspendOrNote')){
-            $model= $this->findModel($id);
+        if (Yii::$app->user->can('suspendOrNote')) {
+            $model = $this->findModel($id);
             // TODO...
         }
     }
@@ -318,34 +320,34 @@ class UserController extends Controller
         ]);
     }
 
-    
+
     public function actionSignup()
     {
         if (!Yii::$app->user->isGuest) {
             return $this->redirect(['book/index']);
         }
-        
+
         $model = new SignupForm();
 
-        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())){
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
-        } 
-        
-        if($model->load(Yii::$app->request->post()) && $model->signup()){
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             return $this->redirect(Yii::$app->homeUrl);
         }
-        
-        return $this->render("signup",['model'=>$model]);
+
+        return $this->render("signup", ['model' => $model]);
     }
 
 
     public function actionLendhistory()
     {
-        if(Yii::$app->user->can('viewAllHistory')){
+        if (Yii::$app->user->can('viewAllHistory')) {
             $searchModel = new LentToSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
-    
+
             return $this->render('lendHistory', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
@@ -355,7 +357,7 @@ class UserController extends Controller
         return $this->redirect(['book/index']);
     }
 
-    
+
     public function actionMybooks()
     {
         $notReturnedOnly = true;
@@ -372,7 +374,7 @@ class UserController extends Controller
 
     public function userHistory($user_id, $notReturnedOnly)
     {
-        if(Yii::$app->user->can('viewAllProfilesLibrary' == false)){
+        if (Yii::$app->user->can('viewAllProfilesLibrary' == false)) {
             $user_id = Yii::$app->user->identity->id;
         }
 
@@ -388,13 +390,13 @@ class UserController extends Controller
 
     public function actionGive($id)
     {
-        if(Yii::$app->user->can('manageBook') == false){
+        if (Yii::$app->user->can('manageBook') == false) {
             return $this->redirect(['index']);
         }
 
         $session = Yii::$app->session;
-        
-        if($session->has('cart')){
+
+        if ($session->has('cart')) {
             $session->remove('cart');
         }
         $userModel = $this->findModel($id);
@@ -408,19 +410,24 @@ class UserController extends Controller
             'book' => [],
         ];
 
-        $session->set('cart',$cart);
-        
+        $reservedBooks = LentTo::findAll([
+            'user_id' => $id,
+            'status' => 'reserved',
+        ]);
+
+        $session->set('cart', $cart);
+
         return $this->redirect(['/book/index']);
     }
 
 
     public function actionProblemreaders()
     {
-        if(Yii::$app->user->can('viewAllHistory') == false){
+        if (Yii::$app->user->can('viewAllHistory') == false) {
             $this->redirect(['index']);
         }
 
-        $searchModel= new LentToSearch();
+        $searchModel = new LentToSearch();
         $dataProviderDays = $searchModel->searchProblemDays($this->request->queryParams);
         $dataProviderLate = $searchModel->searchProblemLate($this->request->queryParams);
         return $this->render('problemReaders', [
@@ -431,8 +438,9 @@ class UserController extends Controller
     }
 
 
-    public function actionReserved(){
-        if(Yii::$app->user->can('viewAllHistory') == false){
+    public function actionReserved()
+    {
+        if (Yii::$app->user->can('viewAllHistory') == false) {
             $this->redirect(['index']);
         }
 
@@ -448,8 +456,9 @@ class UserController extends Controller
     }
 
 
-    public function actionCancelreserved($isbn,$user){
-        if(Yii::$app->user->can('viewAllHistory') == false){
+    public function actionCancelreserved($isbn, $user)
+    {
+        if (Yii::$app->user->can('viewAllHistory') == false) {
             $this->redirect(['index']);
         }
 
@@ -458,8 +467,8 @@ class UserController extends Controller
         $book->save();
 
         $lentTo = LentTo::findOne([
-            'user_id' => $user, 
-            'book_isbn' => $isbn, 
+            'user_id' => $user,
+            'book_isbn' => $isbn,
             'status' => 'reserved'
         ]);
 
@@ -469,13 +478,14 @@ class UserController extends Controller
     }
 
 
-    public function actionCancelreservedall(){
-        if(Yii::$app->user->can('viewAllHistory') == false){
+    public function actionCancelreservedall()
+    {
+        if (Yii::$app->user->can('viewAllHistory') == false) {
             $this->redirect(['index']);
         }
 
-        $lentTo = LentTo::findAll(['status'=>'reserved']);
-        foreach($lentTo as $model){
+        $lentTo = LentTo::findAll(['status' => 'reserved']);
+        foreach ($lentTo as $model) {
             $book = Book::findOne($model->book_isbn);
             $book->available_count++;
             $book->save();
