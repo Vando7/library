@@ -398,7 +398,7 @@ class UserController extends Controller
         $searchModel    = new LentToSearch();
         $dataProvider   = $searchModel->search($this->request->queryParams, $user_id, $notReturnedOnly);
 
-        return $this->render('myBooks', [
+        return $this->render($notReturnedOnly?'myBooks':'myHistory', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -439,8 +439,6 @@ class UserController extends Controller
                 'amount' => 1,
             ];
         }
-
-        //error_log(VarDumper::dumpAsString($reservedBooks),3,'ivan_log.txt');
 
         $session->set('cart', $cart);
 

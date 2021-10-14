@@ -10,7 +10,7 @@ use yii\bootstrap4\Modal;
 
 $this->title = 'Users';
 ?>
-<div class="user-index">
+<div class="user-index" style="margin:auto;max-width:850px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

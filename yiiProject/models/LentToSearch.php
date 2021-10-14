@@ -16,7 +16,7 @@ class LentToSearch extends LentTo
     public function rules()
     {
         return [
-            [['book_isbn', 'user_id', 'employee_id', 'amount', 'date_lent', 'date_returned', 'deadline', 'status', 'statusQuery'], 'safe'],
+            [['book_isbn', 'user_id', 'employee_id', 'amount', 'date_lent', 'date_returned', 'deadline', 'status', 'statusQuery','titleQuery'], 'safe'],
             [['amount'], 'integer'],
         ];
     }
@@ -27,6 +27,8 @@ class LentToSearch extends LentTo
      * @var statusQuery
      */
     public $statusQuery = "";
+
+    public $titleQuery = '';
 
 
     /**
@@ -240,6 +242,46 @@ class LentToSearch extends LentTo
         $query->joinWith(['bookIsbn', 'user']);
         $query->where(
             ['like', 'status', 'reserved']
+        );
+
+        return $dataProvider;
+    }
+
+    public function searchTitle($params, $id)
+    {
+        $query = LentTo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'date_lent' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith(['bookIsbn', 'user']);
+        $query->andFilterWhere(
+            ['like', 'status', 'taken'],
+        );
+        $query->andFilterWhere(
+            ['=', 'user_id', $id],
+        );
+        $query->andFilterWhere(
+            ['like', 'title', $this->titleQuery],
         );
 
         return $dataProvider;

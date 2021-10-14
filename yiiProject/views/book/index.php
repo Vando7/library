@@ -19,7 +19,7 @@ $this->title = 'Books';
 $currentUser = Yii::$app->user->identity;
 
 ?>
-<div class="book-index">
+<div class="book-index" style="margin:auto;max-width:850px;">
     <p>
         <?php $modal = Modal::begin([
             'title' => 'Manage genres',

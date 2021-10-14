@@ -90,4 +90,205 @@ app\models\LentTo#1
     'user_id' => '1'
     'book_isbn' => '978-0451524935'
     'date_lent' => '2021-10-12 13:31:47'
-]bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh
+]bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhapp\models\LentToSearch#1
+(
+    [statusQuery] => ''
+    [yii\db\BaseActiveRecord:_attributes] => []
+    [yii\db\BaseActiveRecord:_oldAttributes] => null
+    [yii\db\BaseActiveRecord:_related] => []
+    [yii\db\BaseActiveRecord:_relationsDependencies] => []
+    [yii\base\Model:_errors] => []
+    [yii\base\Model:_validators] => ArrayObject#2
+    (
+        [0] => yii\validators\SafeValidator#3
+        (
+            [attributes] => [
+                0 => 'book_isbn'
+                1 => 'user_id'
+                2 => 'employee_id'
+                3 => 'amount'
+                4 => 'date_lent'
+                5 => 'date_returned'
+                6 => 'deadline'
+                7 => 'status'
+                8 => 'statusQuery'
+            ]
+            [message] => null
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+        [1] => yii\validators\NumberValidator#4
+        (
+            [allowArray] => false
+            [integerOnly] => true
+            [max] => null
+            [min] => null
+            [tooBig] => null
+            [tooSmall] => null
+            [integerPattern] => '/^[+-]?\\d+$/'
+            [numberPattern] => '/^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$/'
+            [attributes] => [
+                0 => 'amount'
+            ]
+            [message] => '{attribute} must be an integer.'
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+    )
+    [yii\base\Model:_scenario] => 'default'
+    [yii\base\Component:_events] => []
+    [yii\base\Component:_eventWildcards] => []
+    [yii\base\Component:_behaviors] => []
+)app\models\LentToSearch#1
+(
+    [statusQuery] => ''
+    [yii\db\BaseActiveRecord:_attributes] => []
+    [yii\db\BaseActiveRecord:_oldAttributes] => null
+    [yii\db\BaseActiveRecord:_related] => []
+    [yii\db\BaseActiveRecord:_relationsDependencies] => []
+    [yii\base\Model:_errors] => []
+    [yii\base\Model:_validators] => ArrayObject#2
+    (
+        [0] => yii\validators\SafeValidator#3
+        (
+            [attributes] => [
+                0 => 'book_isbn'
+                1 => 'user_id'
+                2 => 'employee_id'
+                3 => 'amount'
+                4 => 'date_lent'
+                5 => 'date_returned'
+                6 => 'deadline'
+                7 => 'status'
+                8 => 'statusQuery'
+            ]
+            [message] => null
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+        [1] => yii\validators\NumberValidator#4
+        (
+            [allowArray] => false
+            [integerOnly] => true
+            [max] => null
+            [min] => null
+            [tooBig] => null
+            [tooSmall] => null
+            [integerPattern] => '/^[+-]?\\d+$/'
+            [numberPattern] => '/^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$/'
+            [attributes] => [
+                0 => 'amount'
+            ]
+            [message] => '{attribute} must be an integer.'
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+    )
+    [yii\base\Model:_scenario] => 'default'
+    [yii\base\Component:_events] => []
+    [yii\base\Component:_eventWildcards] => []
+    [yii\base\Component:_behaviors] => []
+)app\models\LentToSearch#1
+(
+    [statusQuery] => ''
+    [yii\db\BaseActiveRecord:_attributes] => []
+    [yii\db\BaseActiveRecord:_oldAttributes] => null
+    [yii\db\BaseActiveRecord:_related] => []
+    [yii\db\BaseActiveRecord:_relationsDependencies] => []
+    [yii\base\Model:_errors] => []
+    [yii\base\Model:_validators] => ArrayObject#2
+    (
+        [0] => yii\validators\SafeValidator#3
+        (
+            [attributes] => [
+                0 => 'book_isbn'
+                1 => 'user_id'
+                2 => 'employee_id'
+                3 => 'amount'
+                4 => 'date_lent'
+                5 => 'date_returned'
+                6 => 'deadline'
+                7 => 'status'
+                8 => 'statusQuery'
+            ]
+            [message] => null
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+        [1] => yii\validators\NumberValidator#4
+        (
+            [allowArray] => false
+            [integerOnly] => true
+            [max] => null
+            [min] => null
+            [tooBig] => null
+            [tooSmall] => null
+            [integerPattern] => '/^[+-]?\\d+$/'
+            [numberPattern] => '/^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$/'
+            [attributes] => [
+                0 => 'amount'
+            ]
+            [message] => '{attribute} must be an integer.'
+            [on] => []
+            [except] => []
+            [skipOnError] => true
+            [skipOnEmpty] => true
+            [enableClientValidation] => true
+            [isEmpty] => null
+            [when] => null
+            [whenClient] => null
+            [yii\base\Component:_events] => []
+            [yii\base\Component:_eventWildcards] => []
+            [yii\base\Component:_behaviors] => null
+        )
+    )
+    [yii\base\Model:_scenario] => 'default'
+    [yii\base\Component:_events] => []
+    [yii\base\Component:_eventWildcards] => []
+    [yii\base\Component:_behaviors] => []
+)

@@ -11,11 +11,14 @@ use yii\widgets\Pjax;
 
 $this->title = "Return books";
 ?>
-<div class="lent-to-index">
+
+<div class="container" style="margin:auto;max-width:850;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(); ?>
+
+    <?= $this->render('_searchReturn', ['model' => $searchModel, 'user_id'=>$user_id]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

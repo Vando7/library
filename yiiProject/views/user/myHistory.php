@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 ?>
-<div class="lentTo-index">
+<div class="lentTo-index" style="margin:auto;max-width:850px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -41,7 +41,7 @@ use yii\widgets\Pjax;
                         $deadline = strtotime($model->deadline);
                         $today    = strtotime('now');
 
-                        if ($deadline > $today) {
+                        if ($deadline < $today) {
                             $badgeType = 'danger';
                             $status = 'Past Deadline';
                         } else {

@@ -9,7 +9,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'Reserved books';
 ?>
-<div class="lentTo-index">
+<div class="lentTo-index" style="margin:auto;max-width:850px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

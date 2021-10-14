@@ -109,8 +109,10 @@ $pictureJson = json_decode($model->pictures, true);
                 ?>
 
             </div>
-        </div>
-        <div class="container m-auto">
+        </div> 
+        <hr>
+        <div class="container"  style="margin:auto;margin-top:50px;max-width:850px;",>
+        <h2>Lend history of this book</h2>
             <?= $currentUser->can('manageBook') == false ? '' : GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [

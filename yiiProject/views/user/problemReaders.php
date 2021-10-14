@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 
 ?>
 
-<div class="lentTo-index">
+<div class="lentTo-index" style="margin:auto;max-width:850px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

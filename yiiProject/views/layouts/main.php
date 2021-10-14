@@ -50,7 +50,7 @@ AppAsset::register($this);
 
         if ($session->has('cart')) {
             $cart = $session['cart'];
-            $cancelCart   = (['label' => 'Cancel cart', 'url' => '/book/clearcart']);
+            $cancelCart   = (['label' => 'Cancel 🛒', 'url' => '/book/clearcart']);
 
             $modalButton  = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartModal">';
             if ($cart['book'] !== []) {
@@ -64,21 +64,20 @@ AppAsset::register($this);
 
             $cart = $session['cart'];
             if (empty($cart['book']) == false) {
-                $clearCart  = (['label' => 'Clear Cart',  'url' => '/book/clearcartitems']);
-                $checkout = (['label' => 'Checkout',   'url' => '/book/checkout']);
+                $clearCart  = (['label' => 'Clear 🛒',  'url' => '/book/clearcartitems']);
             } else {
                 $clearCart = '';
-                $checkout = '';
             }
         } else {
             $modalButton = '';
             $cancelCart = '';
             $clearCart  = '';
-            $checkout = '';
         }
 
         echo Nav::widget([
-            'options' => ['class' => 'navbar-nav'],
+            'options' => [
+                'class' => 'navbar-nav'
+            ],
             'items' => [
                 Yii::$app->user->isGuest ? '' : (['label' => 'Books', 'url' => ['/book/index']]),
                 Yii::$app->user->isGuest ? '' : (Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'Users', 'url' => ['/user/index']])),
@@ -93,7 +92,15 @@ AppAsset::register($this);
                 Yii::$app->user->isGuest ? '' : $cancelCart,
                 Yii::$app->user->isGuest ? '' : $clearCart,
                 Yii::$app->user->isGuest ? '' : $modalButton,
+                Yii::$app->user->isGuest ? (['label' => 'Signup', 'url' => ['/user/signup']]) : '',
+            ],
+        ]);
 
+        echo Nav::widget([
+            'options' => [
+                'class' => 'navbar-nav ml-auto'
+            ], 
+            'items' => [
                 Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/user/login']]) : ('<li>'
                     . Html::beginForm(['/user/logout'], 'post', ['class' => 'form-inline'])
                     . Html::submitButton(
@@ -102,9 +109,9 @@ AppAsset::register($this);
                     )
                     . Html::endForm()
                     . '</li>'),
-                Yii::$app->user->isGuest ? (['label' => 'Signup', 'url' => ['/user/signup']]) : '',
             ],
         ]);
+
         NavBar::end();
 
         if ($session->has('cart')) {
@@ -122,7 +129,6 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?= Alert::widget() ?>
-            <?= Yii::$app->session->has('cart') ? Html::encode(VarDumper::DumpAsString(Yii::$app->session['cart'])) : '' ?>
             <?= $content ?>
         </div>
     </main>

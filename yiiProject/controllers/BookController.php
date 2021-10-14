@@ -520,7 +520,7 @@ class BookController extends Controller
         }
 
         $searchModel    = new LentToSearch;
-        $dataProvider   = $searchModel->search($this->request->queryParams, $id, true);
+        $dataProvider   = $searchModel->searchTitle($this->request->queryParams, $id);
 
         return $this->render('_returnForm', [
             'user_id' => $id,

@@ -19,17 +19,16 @@ use yii\widgets\DetailView;;
             'city',
             'street',
             'phone',
-            'email:email'
+            'email:email',
+            'suspended_status',
+            'suspended_note',
+            'suspended_date'
         ],
     ]) ?>
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'suspended_status')->dropDownList(['no' => 'No', 'yes' => 'Yes',], ['prompt' => 'Set suspended status']) ?>
-
-    <?= $form->field($model, 'suspended_reason')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
