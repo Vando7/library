@@ -12,12 +12,39 @@ $this->title = 'Reserved books';
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?= Html::a( "<i class='bi bi-x-lg'></i> Cancel All" ,
+                "/user/cancelreservedall",
+                [
+                    'class' => 'btn btn-sm btn-danger',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to cancel all reservations?',
+                        'method' => 'post',
+                    ],
+                ] 
+    ); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             [
             'format' => 'raw',
-            'label'  => 'Book info',
+            'label'  => 'User',
+            'value'  => function($model){
+                $element = '';
+
+                // User names
+                $user = $model->user;
+                $element .=  '<i class="bi bi-person"></i><b>'. Html::a(Html::encode($user->first_name." ".$user->last_name),"/user/view?id=".$user->id )."</b><br>";
+
+                // User Phone
+                $element .= '<i class="bi bi-telephone"></i> ' . Html::encode($user->phone) . "<br>";
+                
+                return $element;
+            }
+        ],
+        [
+            'format' => 'raw',
+            'label'  => 'Book reserved',
             'value'  => function($model){
                 // Book name
                 $element  = '';
@@ -25,61 +52,11 @@ $this->title = 'Reserved books';
                 $element .= Html::a( Html::encode($model->bookIsbn->title),"/book/view?isbn=".$model->book_isbn );
                 $element .= '</b><br>';
 
-                // Amount
-                $element .= '<i>';
-                $element .= Html::encode($model->amount) . " " . ($model->amount > 1 ? " Copies": " Copy") . " ";
-                $element .= '</i>';
-
-                // Status
-                $badgeType = '';
-                $status    = $model->status;
-                if($model->status == 'returned') $badgeType = 'success';
-                if($model->status == 'reserved') $badgeType = 'warning';
-                if($model->status == 'taken') {
-                    $deadline = strtotime($model->deadline);
-                    $today    = strtotime('now');
-                    
-                    if($deadline < $today){
-                        $badgeType = 'danger';
-                        $status = 'Past Deadline';
-                    } else {
-                        $badgeType = 'primary';
-                        $status = 'Not Returned';
-                    }
-                }
-                $element .= '<span class="badge badge-' . $badgeType . '">'. $status .'</span><br>';
-
                 // ISBN
-                $element .= "<b>ISBN</b> " . Html::encode($model->book_isbn) . '<br>';
+                $element .= "<b>ISBN</b> " . Html::encode($model->book_isbn)." ";
 
-                // Employee info
-                $element .= "Given by <br>";
-                $element .= Html::encode($model->employee->first_name . " " . $model->employee->last_name);
-
-                return $element;
-            }
-        ],
-        [
-            'format' => 'raw',
-            'label'  => 'Reserved by',
-            'value'  => function($model){
-                $element = '';
-
-                // User names
-                $user = $model->user;
-                $element .=  '<i class="bi bi-person"></i> '. Html::a(Html::encode($user->first_name." ".$user->last_name),"/user/view?id=".$user->id )."<br>";
-
-                // User Phone
-                $element .= '<i class="bi bi-telephone"></i> ' . Html::encode($user->phone) . "<br>";
-                
-                // Date lent
-                $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
-
-                // Date returned 
-                $element .= "<b>Returned</b> " . ($model->date_returned ? date('Y-m-d', strtotime($model->date_returned)) : "No") . '<br>';
-
-                // Deadline 
-                $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                // Cancel button
+                $element .= Html::a( "<i class='bi bi-x-lg'></i> Cancel" ,"/user/cancelreserved?isbn={$model->book_isbn}&user={$model->user_id}",['class' => 'btn btn-sm btn-danger'] );
 
                 return $element;
             }

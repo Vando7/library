@@ -75,7 +75,7 @@ $currentUser = Yii::$app->user->identity;
                 'format' => 'html',
                 'label' => 'Info',
                 'value' => function($model){
-                    // Book title row, title clickable
+                    // Book title row, clickable
                     $elements = '';
                     $elements .= '<b>';
                     $elements .= Html::a(Html::encode($model->title),'view?isbn='.$model->isbn);
@@ -92,7 +92,14 @@ $currentUser = Yii::$app->user->identity;
                     
                     // Avaliable copies badge
                     $elements .= '<br>';
-                    $elements .= '<span class="badge badge-success">Available:' . Html::encode($model->available_count) . '</span><br>';
+                    if($model->available_count > 20){
+                        $elements .= '<span class="badge badge-success">Available: ' . Html::encode($model->available_count) . '</span><br>';
+                    }
+                    else if ($model->available_count > 0  && $model->available_count < 20){
+                        $elements .= '<span class="badge badge-warning">Available: ' . Html::encode($model->available_count) . '</span><br>';
+                    }else {
+                        $elements .= '<span class="badge badge-danger">Not Available</span><br>';
+                    }
                    
                     // Book ISBN - clickable
                     $elements .= "ISBN " . Html::a(Html::encode($model->isbn),'view?isbn='.$model->isbn).'<br>';
@@ -113,6 +120,10 @@ $currentUser = Yii::$app->user->identity;
              },
                 'buttons' => [
                     'add' => function($url, $model){
+                        if($model->available_count == 0){
+                            return '';
+                        }
+                        
                         $session = Yii::$app->session;
                         if($session->has('cart') == false){
                             return '';
@@ -149,6 +160,7 @@ $currentUser = Yii::$app->user->identity;
                             'data-toggle'=>"modal",
                             'data-target'=>"#bookModal".$model->isbn,
                         ]);
+                        
                     }
                 ],
              'visible' => Yii::$app->user->can('manageBook'),

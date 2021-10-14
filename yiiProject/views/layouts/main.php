@@ -128,7 +128,6 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
         <?= Alert::widget() ?>
-        <?= Yii::$app->session->has('cart') ? Html::encode(VarDumper::DumpAsString(Yii::$app->session['cart'])) : '' ?>
         <?= $content ?>
     </div>
 </main>

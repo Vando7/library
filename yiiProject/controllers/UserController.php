@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use Yii;
 
+use app\models\Book;
 use app\models\User;
 use app\models\LoginForm;
 use app\models\UserSearch;
 use app\models\SignupForm;
+use app\models\LentTo;
 use app\models\LentToSearch;
 
 use yii\web\Response;
@@ -443,5 +445,43 @@ class UserController extends Controller
         ]);
 
         return $this->redirect(['book/index']);
+    }
+
+
+    public function actionCancelreserved($isbn,$user){
+        if(Yii::$app->user->can('viewAllHistory') == false){
+            $this->redirect(['index']);
+        }
+
+        $book = Book::findOne(['isbn' => $isbn]);
+        $book->available_count++;
+        $book->save();
+
+        $lentTo = LentTo::findOne([
+            'user_id' => $user, 
+            'book_isbn' => $isbn, 
+            'status' => 'reserved'
+        ]);
+
+        $lentTo->delete();
+
+        $this->redirect(['reserved']);
+    }
+
+
+    public function actionCancelreservedall(){
+        if(Yii::$app->user->can('viewAllHistory') == false){
+            $this->redirect(['index']);
+        }
+
+        $lentTo = LentTo::findAll(['status'=>'reserved']);
+        foreach($lentTo as $model){
+            $book = Book::findOne($model->book_isbn);
+            $book->available_count++;
+            $book->save();
+            $model->delete();
+        }
+
+        $this->redirect(['reserved']);
     }
 }
