@@ -79,7 +79,7 @@ $currentUser = Yii::$app->user->identity;
                     // Book title row, clickable
                     $elements = '';
                     $elements .= '<b>';
-                    $elements .= Html::a(Html::encode($model->title), 'view?isbn=' . $model->isbn);
+                    $elements .= Html::a(Html::encode($model->title), ['view', 'isbn' => $model->isbn]);
                     $publishYear = DateTime::createFromFormat("Y-m-d", $model->published);
                     $publishYear = $publishYear->format('Y');
                     $elements .= '</b> (' . $publishYear . ')<br>';

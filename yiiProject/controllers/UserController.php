@@ -415,6 +415,16 @@ class UserController extends Controller
             'status' => 'reserved',
         ]);
 
+        foreach($reservedBooks as $model){
+            $bookModel = Book::findOne(['isbn'=>$model->book_isbn]);
+            $cart['book'][$model->book_isbn] = [
+                'title' => $bookModel->title . ' - RESERVED',
+                'amount' => 1,
+            ];
+        }
+
+        //error_log(VarDumper::dumpAsString($reservedBooks),3,'ivan_log.txt');
+
         $session->set('cart', $cart);
 
         return $this->redirect(['/book/index']);
@@ -462,17 +472,22 @@ class UserController extends Controller
             $this->redirect(['index']);
         }
 
-        $book = Book::findOne(['isbn' => $isbn]);
-        $book->available_count++;
-        $book->save();
-
         $lentTo = LentTo::findOne([
             'user_id' => $user,
             'book_isbn' => $isbn,
             'status' => 'reserved'
         ]);
 
+        if($lentTo == null){
+            Yii::$app->session->setFlash('warning','Could not find reserved book.');
+            $this->redirect(['reserved']);
+        }
+
         $lentTo->delete();
+
+        $book = Book::findOne(['isbn' => $isbn]);
+        $book->available_count++;
+        $book->save();
 
         $this->redirect(['reserved']);
     }

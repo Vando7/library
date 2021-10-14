@@ -467,6 +467,21 @@ class BookController extends Controller
                     $cartModel->deadline = date("Y-m-d", strtotime('+30 days'));
                 }
 
+                $reservedBook = LentTo::findOne([
+                    'book_isbn' => $isbn,
+                    'user_id'   => $cart['user']['id'],
+                    'status'    => 'reserved'
+                ]);
+                
+                $reservedAmount = 0;
+                if($reservedBook != null){
+                    $reservedAmount = 1;
+                    $book = Book::findOne(['isbn'=>$isbn]);
+                    $book->available_count++;
+                    $book->save();
+                    $reservedBook->delete();
+                }
+
                 $model = new LentTo;
                 $model->book_isbn   = $isbn;
                 $model->user_id     = $cart['user']['id'];

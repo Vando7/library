@@ -8,7 +8,6 @@ use yii\widgets\Pjax;
 ?>
 
 <div class="input-form">
-    <?php Pjax::begin(); ?>
     <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -18,6 +17,7 @@ use yii\widgets\Pjax;
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                
                 <div class="modal-body">
                     <?php
                     $session = Yii::$app->session;
@@ -73,5 +73,4 @@ use yii\widgets\Pjax;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
-    <?php Pjax::end(); ?>
 </div>
