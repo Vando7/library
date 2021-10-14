@@ -129,13 +129,12 @@ class LentToSearch extends LentTo
         $query->joinWith(['bookIsbn','user', 'employee']);
 
         
-        $query->select(['user_id','count(*) as count','book_isbn','employee_id','status'])
+        $query->select(['user_id','count(*) as amount','book_isbn','employee_id','status'])
                 ->from('lent_to')
                 ->andFilterWhere(['like','status','taken'])
                 ->groupBy('user_id')
-                ->orderBy(['count'=>SORT_DESC])->all();
+                ->orderBy(['amount'=>SORT_DESC])->all();
 
-        
         
         return $dataProvider;
     }
@@ -207,6 +206,41 @@ class LentToSearch extends LentTo
         $query->joinWith(['bookIsbn','user', 'employee']);
         $query->where(
             ['like','book_isbn',$isbn]
+        );
+        
+        return $dataProvider;
+    }
+
+
+    public function searchReserved($params)
+    {
+        $query = LentTo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'date_lent' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith(['bookIsbn','user']);
+        $query->where(
+            ['like','status','reserved']
         );
         
         return $dataProvider;

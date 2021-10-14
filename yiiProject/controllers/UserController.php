@@ -427,4 +427,21 @@ class UserController extends Controller
             'dataProviderLate' => $dataProviderLate,
         ]);
     }
+
+
+    public function actionReserved(){
+        if(Yii::$app->user->can('viewAllHistory') == false){
+            $this->redirect(['index']);
+        }
+
+        $searchModel = new LentToSearch();
+        $dataProvider = $searchModel->searchReserved($this->request->queryParams);
+
+        return $this->render('reserved', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+        return $this->redirect(['book/index']);
+    }
 }

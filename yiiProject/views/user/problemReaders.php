@@ -52,7 +52,7 @@ use yii\widgets\Pjax;
                         'value'  => function($model){
                             $element = '';
                             $element .= '<h3>';
-                            $element .= Html::encode($model->countTaken);
+                            $element .= Html::encode($model->amount);
                             $element .= '</h3>';
                             return $element;
                         }

@@ -84,6 +84,7 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'Users', 'url' => ['/user/index']])),
             Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'Problem Readers', 'url' => ['/user/problemreaders']])),
             Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'History', 'url' => '/user/lendhistory'])),
+            Yii::$app->user->isGuest ? '' : ( Yii::$app->user->identity->role == 'reader' ? '' : (['label' => 'Reserved', 'url' => ['/user/reserved']])),
             
             // Pages viewable for all users
             Yii::$app->user->isGuest ? '' : (['label' => 'My Account', 'url' => '/user/view?id='.Yii::$app->user->identity->id]),

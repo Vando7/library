@@ -91,18 +91,19 @@ class BookSearch extends Book
             $query->joinWith('genres AS genre')
                     ->where(['genre.id' => $this->genreSearch])
                     ->GroupBy('book.isbn')
-                    ->having(['=', "COUNT(*)" , count($this->genreSearch)]); // this is fine ignore the warning :)
+                    ->having(['=', "COUNT(*)" , count($this->genreSearch)]); // this is fine ignore the warning
         }else{
             $query->joinWith('genres AS genre')
                     ->groupBy('book.isbn');
         }
 
         $words = explode(' ', $this->globalSearch);
-            $query
-            ->orFilterWhere( ['or like', 'title',   $words],)
-            ->orFilterWhere( ['or like', 'author',  $words] )
-            ->orFilterWhere( ['or like', 'isbn',    $words], )
-            ->orFilterWhere( ['or like', 'published', $words], );
+
+        $query
+            ->andFilterWhere( ['like', 'title',   $words],)
+            ->andFilterWhere( ['like', 'author',  $words] )
+            ->andFilterWhere( ['like', 'isbn',    $words], )
+            ->andFilterWhere( ['like', 'published', $words], );
 
 
         return $dataProvider;

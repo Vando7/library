@@ -41,7 +41,7 @@ use yii\bootstrap4\ActiveForm;
             [
                 'tag' => 'ul',
                 'class' => 'dropdown-menu',
-                'style' => 'height:300px; overflow-y:auto;',
+                'style' => 'height:350px; overflow-y:auto;',
                 'item' => function ($index, $label, $name, $checked, $value) {
                     return '<a class="dropdown-item" href="#">' . Html::checkbox($name, $checked, [
                         'value' => $value,
