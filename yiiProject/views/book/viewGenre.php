@@ -26,6 +26,7 @@ use yii\helpers\Url;
             $deleteButton = Html::a($deleteIcon, ['deletegenre', 'id' => $genreObj->id,], [
                 'class' => 'badge badge-danger',
                 'id' => 'deleteButton',
+                "onclick"=>"if (!confirm('Are you sure?\\r\\nGenre deletions are not recoverable.')){return}",
             ]);
 
             $genreLabel = Html::encode($genreObj->name);
@@ -55,11 +56,11 @@ use yii\helpers\Url;
 
     <div class="genre-form">
         <?php $form = ActiveForm::begin([
-            'options' => ['data-pjax' => true],
+            'options' => ['autocomplete' => 'off', 'data-pjax' => true],
             'action' => ['creategenre', 'goBack'],
         ]); ?>
 
-        <?= $form->field($newGenre, 'name')->textInput(['maxlength' => 40]) ?>
+        <?= $form->field($newGenre, 'name', )->textInput(['maxlength' => 40, 'autocomplete'=>'off']) ?>
 
         <div class="form-group">
             <?= Html::submitButton($newGenre->isNewRecord ? "Create" : "Haha Jonathan", ['class' => $newGenre->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>

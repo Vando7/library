@@ -23,12 +23,10 @@ use yii\bootstrap4\ActiveForm;
                 'taken'    => 'Not Returned',
                 'late'     => 'Past Deadline',
             ],
+            ['onchange'=>'this.form.submit()'],
             ['prompt'   => 'Filter by']
         )->label(false); ?>
 
-        <div class="form-group ml-3">
-            <?= Html::submitButton('<i class="bi bi-search"></i> Search', ['class' => 'btn btn-primary']) ?>
-        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -87,23 +87,33 @@ class BookSearch extends Book
             'available_count' => $this->available_count,
         ]);
 
+        // Show only entries that have AT LEAST these listed genres
+        // if ($this->genreSearch) {
+        //     $query->joinWith('genres AS genre')
+        //         ->where(['genre.id' => $this->genreSearch])
+        //         ->GroupBy('book.isbn')
+        //         ->having(['=', "COUNT(*)", count($this->genreSearch)]); // this is fine ignore the warning
+        // } else {
+        //     $query->joinWith('genres AS genre')
+        //         ->groupBy('book.isbn');
+        // }
+
         if ($this->genreSearch) {
             $query->joinWith('genres AS genre')
                 ->where(['genre.id' => $this->genreSearch])
-                ->GroupBy('book.isbn')
-                ->having(['=', "COUNT(*)", count($this->genreSearch)]); // this is fine ignore the warning
-        } else {
-            $query->joinWith('genres AS genre')
-                ->groupBy('book.isbn');
+                ->GroupBy('book.isbn');
         }
 
         $words = explode(' ', $this->globalSearch);
 
         $query
-            ->orFilterWhere(['like', 'title',   $words],)
-            ->orFilterWhere(['like', 'author',  $words])
-            ->orFilterWhere(['like', 'isbn',    $words],)
-            ->orFilterWhere(['like', 'published', $words],);
+            ->andFilterWhere([
+                'or',
+            ['like', 'title',   $words],
+            ['like', 'author',  $words],
+            ['like', 'isbn',    $words],
+            ['like', 'published', $words],
+        ]);
 
 
         return $dataProvider;

@@ -70,14 +70,13 @@ class BookController extends Controller
     public function actionIndex()
     {
         $searchModel    = new BookSearch();
-        $dataProvider   = $searchModel->search($this->request->queryParams);
-
+        $dataProvider   = $searchModel->search($this->request->queryParams,);
+        $dataProvider->setPagination (['pageSize' => 10,]);
         $cartModel = Yii::$app->session->has('cart') ? new Cart : 'NULL';
 
         return $this->render('index', [
             'searchModel'   => $searchModel,
             'dataProvider'  => $dataProvider,
-            'pageSize'      => 10,
             'genreList'     => $this->getGenreNames(),
             'cartModel'     => $cartModel,
         ]);
@@ -509,6 +508,7 @@ class BookController extends Controller
                     $transaction->rollBack();
                     throw $e;
                 }
+                $session->setFlash('success', 'Books given successfully!');
             }
         }
 
