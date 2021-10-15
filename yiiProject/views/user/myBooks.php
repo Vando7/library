@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LentToSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+$this->title = "Books I have to return";
 ?>
 <div class="lentTo-index" style="margin:auto;max-width:850px;">
 
@@ -35,20 +35,18 @@ use yii\widgets\Pjax;
                     // Status
                     $badgeType = '';
                     $status    = $model->status;
-                    if ($model->status == 'returned') $badgeType = 'success';
-                    if ($model->status == 'reserved') $badgeType = 'warning';
-                    if ($model->status == 'taken') {
-                        $deadline = strtotime($model->deadline);
-                        $today    = strtotime('now');
+                    
+                    $deadline = strtotime($model->deadline);
+                    $today    = strtotime('now');
 
-                        if ($deadline < $today) {
-                            $badgeType = 'danger';
-                            $status = 'Past Deadline';
-                        } else {
-                            $badgeType = 'primary';
-                            $status = 'Not Returned';
-                        }
+                    if ($deadline < $today) {
+                        $badgeType = 'danger';
+                        $status = 'Past Deadline';
+                    } else {
+                        $badgeType = 'primary';
+                        $status = 'Not Returned';
                     }
+                
                     $element .= '<span class="badge badge-' . $badgeType . '">' . $status . '</span><br>';
 
                     // ISBN
@@ -62,15 +60,16 @@ use yii\widgets\Pjax;
                 'label'  => 'Library info',
                 'value'  => function ($model) {
                     $element = '';
-
                     // Date lent
-                    $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
+                    $element .= '<b>Given</b> ' . Html::encode(date("F jS, Y", strtotime($model->date_lent))) . "<br>";
 
                     // Date returned 
-                    $element .= "<b>Returned</b> " . ($model->date_returned ? date('Y-m-d', strtotime($model->date_returned)) : "No") . '<br>';
+                    if ($model->status == 'returned') {
+                        $element .= "<b>Returned</b> " . ($model->date_returned ? date("F jS, Y", strtotime($model->date_returned)) : "No") . '<br>';
+                    }
 
                     // Deadline 
-                    $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                    $element .= "<b>Deadline</b> " . (date("F jS, Y", strtotime($model->deadline))) . "<br>";
 
                     return $element;
                 }

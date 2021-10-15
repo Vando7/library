@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LentToSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+$this->title = 'Problematic Users';
 ?>
 
 <div class="lentTo-index" style="margin:auto;max-width:850px;">
@@ -25,6 +25,7 @@ use yii\widgets\Pjax;
 
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <h4>List of users and the amount of books they have not returned.</h4>
             <?= GridView::widget([
                 'dataProvider' => $dataProviderDays,
                 'columns' => [
@@ -63,6 +64,7 @@ use yii\widgets\Pjax;
         </div>
 
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <h4>List of users and the most they are late by on a book.</h4>
             <?= GridView::widget([
                 'dataProvider' => $dataProviderLate,
                 'columns' => [
@@ -86,14 +88,33 @@ use yii\widgets\Pjax;
                     ],
                     [
                         'format' => 'raw',
-                        'label'  => 'Days late',
+                        'label'  => 'Late by',
                         'value'  => function ($model) {
                             $element = '';
                             $element .= '<h3>';
                             $deadline = new DateTime($model->deadline);
                             $today = new DateTime();
+                            
                             $days = $deadline->diff($today)->days;
-                            $element .= $days;
+                            if($days >= 365){
+                                $years = '';
+                                $years .= floor($days/365);
+                                $element .= $years;
+                                if($years == 1){$element .= ' year ';}
+                                else $element .= ' years ';
+                            }
+
+                            if($days%365 >= 31){
+                                $months = '';
+                                $months = floor(($days%365)/31);
+                                $element .= $months;
+                                if($months == 1 ){ $element .= ' month ';}
+                                else $element .= ' months ';
+                            }
+                            else {
+                                $element .= $days%365 . ' days';
+                            }
+
                             $element .= '</h3>';
                             return $element;
                         }

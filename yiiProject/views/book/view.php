@@ -72,8 +72,8 @@ $pictureJson = json_decode($model->pictures, true);
                         : ''; ?>
                 </p>
                 <h1><?= Html::encode($model->title) ?></h1>
-                <p class="text-secondary"><?= Html::encode($model->author) . ", " . Html::encode($model->published) ?></p>
-                <p class="text-secondary">
+                <p class="text-secondary"><?= Html::encode($model->author) . ", published " . (date("F jS, Y", strtotime($model->published))) ?></p>
+                <p class="text-secondary"><i>
                     <?php
                     for ($i = 0; $i < count($genres); $i++) {
                         if ($i == 0) {
@@ -83,14 +83,15 @@ $pictureJson = json_decode($model->pictures, true);
                         }
                     }
                     ?>
-                </p>
+                </i></p>
+                <h3> Description </h3>
                 <p class="text-justify"><?= Html::encode($model->description) ?></p>
                 <p class="text-secondary">
                     <em>ISBN <?= Html::encode($model->isbn) ?></em>
                     <?php
                     if ($model->available_count > 20) {
                         echo '<span class="badge badge-success">Available:' . Html::encode($model->available_count) . '</span>';
-                    } else if ($model->available_count < 20 && $model->available_count > 0) {
+                    } else if ($model->available_count <= 20 && $model->available_count > 0) {
                         echo '<span class="badge badge-warning">Available:' . Html::encode($model->available_count) . '</span>';
                     } else {
                         echo '<span class="badge badge-danger">Not available.</span>';
@@ -110,9 +111,9 @@ $pictureJson = json_decode($model->pictures, true);
 
             </div>
         </div> 
-        <hr>
         <div class="container"  style="margin:auto;margin-top:50px;max-width:850px;",>
-        <h2>Lend history of this book</h2>
+        <?= $currentUser->can('manageBook') ? '<hr><h2>Lend history of this book</h2>' : ''; ?>
+        
             <?= $currentUser->can('manageBook') == false ? '' : GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [
@@ -171,13 +172,21 @@ $pictureJson = json_decode($model->pictures, true);
                             $element .= '<i class="bi bi-telephone"></i> ' . Html::encode($user->phone) . "<br>";
 
                             // Date lent
-                            $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
-
+                            if($model->status == 'reserved'){
+                                $element .= "<b>Take book:</b> Today<br>";
+        
+                                return $element;
+                            }
+        
+                            $element .= '<b>Given</b> ' . Html::encode(date("F jS, Y", strtotime($model->date_lent))) . "<br>";
+        
                             // Date returned 
-                            $element .= "<b>Returned</b> " . ($model->date_returned ? date('Y-m-d', strtotime($model->date_returned)) : "No") . '<br>';
-
+                            if ($model->status == 'returned') {
+                                $element .= "<b>Returned</b> " . ($model->date_returned ? date("F jS, Y", strtotime($model->date_returned)) : "No") . '<br>';
+                            }
+        
                             // Deadline 
-                            $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                            $element .= "<b>Deadline</b> " . (date("F jS, Y", strtotime($model->deadline))) . "<br>";
 
                             return $element;
                         }

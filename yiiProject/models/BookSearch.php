@@ -100,10 +100,10 @@ class BookSearch extends Book
         $words = explode(' ', $this->globalSearch);
 
         $query
-            ->andFilterWhere(['like', 'title',   $words],)
-            ->andFilterWhere(['like', 'author',  $words])
-            ->andFilterWhere(['like', 'isbn',    $words],)
-            ->andFilterWhere(['like', 'published', $words],);
+            ->orFilterWhere(['like', 'title',   $words],)
+            ->orFilterWhere(['like', 'author',  $words])
+            ->orFilterWhere(['like', 'isbn',    $words],)
+            ->orFilterWhere(['like', 'published', $words],);
 
 
         return $dataProvider;

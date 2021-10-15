@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Modal;
 use yii\widgets\Pjax;
 use yii\jui\DatePicker;
@@ -17,15 +17,15 @@ $currentUser = Yii::$app->user->identity;
 natcasesort($genreList);
 ?>
 
-<div class="book-form">
+<div class="site-login">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['autocomplete' => 'off']]); ?>
 
-    <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'isbn', )->textInput(['maxlength' => true, 'autocomplete'=>'off']) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'autocomplete'=>'off']) ?>
 
-    <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'author')->textInput(['maxlength' => true, 'autocomplete'=>'off']) ?>
 
     <?= $form->field($model, 'published')->widget(DatePicker::classname(), [
         'dateFormat' => 'yyyy-MM-dd',
@@ -34,6 +34,7 @@ natcasesort($genreList);
             'changeMonth' => 'true',
             'showButtonPanel' => true,
             'yearRange' => '1400:2040',
+            
         ],
     ]) ?>
 

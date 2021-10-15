@@ -95,7 +95,7 @@ $currentUser = Yii::$app->user->identity;
                     $elements .= '<br>';
                     if ($model->available_count > 20) {
                         $elements .= '<span class="badge badge-success">Available: ' . Html::encode($model->available_count) . '</span><br>';
-                    } else if ($model->available_count > 0  && $model->available_count < 20) {
+                    } else if ($model->available_count > 0  && $model->available_count <= 20) {
                         $elements .= '<span class="badge badge-warning">Available: ' . Html::encode($model->available_count) . '</span><br>';
                     } else {
                         $elements .= '<span class="badge badge-danger">Not Available</span><br>';
@@ -109,7 +109,7 @@ $currentUser = Yii::$app->user->identity;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{add} {view} {update} {delete} {return}',
+                'template' => '{add} {update} {delete} {return}',
                 'urlCreator' => function ($action, $model) {
                     if ($action == 'update') {
                         return 'update?isbn=' . $model->isbn;

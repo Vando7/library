@@ -69,10 +69,10 @@ $this->title = "Return books";
                     $element = '';
 
                     // Date lent
-                    $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
+                    $element .= '<b>Given</b> ' . Html::encode(date("F jS, Y", strtotime($model->date_lent))) . "<br>";
 
                     // Deadline 
-                    $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                    $element .= "<b>Deadline</b> " . (date("F jS, Y", strtotime($model->deadline))) . "<br>";
 
                     // Return button
                     $element .= Html::a(

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\jui\DatePicker;
 use app\models\Cart;
 use app\models\User;

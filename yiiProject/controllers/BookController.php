@@ -155,7 +155,10 @@ class BookController extends Controller
         }
 
         $model->pictures = json_encode($picturesJson);
-        return $model->save() && $model->upload();
+        $model->save();
+        error_log((VarDumper::dumpAsString($model)),3,'ivan_log.txt');
+        $model->upload();
+        return true;
     }
 
 

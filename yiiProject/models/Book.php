@@ -62,8 +62,8 @@ class Book extends \yii\db\ActiveRecord
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
             ['pictures', 'default', 'value' => NULL],
-            [['bookCover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
-            [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg', 'maxFiles' => 10],
+            [['bookCover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxSize' => 2097150],
+            [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
             [['genreList'], 'safe'],
         ];
     }

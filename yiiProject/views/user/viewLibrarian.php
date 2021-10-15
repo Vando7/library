@@ -39,6 +39,12 @@ $currentUser = Yii::$app->user->identity;
 
     <?= DetailView::widget([
         'model' => $model,
+        
+        'formatter' => [
+            'class' => '\yii\i18n\Formatter',
+            'dateFormat' => 'medium',
+            'datetimeFormat' => 'medium',
+        ],
         'attributes' => [
             'first_name',
             'last_name',
@@ -49,9 +55,9 @@ $currentUser = Yii::$app->user->identity;
             'email:email',
             'role',
             'note:ntext',
-            'register_date',
+            'register_date:date',
             'suspended_status',
-            'suspended_date',
+            'suspended_date:date',
             'suspended_reason:ntext',
         ],
     ]) ?>

@@ -92,7 +92,6 @@ AppAsset::register($this);
                 Yii::$app->user->isGuest ? '' : $cancelCart,
                 Yii::$app->user->isGuest ? '' : $clearCart,
                 Yii::$app->user->isGuest ? '' : $modalButton,
-                Yii::$app->user->isGuest ? (['label' => 'Signup', 'url' => ['/user/signup']]) : '',
             ],
         ]);
 
@@ -101,6 +100,7 @@ AppAsset::register($this);
                 'class' => 'navbar-nav ml-auto'
             ], 
             'items' => [
+                Yii::$app->user->isGuest ? (['label' => 'Signup', 'url' => ['/user/signup']]) : '',
                 Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/user/login']]) : ('<li>'
                     . Html::beginForm(['/user/logout'], 'post', ['class' => 'form-inline'])
                     . Html::submitButton(

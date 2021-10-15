@@ -7,7 +7,6 @@ use yii\bootstrap4\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\BookSearch */
 /* @var $form yii\widgets\ActiveForm */
-error_log(VarDumper::dumpAsString($model),3,'ivan_log.txt');
 ?>
 
 <div class="book-search" style="margin:auto;max-width:500px;">

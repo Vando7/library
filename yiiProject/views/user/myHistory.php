@@ -6,11 +6,11 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LentToSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+$this->title = 'Books I have taken'
 ?>
 <div class="lentTo-index" style="margin:auto;max-width:850px;">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Full history of the books I have taken</h1>
 
     <?= $this->render('_searchMyHistory', ['model' => $searchModel]) ?>
 
@@ -59,18 +59,26 @@ use yii\widgets\Pjax;
             ],
             [
                 'format' => 'raw',
-                'label'  => 'Library info',
+                'label'  => 'Relevant dates',
                 'value'  => function ($model) {
                     $element = '';
 
+                    if($model->status == 'reserved'){
+                        $element .= "<b>Take book:</b> Today<br>";
+
+                        return $element;
+                    }
+
                     // Date lent
-                    $element .= '<b>Given</b> ' . Html::encode(date('Y-m-d', strtotime($model->date_lent))) . "<br>";
+                    $element .= '<b>Given</b> ' . Html::encode(date("F jS, Y", strtotime($model->date_lent))) . "<br>";
 
                     // Date returned 
-                    $element .= "<b>Returned</b> " . ($model->date_returned ? date('Y-m-d', strtotime($model->date_returned)) : "No") . '<br>';
+                    if ($model->status == 'returned') {
+                        $element .= "<b>Returned</b> " . ($model->date_returned ? date("F jS, Y", strtotime($model->date_returned)) : "No") . '<br>';
+                    }
 
                     // Deadline 
-                    $element .= "<b>Deadline</b> " . (date('Y-m-d', strtotime($model->deadline))) . "<br>";
+                    $element .= "<b>Deadline</b> " . (date("F jS, Y", strtotime($model->deadline))) . "<br>";
 
                     return $element;
                 }
