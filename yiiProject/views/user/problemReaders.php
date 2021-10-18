@@ -125,6 +125,13 @@ $this->title = 'Problematic Users';
         </div>
 
     </div>
-
+    <?php 
+    $script = <<< JS
+        $(function(){
+                $("ul.pagination > li > a").addClass("page-link");
+            });
+    JS;
+    $this->registerJs($script);
+    ?>
 </div>
 </div>

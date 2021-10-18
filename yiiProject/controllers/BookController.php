@@ -71,7 +71,7 @@ class BookController extends Controller
     {
         $searchModel    = new BookSearch();
         $dataProvider   = $searchModel->search($this->request->queryParams,);
-        $dataProvider->setPagination (['pageSize' => 10,]);
+        $dataProvider->setPagination(['pageSize' => 10,]);
         $cartModel = Yii::$app->session->has('cart') ? new Cart : 'NULL';
 
         return $this->render('index', [
@@ -155,7 +155,6 @@ class BookController extends Controller
 
         $model->pictures = json_encode($picturesJson);
         $model->save();
-        error_log((VarDumper::dumpAsString($model)),3,'ivan_log.txt');
         $model->upload();
         return true;
     }
@@ -532,6 +531,7 @@ class BookController extends Controller
         ]);
     }
 
+
     public function actionReturnbook($id, $isbn, $dateLent)
     {
         if (Yii::$app->user->can('manageBook') == false) {
@@ -562,6 +562,11 @@ class BookController extends Controller
     {
         $currentUser = Yii::$app->user->identity;
 
+        if ($currentUser->suspended_status === 'yes') {
+            error_log("jeff", 3, 'ivan_log.txt');
+            return $this->redirect(['view', 'isbn' => $isbn]);
+        }
+
         $lentTo = LentTo::findOne([
             'book_isbn' => $isbn,
             'user_id' => $currentUser->id,
@@ -569,12 +574,12 @@ class BookController extends Controller
         ]);
 
         if ($lentTo != null) {
-            $this->redirect(['view', 'isbn' => $isbn]);
+            return $this->redirect(['view', 'isbn' => $isbn]);
         }
 
         $book = $this->findModel($isbn);
         if ($book->available_count <= 0) {
-            $this->redirect(['view', 'isbn' => $isbn]);
+            return $this->redirect(['view', 'isbn' => $isbn]);
         }
 
         $model = new LentTo;
@@ -594,6 +599,9 @@ class BookController extends Controller
         $book->save();
         $model->save();
 
-        $this->redirect(['view', 'isbn' => $isbn]);
+        return $this->redirect(['view', 'isbn' => $isbn]);
     }
+
+
+    
 }

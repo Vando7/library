@@ -58,12 +58,20 @@ $this->title = 'Reserved books';
                     $element .= "<b>ISBN</b> " . Html::encode($model->book_isbn) . " ";
 
                     // Cancel button
-                    $element .= Html::a("<i class='bi bi-x-lg'></i> Cancel", "/user/cancelreserved?isbn={$model->book_isbn}&user={$model->user_id}", ['class' => 'btn btn-sm btn-danger']);
+                    $element .= Html::a("<i class='bi bi-x-lg'></i> Cancel", "/user/cancelreserved?isbn={$model->book_isbn}&userID={$model->user_id}", ['class' => 'btn btn-sm btn-danger']);
 
                     return $element;
                 }
             ],
         ],
     ]);
+    ?>
+    <?php 
+    $script = <<< JS
+        $(function(){
+                $("ul.pagination > li > a").addClass("page-link");
+            });
+    JS;
+    $this->registerJs($script);
     ?>
 </div>

@@ -405,6 +405,36 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Create a cart object in session['cart'] with the following structure:
+     * Session['cart'] = [
+     *      'user' => [
+     *          'id'   => [user ID],
+     *          'name' => [First and Last name]
+     *      ],
+     *      'librarian' => [librarian ID],
+     *      'book' => [
+     *          [book1 ISBN] => [
+     *              'title' => [Book title],
+     *              'amount'=> [take amount],
+     *          ],
+     *          [book2 ISBN] => [
+     *              'title' => [Book title],
+     *              'amount'=> [take amount],
+     *          ]
+     *          . . . 
+     *      ]
+     * ]
+     * 
+     * Due to a quirk of Yii2, you have to assign the cart in the session to a 
+     * local variable, change that local variable and assign it back to the session.
+     * like this:
+     * 
+     * $cart = $session['cart'];
+     * [ change something in $cart . . . ]
+     * $session['cart'] = $cart; <- save changes to session.
+     * 
+     */
     public function actionGive($id)
     {
         if (Yii::$app->user->can('manageBook') == false) {
@@ -463,6 +493,9 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Render a page that shows a list of all reserved books.
+     */
     public function actionReserved()
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
@@ -481,21 +514,25 @@ class UserController extends Controller
     }
 
 
-    public function actionCancelreserved($isbn, $user)
+    /**
+     * Cancels a single reservation given user and book IDs
+     * Effectively deletes a row from lent_to table.
+     */
+    public function actionCancelreserved($isbn, $userID)
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
             $this->redirect(['index']);
         }
 
         $lentTo = LentTo::findOne([
-            'user_id' => $user,
+            'user_id' => $userID,
             'book_isbn' => $isbn,
             'status' => 'reserved'
         ]);
 
         if($lentTo == null){
             Yii::$app->session->setFlash('warning','Could not find reserved book.');
-            $this->redirect(['reserved']);
+            return $this->redirect(['reserved']);
         }
 
         $lentTo->delete();
@@ -504,10 +541,15 @@ class UserController extends Controller
         $book->available_count++;
         $book->save();
 
-        $this->redirect(['reserved']);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 
+    /**
+     * Cancel all reservations by all users.
+     * Deletes all rows with status 'reserved' from 
+     * lent_to table.
+     */
     public function actionCancelreservedall()
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {

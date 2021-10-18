@@ -77,4 +77,12 @@ $this->title = "Books I have to return";
         ],
     ]);
     ?>
+    <?php 
+    $script = <<< JS
+        $(function(){
+                $("ul.pagination > li > a").addClass("page-link");
+            });
+    JS;
+    $this->registerJs($script);
+    ?>
 </div>

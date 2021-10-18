@@ -100,15 +100,30 @@ $pictureJson = json_decode($model->pictures, true);
                 </p>
                 <!-- Reserve button -->
                 <?php
-                if ($model->available_count <= 0) {
+                if($currentUser->identity->suspended_status === 'yes'){
+                    if($reserveButton == ''){
+                        echo Html::a('<i class="bi bi-x-lg"></i> Cancel reservation', [
+                                '/user/cancelreserved', 
+                                'isbn' => $model->isbn,
+                                'userID'   => $currentUser->identity->id,
+                            ], 
+                            ['class' => 'btn btn-danger']);
+                    }
+                    else echo Html::a('Account suspended', '#', ['class' => 'btn btn-danger disabled', 'aria-disabled' => 'true']);
+                }
+                else if ($model->available_count <= 0) {
                     echo '';
                 } else if ($reserveButton !== '') {
                     echo Html::a('<i class="bi bi-save"></i> Reserve', ['reservebook', 'isbn' => $model->isbn], ['class' => 'btn btn-success']);
                 } else {
-                    echo Html::a('<i class="bi bi-check-lg"></i> Reserved', '#', ['class' => 'btn btn-warning disabled', 'aria-disabled' => 'true']);
+                    echo Html::a('<i class="bi bi-x-lg"></i> Cancel reservation', [
+                        '/user/cancelreserved', 
+                        'isbn' => $model->isbn,
+                        'userID'   => $currentUser->identity->id,
+                    ], 
+                    ['class' => 'btn btn-danger']);
                 }
                 ?>
-
             </div>
         </div> 
         <div class="container"  style="margin:auto;margin-top:50px;max-width:850px;",>
@@ -195,6 +210,13 @@ $pictureJson = json_decode($model->pictures, true);
             ]);
             ?>
         </div>
-
+        <?php 
+    $script = <<< JS
+            $(function(){
+                    $("ul.pagination > li > a").addClass("page-link");
+                });
+        JS;
+        $this->registerJs($script);
+        ?>
     </div>
 </div>

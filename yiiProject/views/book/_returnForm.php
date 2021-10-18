@@ -88,6 +88,13 @@ $this->title = "Return books";
             ],
         ],
     ]); ?>
-
+    <?php 
+        $script = <<< JS
+            $(function(){
+                    $("ul.pagination > li > a").addClass("page-link");
+                });
+        JS;
+        $this->registerJs($script);
+    ?>
     <?php Pjax::end(); ?>
 </div>

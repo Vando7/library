@@ -98,4 +98,12 @@ $this->title = 'History of given books';
         ],
     ]);
     ?>
+    <?php 
+    $script = <<< JS
+        $(function(){
+                $("ul.pagination > li > a").addClass("page-link");
+            });
+    JS;
+    $this->registerJs($script);
+    ?>
 </div>

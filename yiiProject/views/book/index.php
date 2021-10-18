@@ -17,17 +17,8 @@ use yii\helpers\VarDumper;
 
 $this->title = 'Books';
 $currentUser = Yii::$app->user->identity;
-
 ?>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li ><a class="page-link" href="#">Previous</a></li>
-    <li ><a class="page-link" href="#">1</a></li>
-    <li ><a class="page-link" href="#">2</a></li>
-    <li ><a class="page-link" href="#">3</a></li>
-    <li><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+
 <div class="book-index" style="margin:auto;max-width:850px;">
     <p>
         <?php $modal = Modal::begin([
@@ -178,6 +169,13 @@ $currentUser = Yii::$app->user->identity;
         ],
     ]); ?>
 
-
-    <?php Pjax::end(); ?>
+    <?php 
+    $script = <<< JS
+        $(function(){
+                $("ul.pagination > li > a").addClass("page-link");
+            });
+    JS;
+    $this->registerJs($script);
+    Pjax::end(); 
+    ?>
 </div>
