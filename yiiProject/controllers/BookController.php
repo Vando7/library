@@ -91,6 +91,7 @@ class BookController extends Controller
      */
     public function actionView($isbn)
     {
+        $this->cleanPics($isbn);
         $model = $this->findModel($isbn);
 
         $genresQuery = $model->genres;
@@ -118,45 +119,6 @@ class BookController extends Controller
             'dataProvider'  => $dataProvider,
             'reserveButton' => $reserveButton,
         ]);
-    }
-
-
-    /**
-     * Uploads pictures specified in the create form.
-     * - maybe  can be moved to book model?
-     */
-    public function uploadPictures($model)
-    {
-        $model->bookCover   = UploadedFile::getInstance($model, 'bookCover');
-        $model->bonusImages = UploadedFile::getInstances($model, 'bonusImages');
-
-        $counter = 0;
-        $picturesJson = [];
-        $picturesJson = json_decode($model->pictures, true);
-
-        if ($model->bookCover) {
-            $picturesJson['cover'] = 'upload/' . $model->isbn . '_cover.' . $model->bookCover->extension;
-        }
-
-        $counter = 1;
-        if ($model->bonusImages) {
-            foreach ($model->bonusImages as $files) {
-                $picturesJson['extra' . $counter] = 'upload/' . $model->isbn . '_extra' . $counter . '.'  . $files->extension;
-
-                ++$counter;
-            }
-
-            while (file_exists('upload/' . $model->isbn . '_extra' . $counter)) {
-                unlink('upload/' . $model->isbn . '_extra' . $counter);
-
-                ++$counter;
-            }
-        }
-
-        $model->pictures = json_encode($picturesJson);
-        $model->save();
-        $model->upload();
-        return true;
     }
 
 
@@ -506,7 +468,7 @@ class BookController extends Controller
                     $transaction->rollBack();
                     throw $e;
                 }
-                
+
                 $session->setFlash('success', 'Books given successfully to !');
             }
         }
@@ -603,5 +565,153 @@ class BookController extends Controller
     }
 
 
-    
+    /**
+     * Move a picture in a certain direction.
+     * direction = [right|left]
+     */
+    public function actionMovepic($picIndex, $isbn, $direction)
+    {
+        if (Yii::$app->user->can('manageBook') == false) {
+            return $this->redirect(['index']);
+        }
+
+        $model = $this->findModel($isbn);
+        $pictureJson = json_decode($model->pictures, true);
+
+        // Cant move first pic left
+        if ($picIndex == 1 && $direction === 'left') {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        // Cant move last pic right.
+        if (!array_key_exists('extra' . ($picIndex + 1), $pictureJson) && $direction === 'right') {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $directionValue = $direction === 'left' ? -1 : +1;
+        $swap = null;
+
+        $swap = $pictureJson['extra' . $picIndex];
+        $pictureJson['extra' . $picIndex] = $pictureJson['extra' . ($picIndex + $directionValue)];
+        $pictureJson['extra' . ($picIndex + $directionValue)] = $swap;
+
+        $model->pictures = json_encode($pictureJson);
+        $model->save();
+
+        //return $this->redirect(Yii::$app->request->referrer);
+        return $this->render('update', [
+            'model'     => $model,
+            'genreList' => $this->getGenreNames(),
+        ]);
+    }
+
+
+    public function actionDeletepic($picIndex, $isbn)
+    {
+        if (Yii::$app->user->can('manageBook') == false) {
+            return $this->redirect(['index']);
+        }
+
+        $model = $this->findModel($isbn);
+        $pictureJson = json_decode($model->pictures, true);
+
+        if (array_key_exists('extra' . $picIndex, $pictureJson) == false) {
+            Yii::$app->session->setFlash('danger', 'Could not find picture to delete.');
+
+            return $this->render('update', [
+                'model'     => $model,
+                'genreList' => $this->getGenreNames(),
+            ]);
+        }
+        
+        if (file_exists($pictureJson['extra' . $picIndex])) {
+            unlink($pictureJson['extra' . $picIndex]);
+
+            if (array_key_exists('extra' . ($picIndex + 1), $pictureJson)) {
+                $it = $picIndex;
+
+                while(array_key_exists('extra'.($it+1), $pictureJson)){
+                    $pictureJson['extra'.$it] = $pictureJson['extra' . ($it + 1)];
+                    $it++;
+                }
+
+                unset($pictureJson['extra' . $it]);
+            } 
+            else {
+                unset($pictureJson['extra' . $picIndex]);
+            }
+            $model->pictures = json_encode($pictureJson);
+            error_log($model->pictures,3,'ivan_log.txt');
+            $model->save();
+        }
+
+        return $this->render('update', [
+            'model'     => $model,
+            'genreList' => $this->getGenreNames(),
+        ]);
+    }
+
+
+    public function actionAddpic($isbn)
+    {
+        if (Yii::$app->user->can('manageBook') == false) {
+            return $this->redirect(['index']);
+        }
+
+        $model = $this->findModel($isbn);
+        $pictureJson = json_decode($model->pictures, true);
+    }
+
+
+
+    /**
+     * Uploads pictures specified in the create form.
+     * - maybe  can be moved to book model?
+     */
+    public function uploadPictures($model)
+    {
+        $model->bookCover   = UploadedFile::getInstance($model, 'bookCover');
+        $model->bonusImages = UploadedFile::getInstances($model, 'bonusImages');
+
+        $pictureJson = [];
+        $pictureJson = json_decode($model->pictures, true);
+
+        if ($model->bookCover) {
+            $pictureJson['cover'] = 'upload/' . $model->isbn . '_cover.' . $model->bookCover->extension;
+            $model->bookCover->saveAs('upload/' . $model->isbn . '_cover.' . $model->bookCover->extension);
+        }
+
+        $counter = 1;
+        if ($model->bonusImages) {
+            while (array_key_exists('extra' . $counter, $pictureJson)) {
+                $counter++;
+            }
+
+            foreach ($model->bonusImages as $files) {
+                $pictureJson['extra' . $counter] = 'upload/' . $model->isbn . '_extra' . $counter . '.'  . $files->extension;
+                $files->saveAs('upload/' . $model->isbn . '_extra' . $counter . '.' . $files->extension);
+                $counter++;
+            }
+        }
+
+        $model->bookCover = null;
+        $model->bonusImages = null;
+        $model->pictures = json_encode($pictureJson);
+        $model->save();
+        //$model->upload();
+        return true;
+    }
+
+
+    // this function is for debugging purposes.
+    public function cleanPics($isbn){
+        $model = $this->findModel($isbn);
+        $pictureJson = json_decode($model->pictures, true);
+        foreach($pictureJson as $key => $value){
+            if(file_exists($value) == false){
+                unset($pictureJson[$key]);
+            }
+        }
+        $model->pictures = json_encode($pictureJson);
+        $model->save();
+    }
 }

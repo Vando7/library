@@ -73,14 +73,20 @@ class Book extends \yii\db\ActiveRecord
         if ($this->validate()) {
 
             if ($this->bookCover) {
-                $this->bookCover->saveAs('upload/' . $this->isbn . '_cover.' . $this->bookCover->extension);
+                // $this->bookCover->saveAs('upload/' . $this->isbn . '_cover.' . $this->bookCover->extension);
             }
 
+            $pictureJson = json_decode($this->pictures,true);
+
             $counter = 1;
+            while(array_key_exists('extra'.$counter, $pictureJson)){
+                $counter++;
+            }
+
             if ($this->bonusImages) {
                 foreach ($this->bonusImages as $files) {
-                    $files->saveAs('upload/' . $this->isbn . '_extra' . $counter . '.' . $files->extension);
-                    ++$counter;
+                    //$files->saveAs('upload/' . $this->isbn . '_extra' . $counter . '.' . $files->extension);
+                    $counter++;
                 }
             }
             return true;
