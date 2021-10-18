@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Login';
 ?>
-<div class="site-login" style="margin:auto;max-width:500px;">
+<div class="site-login" style="margin:auto;max-width:300px;">
 
     <h1><?= HTML::encode($this->title) ?></h1>
     <?php $form = ActiveForm::begin(); ?>

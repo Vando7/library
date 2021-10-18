@@ -123,7 +123,7 @@ class BookController extends Controller
 
     /**
      * Uploads pictures specified in the create form.
-     * - maybe  can be moved to book model.
+     * - maybe  can be moved to book model?
      */
     public function uploadPictures($model)
     {
@@ -501,13 +501,13 @@ class BookController extends Controller
                     $book->save();
                     $model->save();
                     unset($session['cart']);
-
                     $transaction->commit();
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     throw $e;
                 }
-                $session->setFlash('success', 'Books given successfully!');
+                
+                $session->setFlash('success', 'Books given successfully to !');
             }
         }
 

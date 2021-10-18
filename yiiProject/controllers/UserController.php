@@ -479,7 +479,7 @@ class UserController extends Controller
     public function actionProblemreaders()
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
-            $this->redirect(['index']);
+            return $this->redirect(['index']);
         }
 
         $searchModel = new LentToSearch();
@@ -499,7 +499,7 @@ class UserController extends Controller
     public function actionReserved()
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
-            $this->redirect(['index']);
+            return $this->redirect(['index']);
         }
 
         $searchModel = new LentToSearch();
@@ -521,7 +521,7 @@ class UserController extends Controller
     public function actionCancelreserved($isbn, $userID)
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
-            $this->redirect(['index']);
+            $userID = Yii::$app->user->identity->id;
         }
 
         $lentTo = LentTo::findOne([
@@ -553,7 +553,7 @@ class UserController extends Controller
     public function actionCancelreservedall()
     {
         if (Yii::$app->user->can('viewAllHistory') == false) {
-            $this->redirect(['index']);
+            return $this->redirect(['index']);
         }
 
         $lentTo = LentTo::findAll(['status' => 'reserved']);
@@ -564,6 +564,6 @@ class UserController extends Controller
             $model->delete();
         }
 
-        $this->redirect(['reserved']);
+        return $this->redirect(['reserved']);
     }
 }
