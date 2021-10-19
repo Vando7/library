@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Update Book: ' . $model->title;
 
 ?>
-<div class="book-update" >
+<div class="book-update" style="margin:auto;max-width:700px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -134,9 +134,9 @@ class BookController extends Controller
 
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save()) {
-
                     $this->uploadPictures($model);
                     $this->saveBookGenres($model);
+                    $model->save();
 
                     return $this->redirect(['view', 'isbn' => $model->isbn]);
                 }
@@ -210,6 +210,8 @@ class BookController extends Controller
 
                 $this->uploadPictures($model);
                 $this->saveBookGenres($model);
+                //$model->normalizePictures();
+                $model->save();
 
                 return $this->redirect(['view', 'isbn' => $model->isbn]);
             }
@@ -566,7 +568,8 @@ class BookController extends Controller
 
 
     /**
-     * Move a picture in a certain direction.
+     * Move a picture in a certain direction in regards to 
+     * how it is displayed to the user in the book view.
      * direction = [right|left]
      */
     public function actionMovepic($picIndex, $isbn, $direction)
@@ -588,8 +591,8 @@ class BookController extends Controller
         }
 
         $directionValue = $direction === 'left' ? -1 : +1;
+        
         $swap = null;
-
         $swap = $pictureJson['extra' . $picIndex];
         $pictureJson['extra' . $picIndex] = $pictureJson['extra' . ($picIndex + $directionValue)];
         $pictureJson['extra' . ($picIndex + $directionValue)] = $swap;
@@ -608,29 +611,34 @@ class BookController extends Controller
     public function actionDeletepic($picIndex, $isbn)
     {
         if (Yii::$app->user->can('manageBook') == false) {
-            return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
         $model = $this->findModel($isbn);
+        $model->normalizePictures();
+
         $pictureJson = json_decode($model->pictures, true);
+        error_log($model->pictures,3,'ivan_log.txt');
 
         if (array_key_exists('extra' . $picIndex, $pictureJson) == false) {
             Yii::$app->session->setFlash('danger', 'Could not find picture to delete.');
 
-            return $this->render('update', [
-                'model'     => $model,
-                'genreList' => $this->getGenreNames(),
-            ]);
+            return $this->redirect(Yii::$app->request->referrer);
         }
         
         if (file_exists($pictureJson['extra' . $picIndex])) {
             unlink($pictureJson['extra' . $picIndex]);
+            $it = $picIndex;
 
             if (array_key_exists('extra' . ($picIndex + 1), $pictureJson)) {
-                $it = $picIndex;
 
                 while(array_key_exists('extra'.($it+1), $pictureJson)){
-                    $pictureJson['extra'.$it] = $pictureJson['extra' . ($it + 1)];
+                    $ext = pathinfo($pictureJson['extra'.($it+1)], PATHINFO_EXTENSION);
+
+                    $newPath = 'upload/' . $model->isbn . '_extra' . $it . '.'  . $ext;
+                    rename($pictureJson['extra'.($it+1)], $newPath);
+                    $pictureJson['extra'.$it] = $newPath;
+
                     $it++;
                 }
 
@@ -639,15 +647,13 @@ class BookController extends Controller
             else {
                 unset($pictureJson['extra' . $picIndex]);
             }
+
+            
             $model->pictures = json_encode($pictureJson);
-            error_log($model->pictures,3,'ivan_log.txt');
             $model->save();
         }
 
-        return $this->render('update', [
-            'model'     => $model,
-            'genreList' => $this->getGenreNames(),
-        ]);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 
@@ -696,7 +702,6 @@ class BookController extends Controller
         $model->bookCover = null;
         $model->bonusImages = null;
         $model->pictures = json_encode($pictureJson);
-        $model->save();
         //$model->upload();
         return true;
     }

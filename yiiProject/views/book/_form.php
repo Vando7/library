@@ -124,23 +124,24 @@ natcasesort($genreList);
     }
     ?>
     <hr>
-    
+    <h3>Add, rearrange or remove bonus pictures:</h3>
     <?php
     if ($model->pictures != null) {
         Pjax::begin(
-            ['enableReplaceState'=>false, 'enablePushState'=>false, ]
+            ['enableReplaceState'=>false, 'enablePushState'=>false, 'timeout' => 5000 ]
         );
-        echo Html::encode(VarDumper::dumpAsString(json_decode($model->pictures,true)));
+        //echo Html::encode(VarDumper::dumpAsString(json_decode($model->pictures,true)));
         
         $pictureJson = null;
         $pictureJson = json_decode($model->pictures, true);
         $counter = 1;
 
-        echo '<div class="card-group">';
+        echo '<div class="row">';
         while (array_key_exists('extra' . $counter, $pictureJson)) {
+            echo '<div class="col-auto mb-4">';
             echo
-            '<div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="/' . $pictureJson['extra' . $counter] . '" alt="Card image cap">
+            '<div class="card w-200">
+                    <img class="rounded mx-auto d-block " src="/' . $pictureJson['extra' . $counter] . '" alt="Card image cap" style="height:150px; width:150px; object-fit: contain;">
                     <div class="card-body"></div>
                     <div class="btn-group card-footer" role="group" aria-label="Basic example">';
 
@@ -151,7 +152,7 @@ natcasesort($genreList);
                     'picIndex'=> $counter,
                     'direction' => 'left',
                 ], 
-                ['class' => 'btn btn-primary']);
+                ['class' => 'btn btn-primary btn-sm']);
                 //echo '<button type="button" class="btn btn-primary"><i class="bi bi-arrow-left"></i></button>';
             }
 
@@ -161,7 +162,11 @@ natcasesort($genreList);
                 'picIndex' => $counter,
             ], 
             [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger btn-sm',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
             ]);
 
             if (array_key_exists('extra' . ($counter+1), $pictureJson)) {
@@ -171,10 +176,10 @@ natcasesort($genreList);
                     'picIndex'=> $counter,
                     'direction' => 'right',
                 ], 
-                ['class' => 'btn btn-primary']);
+                ['class' => 'btn btn-primary btn-sm']);
             }
 
-            echo '</div></div>';
+            echo '</div></div></div>';
 
             $counter++;
         }

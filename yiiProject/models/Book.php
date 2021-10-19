@@ -61,13 +61,17 @@ class Book extends \yii\db\ActiveRecord
             [['isbn'], 'string', 'max' => 20],
             [['title', 'author'], 'string', 'max' => 255],
             [['isbn'], 'unique'],
-            ['pictures', 'default', 'value' => NULL],
+            ['pictures', 'default', 'value' => null],
             [['bookCover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxSize' => 2097150],
             [['bonusImages'], 'file', 'skipOnEmpty' => true,  'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
             [['genreList'], 'safe'],
         ];
     }
 
+
+    /**
+     * Deprecated function
+     */
     public function upload()
     {
         if ($this->validate()) {
@@ -93,6 +97,37 @@ class Book extends \yii\db\ActiveRecord
         }
 
         return false;
+    }
+
+
+    // Very rare, but heavy function.
+    public function normalizePictures(){
+        if(!$this->pictures)
+            return true;
+
+        $picJson = json_decode($this->pictures, true);
+
+        $counter = 1;
+
+        while(array_key_exists('extra'.$counter, $picJson) && file_exists($picJson['extra'.$counter])){
+            $ext = pathinfo($picJson['extra'.$counter], PATHINFO_EXTENSION);
+            rename($picJson['extra'.$counter],'upload/'.$counter.'.'.$ext);
+            $picJson['extra'.$counter] = 'upload/'.$counter.'.'.$ext;
+            
+            ++$counter;
+        }
+
+        $counter = 1;
+        while(array_key_exists('extra'.$counter, $picJson) && file_exists($picJson['extra'.$counter])){
+            $ext = pathinfo($picJson['extra'.$counter], PATHINFO_EXTENSION);
+            rename($picJson['extra'.$counter], 'upload/' . $this->isbn . '_extra' . $counter . '.'  . $ext);
+            $picJson['extra'.$counter] = 'upload/' . $this->isbn . '_extra' . $counter . '.'  . $ext;
+            
+            $counter++;
+        }
+
+        $this->pictures = json_encode($picJson);
+        return true;
     }
 
 
