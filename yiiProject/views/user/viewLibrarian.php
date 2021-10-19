@@ -16,7 +16,7 @@ $currentUser = Yii::$app->user->identity;
 ?>
 
 
-<div class="user-view" style="margin:auto;max-width:700px;">
+<div class="user-view" style="margin:auto;max-width:600px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -39,7 +39,9 @@ $currentUser = Yii::$app->user->identity;
 
     <?= DetailView::widget([
         'model' => $model,
-        
+        'options' => [
+            'class' => 'table table-striped detail-view',
+        ],
         'formatter' => [
             'class' => '\yii\i18n\Formatter',
             'dateFormat' => 'medium',

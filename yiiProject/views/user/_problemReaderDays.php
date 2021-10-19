@@ -13,6 +13,9 @@ use yii\widgets\Pjax;
 <?php Pjax::begin();?>
 <?= GridView::widget([
     'dataProvider' => $dataProviderDays,
+    'tableOptions' => [
+        'class' => 'table table-striped',
+    ],
     'columns' => [
         [
             'format' => 'raw',
@@ -50,6 +53,7 @@ use yii\widgets\Pjax;
     $fixPagination = <<< JS
     $(function(){
             $("ul.pagination > li > a").addClass("page-link");
+            $("ul.pagination").addClass('justify-content-center');
         });
     JS;
     $this->registerJs($fixPagination);

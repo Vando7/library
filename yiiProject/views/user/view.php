@@ -33,6 +33,9 @@ $currentUser = Yii::$app->user->identity;
 
     <?= DetailView::widget([
         'model' => $model,
+        'tableOoptions' => [
+            'class' => 'table table-striped'
+        ],
         'attributes' => [
             'first_name',
             'last_name',

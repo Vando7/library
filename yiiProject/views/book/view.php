@@ -217,6 +217,7 @@ $pictureJson = json_decode($model->pictures, true);
     $script = <<< JS
             $(function(){
                     $("ul.pagination > li > a").addClass("page-link");
+                    $("ul.pagination").addClass('justify-content-center');
                 });
         JS;
         $this->registerJs($script);

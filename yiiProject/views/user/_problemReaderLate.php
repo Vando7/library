@@ -13,6 +13,9 @@ use yii\widgets\Pjax;
 <h4>List of users and the most they are late by on returning a book.</h4>
 <?= GridView::widget([
     'dataProvider' => $dataProviderLate,
+    'tableOptions' => [
+        'class' => 'table table-striped',
+    ],
     'columns' => [
         [
             'format' => 'raw',
@@ -72,6 +75,7 @@ use yii\widgets\Pjax;
     $fixPagination = <<< JS
     $(function(){
             $("ul.pagination > li > a").addClass("page-link");
+            $("ul.pagination").addClass('justify-content-center');
         });
     JS;
     $this->registerJs($fixPagination);

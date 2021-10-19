@@ -16,6 +16,9 @@ $this->title = 'Books I have taken'
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'tableOptions' => [
+            'class' => 'table table-striped',
+        ],
         'columns' => [
             [
                 'format' => 'raw',
@@ -90,6 +93,7 @@ $this->title = 'Books I have taken'
     $script = <<< JS
         $(function(){
                 $("ul.pagination > li > a").addClass("page-link");
+                $("ul.pagination").addClass('justify-content-center');
             });
     JS;
     $this->registerJs($script);

@@ -179,6 +179,7 @@ $currentUser = Yii::$app->user->identity;
     $script = <<< JS
         $(function(){
                 $("ul.pagination > li > a").addClass("page-link");
+                $("ul.pagination").addClass('justify-content-center');
             });
     JS;
     $this->registerJs($script);
