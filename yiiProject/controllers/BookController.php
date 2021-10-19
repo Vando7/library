@@ -465,13 +465,12 @@ class BookController extends Controller
                     $book->save();
                     $model->save();
                     $transaction->commit();
-                    $session->setFlash('success', 'Books given successfully to '.$cart['user']['name']);
+                    $session->setFlash('success', 'Books given successfully to ' . $cart['user']['name']);
                     unset($session['cart']);
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     throw $e;
                 }
-
             }
         }
 
@@ -590,7 +589,7 @@ class BookController extends Controller
         }
 
         $directionValue = $direction === 'left' ? -1 : +1;
-        
+
         $swap = null;
         $swap = $pictureJson['extra' . $picIndex];
         $pictureJson['extra' . $picIndex] = $pictureJson['extra' . ($picIndex + $directionValue)];
@@ -623,48 +622,35 @@ class BookController extends Controller
 
             return $this->redirect(Yii::$app->request->referrer);
         }
-        
+
         if (file_exists($pictureJson['extra' . $picIndex])) {
             unlink($pictureJson['extra' . $picIndex]);
             $it = $picIndex;
 
             if (array_key_exists('extra' . ($picIndex + 1), $pictureJson)) {
 
-                while(array_key_exists('extra'.($it+1), $pictureJson)){
-                    $ext = pathinfo($pictureJson['extra'.($it+1)], PATHINFO_EXTENSION);
+                while (array_key_exists('extra' . ($it + 1), $pictureJson)) {
+                    $ext = pathinfo($pictureJson['extra' . ($it + 1)], PATHINFO_EXTENSION);
 
                     $newPath = 'upload/' . $model->isbn . '_extra' . $it . '.'  . $ext;
-                    rename($pictureJson['extra'.($it+1)], $newPath);
-                    $pictureJson['extra'.$it] = $newPath;
+                    rename($pictureJson['extra' . ($it + 1)], $newPath);
+                    $pictureJson['extra' . $it] = $newPath;
 
                     $it++;
                 }
 
                 unset($pictureJson['extra' . $it]);
-            } 
-            else {
+            } else {
                 unset($pictureJson['extra' . $picIndex]);
             }
 
-            
+
             $model->pictures = json_encode($pictureJson);
             $model->save();
         }
 
         return $this->redirect(Yii::$app->request->referrer);
     }
-
-
-    public function actionAddpic($isbn)
-    {
-        if (Yii::$app->user->can('manageBook') == false) {
-            return $this->redirect(['index']);
-        }
-
-        $model = $this->findModel($isbn);
-        $pictureJson = json_decode($model->pictures, true);
-    }
-
 
 
     /**
@@ -681,13 +667,13 @@ class BookController extends Controller
 
         if ($model->bookCover) {
             $pictureJson['cover'] = 'upload/' . $model->isbn . '_cover.jpeg';
-            
+
             // ignore imagick warnings, it works (on my pc :) ).
             $tempPic = new \Imagick($model->bookCover->tempName);
-            $tempPic->resizeImage(800,800,\imagick::FILTER_LANCZOS, 1 , true);
+            $tempPic->resizeImage(800, 800, \imagick::FILTER_LANCZOS, 1, true);
             $tempPic->setImageFormat("jpeg");
             $tempPic->writeImage($model->bookCover->tempName);
-            $tempPic->resizeImage(200,200,\imagick::FILTER_LANCZOS, 1 , true);
+            $tempPic->resizeImage(200, 200, \imagick::FILTER_LANCZOS, 1, true);
             $tempPic->writeImage('upload/' . $model->isbn . '_cover-thumb.jpeg');
             $tempPic->clear();
             $tempPic->destroy();
@@ -704,12 +690,12 @@ class BookController extends Controller
             foreach ($model->bonusImages as $files) {
                 $pictureJson['extra' . $counter] = 'upload/' . $model->isbn . '_extra' . $counter . '.jpeg';
 
-                $tempPic = new \Imagick($model->bonusImages[$counter-1]->tempName);
-                $tempPic->resizeImage(800,800,\imagick::FILTER_LANCZOS, 1 , true);
+                $tempPic = new \Imagick($model->bonusImages[$counter - 1]->tempName);
+                $tempPic->resizeImage(800, 800, \imagick::FILTER_LANCZOS, 1, true);
                 $tempPic->setImageFormat("jpeg");
-                $tempPic->writeImage($model->bonusImages[$counter-1]->tempName);
-                $tempPic->resizeImage(200,200,\imagick::FILTER_LANCZOS, 1 , true);
-                $tempPic->writeImage('upload/' . $model->isbn . '_extra'.$counter.'-thumb.jpeg');
+                $tempPic->writeImage($model->bonusImages[$counter - 1]->tempName);
+                $tempPic->resizeImage(200, 200, \imagick::FILTER_LANCZOS, 1, true);
+                $tempPic->writeImage('upload/' . $model->isbn . '_extra' . $counter . '-thumb.jpeg');
                 $tempPic->clear();
                 $tempPic->destroy();
 
@@ -726,16 +712,49 @@ class BookController extends Controller
     }
 
 
-    // this function is for debugging purposes.
-    public function cleanPics($isbn){
+    public function actionDeleteallpics($isbn)
+    {
         $model = $this->findModel($isbn);
         $pictureJson = json_decode($model->pictures, true);
-        if(!$pictureJson) return true;
-        foreach($pictureJson as $key => $value){
-            if(file_exists($value) == false){
+
+        $counter = 1;
+        while (array_key_exists('extra' . $counter, $pictureJson)) {
+            unlink($pictureJson['extra' . $counter]);
+
+            if (file_exists('upload/' . $model->isbn . '_extra' . $counter . '-thumb.jpeg')) {
+                unlink('upload/' . $model->isbn . '_extra' . $counter . '-thumb.jpeg');
+            }
+
+            unset($pictureJson['extra' . $counter]);
+            ++$counter;
+        };
+
+        $model->pictures = json_encode($pictureJson);
+        $model->save();
+        
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+
+    /**
+     * Function used for debugging purposes.
+     * Delete keys from $model->pictures JSON that 
+     * do not point anywhere.
+     */
+    public function cleanPics($isbn)
+    {
+        $model = $this->findModel($isbn);
+        $pictureJson = json_decode($model->pictures, true);
+
+        if (!$pictureJson) 
+            return true;
+
+        foreach ($pictureJson as $key => $value) {
+            if (file_exists($value) == false) {
                 unset($pictureJson[$key]);
             }
         }
+
         $model->pictures = json_encode($pictureJson);
         $model->save();
     }

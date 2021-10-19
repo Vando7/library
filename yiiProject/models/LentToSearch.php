@@ -114,7 +114,7 @@ class LentToSearch extends LentTo
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 5,
             ],
         ]);
 
@@ -149,7 +149,7 @@ class LentToSearch extends LentTo
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 5,
             ],
         ]);
 

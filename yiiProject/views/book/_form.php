@@ -126,6 +126,8 @@ natcasesort($genreList);
     <?php
     if ($model->pictures != null) {
         echo '<h3>Add, rearrange or remove bonus pictures:</h3>';
+        
+        $hasExtra = false;
         Pjax::begin(
             ['enableReplaceState'=>false, 'enablePushState'=>false, 'timeout' => 5000 ]
         );
@@ -137,6 +139,7 @@ natcasesort($genreList);
 
         echo '<div class="row">';
         while (array_key_exists('extra' . $counter, $pictureJson)) {
+            $hasExtra = true;
             $picPath = $pictureJson['extra' . $counter];
 
             if(file_exists('upload/'.$model->isbn.'_extra'.$counter.'-thumb.jpeg')){
@@ -189,6 +192,19 @@ natcasesort($genreList);
             $counter++;
         }
         echo '</div>';
+
+        echo $hasExtra == true ? Html::a('<i class="bi bi-trash"></i> Clear All', [
+            'deleteallpics', 
+            'isbn' => $model->isbn,
+        ], 
+        [
+            'class' => 'btn btn-danger mb-10',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) : '';
+        
         Pjax::end();
     }
     ?>
