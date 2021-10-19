@@ -137,10 +137,16 @@ natcasesort($genreList);
 
         echo '<div class="row">';
         while (array_key_exists('extra' . $counter, $pictureJson)) {
+            $picPath = $pictureJson['extra' . $counter];
+
+            if(file_exists('upload/'.$model->isbn.'_extra'.$counter.'-thumb.jpeg')){
+                $picPath = 'upload/'.$model->isbn.'_extra'.$counter.'-thumb.jpeg';
+            }
+
             echo '<div class="col-auto mb-4">';
             echo
             '<div class="card w-200">
-                    <img class="rounded mx-auto d-block " src="/' . $pictureJson['extra' . $counter] . '" alt="Card image cap" style="height:150px; width:150px; object-fit: contain;">
+                    <img class="rounded mx-auto d-block " src="/' . $picPath . '" alt="Card image cap" style="height:150px; width:150px; object-fit: contain;">
                     <div class="card-body"></div>
                     <div class="btn-group card-footer" role="group" aria-label="Basic example">';
 

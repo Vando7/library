@@ -1,5 +1,4 @@
 <?php
-
 use yii\grid\GridView;
 
 use yii\widgets\Pjax;
@@ -61,8 +60,13 @@ $currentUser = Yii::$app->user->identity;
                     if ($pictureJson) {
                         $element = '';
                         $element .= '<a href="/book/view?isbn=' . $model->isbn . '" alt="book cover">';
+                        $coverPath = $pictureJson['cover'];
+                        if(file_exists('upload/'.$model->isbn.'_cover-thumb.jpeg')){
+                            $coverPath = "upload/".$model->isbn.'_cover-thumb.jpeg';
+                            //echo '<h1>asd<h1>';
+                        }
                         $element .= Html::img(
-                            '/' . Html::encode($pictureJson['cover']),
+                            '/' . Html::encode($coverPath),
                             [
                                 'style' => [
                                     'max-width' => '130px'

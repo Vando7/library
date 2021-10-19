@@ -464,14 +464,14 @@ class BookController extends Controller
                 try {
                     $book->save();
                     $model->save();
-                    unset($session['cart']);
                     $transaction->commit();
+                    $session->setFlash('success', 'Books given successfully to '.$cart['user']['name']);
+                    unset($session['cart']);
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     throw $e;
                 }
 
-                $session->setFlash('success', 'Books given successfully to !');
             }
         }
 
@@ -527,7 +527,6 @@ class BookController extends Controller
         $currentUser = Yii::$app->user->identity;
 
         if ($currentUser->suspended_status === 'yes') {
-            error_log("jeff", 3, 'ivan_log.txt');
             return $this->redirect(['view', 'isbn' => $isbn]);
         }
 
@@ -618,7 +617,6 @@ class BookController extends Controller
         $model->normalizePictures();
 
         $pictureJson = json_decode($model->pictures, true);
-        error_log($model->pictures,3,'ivan_log.txt');
 
         if (array_key_exists('extra' . $picIndex, $pictureJson) == false) {
             Yii::$app->session->setFlash('danger', 'Could not find picture to delete.');
@@ -682,8 +680,19 @@ class BookController extends Controller
         $pictureJson = json_decode($model->pictures, true);
 
         if ($model->bookCover) {
-            $pictureJson['cover'] = 'upload/' . $model->isbn . '_cover.' . $model->bookCover->extension;
-            $model->bookCover->saveAs('upload/' . $model->isbn . '_cover.' . $model->bookCover->extension);
+            $pictureJson['cover'] = 'upload/' . $model->isbn . '_cover.jpeg';
+            
+            // ignore imagick warnings, it works (on my pc :) ).
+            $tempPic = new \Imagick($model->bookCover->tempName);
+            $tempPic->resizeImage(800,800,\imagick::FILTER_LANCZOS, 1 , true);
+            $tempPic->setImageFormat("jpeg");
+            $tempPic->writeImage($model->bookCover->tempName);
+            $tempPic->resizeImage(200,200,\imagick::FILTER_LANCZOS, 1 , true);
+            $tempPic->writeImage('upload/' . $model->isbn . '_cover-thumb.jpeg');
+            $tempPic->clear();
+            $tempPic->destroy();
+
+            $model->bookCover->saveAs('upload/' . $model->isbn . '_cover.jpeg');
         }
 
         $counter = 1;
@@ -693,8 +702,18 @@ class BookController extends Controller
             }
 
             foreach ($model->bonusImages as $files) {
-                $pictureJson['extra' . $counter] = 'upload/' . $model->isbn . '_extra' . $counter . '.'  . $files->extension;
-                $files->saveAs('upload/' . $model->isbn . '_extra' . $counter . '.' . $files->extension);
+                $pictureJson['extra' . $counter] = 'upload/' . $model->isbn . '_extra' . $counter . '.jpeg';
+
+                $tempPic = new \Imagick($model->bonusImages[$counter-1]->tempName);
+                $tempPic->resizeImage(800,800,\imagick::FILTER_LANCZOS, 1 , true);
+                $tempPic->setImageFormat("jpeg");
+                $tempPic->writeImage($model->bonusImages[$counter-1]->tempName);
+                $tempPic->resizeImage(200,200,\imagick::FILTER_LANCZOS, 1 , true);
+                $tempPic->writeImage('upload/' . $model->isbn . '_extra'.$counter.'-thumb.jpeg');
+                $tempPic->clear();
+                $tempPic->destroy();
+
+                $files->saveAs('upload/' . $model->isbn . '_extra' . $counter . '.jpeg');
                 $counter++;
             }
         }
@@ -711,6 +730,7 @@ class BookController extends Controller
     public function cleanPics($isbn){
         $model = $this->findModel($isbn);
         $pictureJson = json_decode($model->pictures, true);
+        if(!$pictureJson) return true;
         foreach($pictureJson as $key => $value){
             if(file_exists($value) == false){
                 unset($pictureJson[$key]);
