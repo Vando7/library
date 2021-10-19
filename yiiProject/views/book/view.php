@@ -71,6 +71,7 @@ $pictureJson = json_decode($model->pictures, true);
                     ])
                         : ''; ?>
                 </p>
+                <hr>
                 <h1><?= Html::encode($model->title) ?></h1>
                 <p class="text-secondary"><?= Html::encode($model->author) . ", published " . (date("F jS, Y", strtotime($model->published))) ?></p>
                 <p class="text-secondary"><i>
@@ -84,6 +85,7 @@ $pictureJson = json_decode($model->pictures, true);
                     }
                     ?>
                 </i></p>
+                
                 <h3> Description </h3>
                 <p class="text-justify"><?= Html::encode($model->description) ?></p>
                 <p class="text-secondary">
@@ -99,6 +101,7 @@ $pictureJson = json_decode($model->pictures, true);
                     ?>
                 </p>
                 <!-- Reserve button -->
+                <hr>
                 <?php
                 if($currentUser->identity->suspended_status === 'yes'){
                     if($reserveButton == ''){

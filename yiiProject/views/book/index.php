@@ -31,12 +31,14 @@ $currentUser = Yii::$app->user->identity;
         ?>
     </p>
 
-
+    
     <?php Pjax::begin(); ?>
     <?= $this->render('_search', [
         'model' => $searchModel,
         'genreList' => $genreList,
     ]); ?>
+
+    <hr>
 
     <?= $currentUser->role == 'reader' ? '' : Html::a('<i class="bi bi-plus-circle"></i> Add Book', ['create'], ['class' => 'btn btn-success']) ?>
     <?= $currentUser->role == 'reader' ? '' : Html::Button('<i class="bi bi-pencil-square"></i> Manage Genres', [

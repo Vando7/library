@@ -93,7 +93,6 @@ natcasesort($genreList);
     <?= $form->field($model, 'total_count')->textInput() ?>
     <!-- pepehmm -->
     <hr>
-    <hr>
     <?php
     if ($model->pictures != null) {
         
@@ -124,9 +123,9 @@ natcasesort($genreList);
     }
     ?>
     <hr>
-    <h3>Add, rearrange or remove bonus pictures:</h3>
     <?php
     if ($model->pictures != null) {
+        echo '<h3>Add, rearrange or remove bonus pictures:</h3>';
         Pjax::begin(
             ['enableReplaceState'=>false, 'enablePushState'=>false, 'timeout' => 5000 ]
         );
